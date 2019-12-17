@@ -1,0 +1,52 @@
+{% extends 'layout.twig' %}
+{% block title %} Page Article {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+      <h3> {{ blog.title }} </h3>
+        <p> {{ blog.content }}</p>
+        {% if blog.date_update <= blog.date %}
+        <p>A été créer le {{ blog.date }}</p>
+        {% else %}
+        <p>A été modifier le {{ blog.date_update }}</p>
+        {% endif %}
+
+        <p> Créer par {{ author.pseudo }}</p>
+
+    </div>
+
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <form class="col-8" action="CommentController.php" method="post">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="comment_email" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Message</label>
+                    <textarea class="form-control" id="comment_message" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+            {% for comment as comments %}
+            <div class="row">
+                <p>{{ comment.title }}</p>
+                <p>{{ comment.content }}</p>
+                <p>{{ comment.date }}</p>
+            </div>
+            {% endfor %}
+
+    </div>
+{% endblock %}
