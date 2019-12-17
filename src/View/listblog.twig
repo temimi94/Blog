@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+{% block title %}
+    <h2>Kinder Théo, étudiant développeur PHP / Symfony chez OpenClassrooms</h2>
+    <div class="row">
+        <p>Liste des blogs</p>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for blog in listBlog %}
+            <div class="col-xs">
+                <div class="card">
+                    <h4 class="card-block">{{ blog.title }}</h4>
+                    <p class="card-text">{{ blog.content }}</p>
+                    {% if blog.date_update <= blog.date %}
+                        <p>A été créer le {{ blog.date }}</p>
+                    {% else %}
+                        <p>A été modifier le {{ blog.date_update }}</p>
+                    {% endif %}
+                    <p>Crée par {{ blog.pseudo }}</p>
+                    <a href="index.php?page=blog&idblog={{ blog.id_article }}">Lire l'article</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
