@@ -1,0 +1,46 @@
+{
+  "name": "kindertheo/p5",
+  "version": "0.1.1",
+  "type": "project",
+  "description": "Projet 5 de la formation Développeur Symfony chez OpenClassrooms",
+  "keywords": [
+    "pedagogic",
+    "template",
+    "web",
+    "application",
+    "php",
+    "mvc"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kinder Théo",
+      "email": "kinder.theo@gmail.com",
+      "homepage": "https://kindertheo.net",
+      "role": "Apprenti Développeur Symfony"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "php": "7.2",
+    "twig/twig": "^2.0",
+    "tracy/tracy": "^2.7",
+    "ext-pdo": "*"
+  },
+  "require-dev": {
+  },
+  "config": {
+    "platform": {
+      "php": "7.2"
+    }
+  },
+  "support": {
+    "email": "theo.kinder@gmail.com",
+    "issues": "https://github.com/kindertheo/p5issues",
+    "source": "https://github.com/kindertheo/p5"
+  }
+}
