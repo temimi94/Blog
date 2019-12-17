@@ -1,0 +1,32 @@
+{% extends 'layout.twig' %}
+{% block title %}
+    <h2>Kinder Théo, étudiant développeur PHP / Symfony chez OpenClassrooms</h2>
+    <div class="row">
+    <img src="../public/img/myAvatar.png" alt="photo" class="img-fluid">
+    </div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+
+
+{% block form %}
+    <h3>Me contacter</h3>
+    <form>
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="First name">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Last name">
+            </div>
+        </div>
+        <div class="row">
+            <textarea type="text" class="form-control" rows="4" id="message"></textarea>
+        </div>
+        <div class="row">
+            <input type="submit" value="Envoyer"/>
+        </div>
+    </form>
+{% endblock %}
