@@ -9,17 +9,17 @@ class BlogController extends MainController {
 
 
 
-    public function DefaultMethod(){
+    public static function DefaultMethod(){
         $view = new MainController;
         $id_blog = self::getId();
         $blog = BlogModel::selectArticle($id_blog);
         $author = MainModel::selectAuthorById($blog['author_id']);
         //$comment = listComment($id_blog);
         $view = $view->twig->render('blog.twig', ['blog' => $blog, 'author' => $author, 'comment' => $comment]);
-        echo filter_var($view);
+        return $view;
     }
 
-    private function getId(){
+    private static function getId(){
         /* Filtre si c'est un entier */
         $id_blog = filter_input(INPUT_GET, 'idblog', FILTER_VALIDATE_INT);
 
