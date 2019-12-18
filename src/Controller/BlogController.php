@@ -9,13 +9,13 @@ class BlogController extends MainController {
 
 
 
-    public function __construct(){
-        parent::__construct();
-        $id_blog = $this->getId();
+    public function DefaultMethod(){
+        $view = new MainController;
+        $id_blog = self::getId();
         $blog = BlogModel::selectArticle($id_blog);
         $author = MainModel::selectAuthorById($blog['author_id']);
-        $comment = listComment($id_blog);
-        $view = $this->twig->render('blog.twig', ['blog' => $blog, 'author' => $author, 'comment' => $comment]);
+        //$comment = listComment($id_blog);
+        $view = $view->twig->render('blog.twig', ['blog' => $blog, 'author' => $author, 'comment' => $comment]);
         echo filter_var($view);
     }
 
@@ -30,7 +30,7 @@ class BlogController extends MainController {
         }
         /*Vérifie si l'article existe */
         $verif = BlogModel::selectId_article();;
-        if(in_array($id_blog, $verif)){
+        if(array_search($id_blog, array_column($verif, 'id_article', $id_blog)) === false){
             header('Location: index.php?page=listblog');
             exit();
         }
