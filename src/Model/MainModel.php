@@ -9,6 +9,10 @@ require_once 'ConnectPDO.php';
 class MainModel{
 
     private $db;
+    public function __construct(ConnectPDO $pdo)
+    {
+        $db = $pdo;
+    }
 
 
     public function selectAllUser(){
