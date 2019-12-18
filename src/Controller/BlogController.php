@@ -13,8 +13,7 @@ class BlogController extends MainController {
         $view = new MainController;
         $id_blog = self::getId();
         $blog = BlogModel::selectArticle($id_blog);
-        $author = MainModel::selectAuthorById($blog['author_id']);
-        //$comment = listComment($id_blog);
+        $comment = self::listComment($id_blog);
         $view = $view->twig->render('blog.twig', ['blog' => $blog, 'author' => $author, 'comment' => $comment]);
         return $view;
     }
@@ -37,7 +36,7 @@ class BlogController extends MainController {
         return $id_blog;
     }
 
-    private function listComment($id_blog){
+    private static function listComment($id_blog){
 
         return BlogModel::selectCommentByArticle($id_blog);
     }
