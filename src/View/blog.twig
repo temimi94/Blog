@@ -8,14 +8,31 @@
       <h3> {{ blog.title }} </h3>
         <p> {{ blog.content }}</p>
         {% if blog.date_update <= blog.date %}
-        <p>A été créer le {{ blog.date }}</p>
+        <p>A été créer le {{ blog.date }} par {{ blog.pseudo }}</p>
         {% else %}
-        <p>A été modifier le {{ blog.date_update }}</p>
+        <p>A été modifier le {{ blog.date_update }} par {{ blog.pseudo }}</p>
         {% endif %}
 
-        <p> Créer par {{ author.pseudo }}</p>
 
     </div>
+
+    <div class="container">
+        <h4>Commentaires</h4>
+        {% for comments in comment %}
+            <div class="row">
+                <p>{{ comments.content }}</p>
+            </div>
+            <div class="row">
+               {% if comments.date_update <= comment.date %}
+                    <p>A été crée le {{ comments.date }} par {{ comments.pseudo }}</p>
+                {% else %}
+                    <p>A été modifié le {{ comments.date_update }} par {{ comments.pseudo }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div>
+
 
     <hr>
     <div class="container">
@@ -38,15 +55,4 @@
     </div>
 
 
-    <div class="container">
-
-            {% for comment as comments %}
-            <div class="row">
-                <p>{{ comment.title }}</p>
-                <p>{{ comment.content }}</p>
-                <p>{{ comment.date }}</p>
-            </div>
-            {% endfor %}
-
-    </div>
 {% endblock %}

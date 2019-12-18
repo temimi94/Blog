@@ -15,7 +15,9 @@ class BlogModel extends MainModel
     public static function selectArticle($id_post)
     {
         $db = ConnectPDO::getPDO();
-        $req = $db->prepare('SELECT * FROM Article WHERE id_article = '.$id_post);
+        $req = $db->prepare('SELECT Article.id_article, Article.title, Article.content, Article.date, Article.chapo, Article.date_update, User.pseudo FROM Article 
+        INNER JOIN User ON Article.author_id = User.id_user
+        WHERE id_article ='.$id_post);
         //var_dump($req);
         $req->execute();
         //var_dump($req);
@@ -32,9 +34,12 @@ class BlogModel extends MainModel
 
     public static function selectCommentByArticle($id_article){
         $db = ConnectPDO::getPDO(); /* Ajouter de quoi selectionner le pseudo du créateur du commentaire */
-        $req = $db->prepare('SELECT * FROM Comment RIGHT JOIN Article ON Comment.id_article = Article.id_article WHERE Article.id_article =' . $id_article );
+        $req = $db->prepare('SELECT Comment.content, Comment.id_user, Comment.date, Comment.date_update, User.pseudo FROM Comment
+        INNER JOIN Article ON Article.id_article = Comment.id_article
+        INNER JOIN User ON Comment.id_user = User.id_user
+        WHERE Article.id_article = ' .$id_article);
         $req->execute();
-        return $req = $req->fetch();
+        return $req = $req->fetchAll();
     }
 
 

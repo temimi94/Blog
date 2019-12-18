@@ -6,16 +6,20 @@ use Twig\Loader\FilesystemLoader;
 
 class MainController
 {
-
+    /**
+     * @var Environment|null
+     */
     protected $twig = null;
 
-    /* Charge le chemin des Vues */
-
+    /**
+     * MainController constructor
+     * Creates the Template Engine & adds its Extensions
+     */
     public function __construct()
     {
-        return $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
-            'cache' => false
+        $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
+            'cache' => false,
+            'debug' => true
         ));
-
     }
 }

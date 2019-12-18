@@ -10,11 +10,11 @@ class ListBlogController extends  MainController {
 
     private $comp = 0;
 
-    public function __construct(){
-        parent::__construct();
+    public static function DefaultMethod(){
+        $view = new MainController;
         $listBlog = ListBlogModel::selectAllArticleWithAuthor();
-        $view = $this->twig->render('listblog.twig', ['listBlog' => $listBlog]);
-        echo filter_var($view);
+        $view = $view->twig->render('listblog.twig', ['listBlog' => $listBlog]);
+        return $view;
     }
 
 
