@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h3>Admin panel</h3>
+        </div>
+        <div class="row">
+            <p>Informations du compte</p>
+        </div>
+            <div class="row"><p>Session ID : {{ session.session_id }}</p></div>
+            <div class="row"><p>Pseudo : {{ session.pseudo }}</p></div>
+            <div class="row"><p>Adresse mail : {{ session.email }}</p></div>
+            <div class="row"><p>Date de création du compte : {{ session.date_register }}</p></div>
+            <div class="row"><p>Rang : {{ session.rank }}</p></div>
+
+
+        <div class="row">
+            <a href="index.php?page=admin&method=listuser">Liste des utilisateurs</a>
+        </div>
+        <div class="row">
+            <a href="index.php?page=admin&method=listarticle">Liste des articles</a>
+        </div>
+
+
+    </div>
+
+{% endblock %}
