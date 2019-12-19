@@ -9,6 +9,7 @@ class Router{
     public function __construct(){
         $this->parseUrl();
         $this->setController();
+        $this->setMethod();
         $this->controllerSendView();
     }
     public function parseUrl(){
@@ -45,6 +46,7 @@ class Router{
     }
 
     public function controllerSendView(){
+        $this->controller = new $this->controller;
         $reponse = call_user_func([$this->controller, $this->method]);
 
         echo filter_var($reponse);

@@ -9,12 +9,15 @@ class BlogController extends MainController {
 
 
 
-    public static function DefaultMethod(){
-        $view = new MainController;
+    public function DefaultMethod(){
         $id_blog = self::getId();
-        $blog = BlogModel::selectArticle($id_blog);
-        $comment = self::listComment($id_blog);
-        $view = $view->twig->render('blog.twig', ['blog' => $blog, 'author' => $author, 'comment' => $comment]);
+
+        $BlogModel = new BlogModel;
+        $blog = $BlogModel->selectArticle($id_blog);
+        $comment = $BlogModel->selectCommentByArticle($id_blog);
+
+        $view = new MainController;
+        $view = $view->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
         return $view;
     }
 
@@ -22,13 +25,14 @@ class BlogController extends MainController {
         /* Filtre si c'est un entier */
         $id_blog = filter_input(INPUT_GET, 'idblog', FILTER_VALIDATE_INT);
 
-        /*Redirection si la variable est vide où si l'id de l'article n'existe pas */
-        if(empty($id_blog)){
+        /*Redirection si la variable est vide*/
+        if(!$id_blog){
             header('Location: index.php?page=listblog');
             exit();
         }
         /*Vérifie si l'article existe */
-        $verif = BlogModel::selectId_article();;
+        $BlogModel = new BlogModel;
+        $verif = $BlogModel->selectId_article();;
         if(array_search($id_blog, array_column($verif, 'id_article', $id_blog)) === false){
             header('Location: index.php?page=listblog');
             exit();
@@ -36,10 +40,14 @@ class BlogController extends MainController {
         return $id_blog;
     }
 
-    private static function listComment($id_blog){
+  /*  public function SendcommentMethod(){
+        if(!empty($_POST){
+            $_POST['email']
+            $_POST['message']
+        }
+    }*/
 
-        return BlogModel::selectCommentByArticle($id_blog);
-    }
+
 
 
 }

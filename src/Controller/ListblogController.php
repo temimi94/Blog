@@ -8,11 +8,12 @@ use App\Model\MainModel;
 
 class ListBlogController extends  MainController {
 
-    private $comp = 0;
 
-    public static function DefaultMethod(){
+    public function DefaultMethod(){
+        $ListBlogModel = new ListBlogModel;
+        $listBlog = $ListBlogModel->selectAllArticle();
+
         $view = new MainController;
-        $listBlog = ListBlogModel::selectAllArticleWithAuthor();
         $view = $view->twig->render('listblog.twig', ['listBlog' => $listBlog]);
         return $view;
     }

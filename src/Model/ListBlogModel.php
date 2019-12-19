@@ -6,22 +6,28 @@ namespace App\Model;
 
 require_once 'ConnectPDO.php';
 
-class ListBlogModel
+class ListBlogModel extends MainModel
 {
 
-    private $db;
+    protected $db;
 
 
-    public static function selectAllArticle()
+    public function selectAllArticle()
     {
-        $db = ConnectPDO::getPDO();
+        return $this->readAll('SELECT Article.id_article, Article.title, Article.content, 
+        Article.date, Article.chapo, Article.date_update, 
+        Article.author_id, User.id_user, User.pseudo, User.email 
+        FROM Article INNER JOIN User ON Article.author_id = User.id_user');
+
+        /*$db = ConnectPDO::getPDO();
         $req = $db->prepare('SELECT * FROM Article');
         $req->execute();
-        return $req = $req->fetchAll();
+        return $req = $req->fetchAll();*/
     }
 
-    public static function selectAllArticleWithAuthor()
+    public function selectAllArticleWithAuthor()
     {
+
         $db = ConnectPDO::getPDO();
         $req = $db->prepare('SELECT * FROM Article INNER JOIN User ON Article.author_id = User.id_user');
         $req->execute();
