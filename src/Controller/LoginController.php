@@ -53,4 +53,17 @@ class LoginController extends MainController {
         $logout->logout();
         $this->redirect('home');
     }
+
+    public function RegisterMethod(){
+        $post = array_map( 'htmlspecialchars', $_POST);
+        if(!empty($post)){
+            if($post['password1'] != $post['password2']) return $this->twig->render('register.twig', ['erreur' => 'Les mots de passes sont différents']);
+
+            $post['password'] = password_hash($post['password1'], PASSWORD_DEFAULT);
+            $register = new LoginModel();
+            $register->createUser($post['pseudo'], $post['email'], $post['password']);
+            $this->redirect('home');
+        }
+        return $this->twig->render('register.twig');
+    }
 }
