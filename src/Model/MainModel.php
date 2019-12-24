@@ -41,6 +41,24 @@ class MainModel{
         return $req->fetchAll();
     }
 
+    public function delete($statement){
+        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req->execute();
+        return $req;
+    }
+
+    public function update($statement, $array = []){
+        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req->execute($array);
+        return $req;
+    }
+
+    public function add($statement, $array = []){
+        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req->execute($array);
+        return $req;
+    }
+
 
 
 
