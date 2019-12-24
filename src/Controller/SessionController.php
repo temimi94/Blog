@@ -15,8 +15,9 @@ class SessionController extends MainController
     }
 
     public function isLegit(){
-        if($_SESSION['rank'] === 'Utilisateur')   {
+        if($_SESSION['rank'] != 'Administrateur')   {
             $this->redirect('home');
+            exit();
         }
     }
 
@@ -50,8 +51,14 @@ class SessionController extends MainController
         }elseif ($_SESSION['rank'] == 2) {
             $_SESSION['rank'] = 'Utilisateur';
         }
+    }
 
-
+    public function verifySessionRank(){
+        if($_SESSION['rank'] === 'Administrateur'){
+            $_SESSION['rank'] = 1;
+        }elseif ($_SESSION['rank'] === 'Utilisateur'){
+            $_SESSION['rank'] = 2;
+        }
     }
 
     public function logout(){
