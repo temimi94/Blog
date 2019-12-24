@@ -7,9 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
         {% for blog in listBlog %}
-            <div class="col-xs">
                 <div class="card">
                     <h4 class="card-block">{{ blog.title }}</h4>
                     <p class="card-text">{{ blog.content }}</p>
@@ -21,9 +19,7 @@
                     <p>Crée par {{ blog.pseudo }}</p>
                     <a href="index.php?page=blog&idblog={{ blog.id_article }}">Lire l'article</a>
                 </div>
-            </div>
         {% endfor %}
-    </div>
 
 {% endblock %}
 
