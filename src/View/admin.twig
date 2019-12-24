@@ -88,6 +88,10 @@
             <div class="row">
                 <p>Crée par : {{ articles.pseudo }}</p>
             </div>
+
+            {% if articles.validated == '0' %}
+                <a class="btn btn-primary" href="index.php?page=admin&method=approvearticle&idarticle={{ articles.id_article }}">Approuver</a>
+            {% endif %}
                 <a class="btn btn-primary" href="index.php?page=admin&method=editarticle&idarticle={{ articles.id_article }}">Editer</a>
                 <a class="btn btn-danger" href="index.php?page=admin&method=deletearticle&idarticle={{ articles.id_article }}">Supprimer</a>
             <hr>
