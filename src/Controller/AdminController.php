@@ -30,8 +30,8 @@ class AdminController extends MainController
     public function ListarticleMethod(){
         $this->isLegitAdmin();
 
-        $req = new ListBlogModel();
-        $req = $req->selectAllArticle();
+        $req = new AdminModel();
+        $req = $req->selectArticleAdmin();
 
         $main = new MainController;
         return $main->twig->render('admin.twig', ['article' => $req]);
@@ -101,6 +101,17 @@ class AdminController extends MainController
         $req = new AdminModel();
         $req->deleteComment($get);
         $this->redirect('admin&method=listcomment');
+    }
+
+    public function ApprovearticleMethod(){
+        $this->isLegitAdmin();
+
+        $get = filter_input(INPUT_GET, 'idarticle', FILTER_VALIDATE_INT);
+        if($get == false) $this->redirect('admin');
+
+        $req = new AdminModel();
+        $req->approveArticle($get); // Set article.validated to 1. 0 is non approuved article
+        $this->redirect('admin&method=listarticle');
     }
 
     public function isLegitAdmin(){
