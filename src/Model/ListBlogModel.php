@@ -18,8 +18,6 @@ class ListBlogModel extends MainModel
         Article.date, Article.chapo, Article.date_update, 
         Article.author_id, User.id_user, User.pseudo, User.email 
         FROM Article INNER JOIN User ON Article.author_id = User.id_user');
-
-
     }
 
     public function selectAllArticleWithAuthor()
