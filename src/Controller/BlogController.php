@@ -16,8 +16,7 @@ class BlogController extends MainController {
         $blog = $BlogModel->selectArticle($id_blog);
         $comment = $BlogModel->selectCommentByArticle($id_blog);
 
-        $view = new MainController;
-        $view = $view->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
+        $view = $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
         return $view;
     }
 
@@ -38,6 +37,23 @@ class BlogController extends MainController {
             exit();
         }
         return $id_blog;
+    }
+
+
+    public function CreatearticleMethod(){
+        $sess = new SessionController();
+        $sess->isLegit();
+        $article = new BlogModel();
+
+        if(!empty($_POST)){
+            $post = array_map( 'htmlspecialchars', $_POST); /** Sécurise les données */
+
+            $article->createArticle($post['title'], $post['content'], $post['chapo'], $_SESSION['rank']);
+            $this->redirect('listblog');
+        }elseif(empty($_POST)){
+            $view = $this->twig->render('createblog.twig');
+            return $view;
+        }
     }
 
   /*  public function SendcommentMethod(){
