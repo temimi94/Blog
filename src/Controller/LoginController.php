@@ -29,7 +29,7 @@ class LoginController extends MainController {
                 return $view->twig->render('login.twig', ['erreur' => $err]);
             }else{
                 $data = $login->getUser($_POST['email']);
-                if(password_verify($_POST['password'], htmlspecialchars($data['password']))){
+                if(password_verify(htmlspecialchars($_POST['password']), htmlspecialchars($data['password']))){
                     $sess = new SessionController();
                     if($_POST['remember_me'] === 'on') {
                         $sess->login($data, true);
