@@ -36,6 +36,18 @@ class AdminModel extends MainModel{
         return $this->update($statement);
     }
 
+    public function selectArticleAdmin()
+    {
+        return $this->readAll('SELECT Article.id_article, Article.title, Article.content, 
+        Article.date, Article.chapo, Article.date_update, 
+        Article.author_id, Article.validated, User.id_user, User.pseudo, User.email 
+        FROM Article INNER JOIN User ON Article.author_id = User.id_user');
+    }
+
+    public function approveArticle($article_id){
+        $statement = 'UPDATE Article SET Article.validated = 1 WHERE Article.id_article = '.$article_id;
+        return $this->delete($statement);
+    }
 }
 
 /**
