@@ -19,10 +19,7 @@ class ListBlogModel extends MainModel
         Article.author_id, User.id_user, User.pseudo, User.email 
         FROM Article INNER JOIN User ON Article.author_id = User.id_user');
 
-        /*$db = ConnectPDO::getPDO();
-        $req = $db->prepare('SELECT * FROM Article');
-        $req->execute();
-        return $req = $req->fetchAll();*/
+
     }
 
     public function selectAllArticleWithAuthor()

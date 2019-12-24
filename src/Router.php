@@ -50,5 +50,6 @@ class Router{
         $reponse = call_user_func([$this->controller, $this->method]);
 
         echo filter_var($reponse);
+
     }
 }

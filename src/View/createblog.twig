@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <div class="container">
+        <form action="index.php?page=blog&method=createarticle" method="post">
+
+            <div class="form-group">
+                <label for="title">Titre</label>
+                <input type="text" class="form-control"  id="title" name="title">
+            </div>
+
+            <div class="form-group">
+                <label for="chapo">Chapo</label>
+                <input type="text" class="form-control" id="chapo" name="chapo">
+            </div>
+
+            <div class="form-group form-check">
+                <label for="content">Contenu</label>
+                <textarea type="text" class="form-control" rows="10" id="content" name="content"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Créer</button>
+        </form>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h3>Admin panel</h3>
+        </div>
+        <div class="row">
+            <p>Informations du compte</p>
+        </div>
+            <div class="row"><p>Session ID : {{ session.session_id }}</p></div>
+            <div class="row"><p>Pseudo : {{ session.pseudo }}</p></div>
+            <div class="row"><p>Adresse mail : {{ session.email }}</p></div>
+            <div class="row"><p>Date de création du compte : {{ session.date_register }}</p></div>
+            <div class="row"><p>Rang : {{ session.rank }}</p></div>
+
+
+        <div class="row">
+            <a href="index.php?page=admin&method=listuser">Liste des utilisateurs</a>
+        </div>
+        <div class="row">
+            <a href="index.php?page=admin&method=listarticle">Liste des articles</a>
+        </div>
+        <div class="row">
+            <a href="index.php?page=admin&method=listcomment">Liste des commentaires</a>
+        </div>
+
+
+    </div>
+
+    {% if user is defined %}
+        <hr>
+        <div class="container">
+
+                {% for users in user %}
+                <div class="row">
+                    <p>User ID : {{ users.id_user }}</p>
+                </div>
+                <div class="row">
+                    <p>Pseudo : {{ users.pseudo }}</p>
+                </div>
+                <div class="row">
+                    <p>Email : {{ users.email }}</p>
+                </div>
+                <div class="row">
+                    <p>Date d'enregistrement : {{ users.date_register }}</p>
+                </div>
+                <div class="row">
+                    <p>Rang :
+                        {% if users.rank == 1%}
+                        Administrateur
+                        {% elseif users.rank == 2 %}
+                        Utilisateur
+                        {% endif %}
+                    </p>
+                </div>
+                    <hr>
+                {% endfor %}
+        </div>
+    {% endif %}
+
+
+    {% if article is defined %}
+        <hr>
+        <div class="container">
+            {% for articles in article %}
+            <div class="row">
+                <p>ID Article : {{ articles.id_article }}</p>
+            </div>
+            <div class="row">
+                <p>Titre: {{ articles.title }}</p>
+            </div>
+            <div class="row">
+                <p>Chapo : {{ articles.chapo }}</p>
+            </div>
+            <div class="row">
+                <p>Contenu : {{ articles.content }}</p>
+            </div>
+            <div class="row">
+            <p>Date de création: {{ articles.date }}</p>
+            </div>
+                {% if articles.date_update != null %}
+            <div class="row">
+                <p>Dernière modification le : {{ articles.date_update }}</p>
+            </div>
+                {% endif %}
+            <div class="row">
+                <p>Crée par : {{ articles.pseudo }}</p>
+            </div>
+                <a class="btn btn-primary" href="index.php?page=admin&method=editarticle&idarticle={{ articles.id_article }}">Editer</a>
+                <a class="btn btn-danger" href="index.php?page=admin&method=deletearticle&idarticle={{ articles.id_article }}">Supprimer</a>
+            <hr>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+
+    {% if comment is defined %}
+        <hr>
+        <div class="container">
+            {% for comments in comment %}
+                <div class="row">
+                    <p>ID : {{ comments.id_comment }}</p>
+                </div>
+                <div class="row">
+
+                    <p>Commentaire : {{ comments.content }}</p>
+                </div>
+                <div class="row">
+                    <p>Ecrit par : {{ comments.pseudo }} le {{ comments.date }}</p>
+                </div>
+                <div class="row">
+                    <p>Article : {{ comments.title }}</p>
+                </div>
+                {% if comments.validate == '1' %}
+                <div class="row">
+                    <p>Commentaire approuvé</p>
+                </div>
+                {% elseif comments.validate == '0' %}
+                    <div class="row">
+                        <p>Commentaire en attente de validation</p>
+                    </div>
+                    <a class="btn btn-primary" href="index.php?page=admin&method=approvecomment&idcomment={{ comments.id_comment }}">Approuver</a>
+                {% endif %}
+                <a class="btn btn-danger" href="index.php?page=admin&method=deletecomment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                <hr>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

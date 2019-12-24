@@ -10,15 +10,26 @@
             <a class="nav-link" href="index.php?page=home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=blog">Article</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="index.php?page=listblog">Liste des articles</a>
         </li>
+        {% if session.session_id is defined %}
+        <li class="nav-item">
+            <a class="nav-link" href="index.php?page=admin">Mon compte</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="index.php?page=blog&method=createarticle">Créer un article</a>
+        </li>
+        {% endif %}
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    {% if session.session_id is defined %}
+        <form class="nav-item">
+            <a class="btn btn-warning" href="index.php?page=login&method=logout">Logout</a>
+        </form>
+    {% else %}
+        <form class="nav-item">
+        <a class="btn btn-success" href="index.php?page=login">Login</a>
     </form>
+
+    {% endif %}
 </div>
 </nav>

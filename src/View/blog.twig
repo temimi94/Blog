@@ -3,19 +3,20 @@
 
 {% block content %}
 
-    <div class="row">
 
-      <h3> {{ blog.title }} </h3>
-        <p> {{ blog.content }}</p>
+    <div class="container">
+
+        <div class="row"><h3> {{ blog.title }} </h3>   </div>
+        <div class="row"><p> {{ blog.content }}</p></div>
+        <div class="row">
         {% if blog.date_update <= blog.date %}
         <p>A été créer le {{ blog.date }} par {{ blog.pseudo }}</p>
         {% else %}
         <p>A été modifier le {{ blog.date_update }} par {{ blog.pseudo }}</p>
         {% endif %}
-
+        </div>
 
     </div>
-
     <div class="container">
         <h4>Commentaires</h4>
         {% for comments in comment %}
