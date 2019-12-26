@@ -13,11 +13,17 @@
             <a class="nav-link" href="index.php?page=listblog">Liste des articles</a>
         </li>
         {% if session.session_id is defined %}
+
         <li class="nav-item">
+            {% if session.rank == 'Administrateur' %}
             <a class="nav-link" href="index.php?page=admin">Mon compte</a>
+            {% elseif session.rank == 'Utilisateur' %}
+            <a class="nav-link" href="index.php?page=user">Mon compte</a>
+            {% endif %}
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=blog&method=createarticle">Créer un article</a>
+            <a class="nav-link" href="index.php?page=blog&method=createarticle">Créer un article</a> {# verifier autorisation create article#}
         </li>
         {% endif %}
     </ul>
