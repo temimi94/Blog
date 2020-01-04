@@ -7,25 +7,22 @@ namespace App\Model;
 class MainModel{
 
     public function selectAllUser(){
-        $db = ConnectPDO::getPDO();
-        $req = $db->prepare('SELECT * FROM User');
-        $req->execute();
-        return $req = $req->fetchAll();
+        $database = ConnectPDO::getPDO()->prepare('SELECT * FROM User');
+        $database->execute();
+        return $req = $database->fetchAll();
     }
 
     public static function selectAuthorById($author_id){
-        $db = ConnectPDO::getPDO();
-        $req = $db->prepare('SELECT * FROM User WHERE id_user = '.$author_id);
-        $req->execute();
-        return $req = $req->fetch();
+        $database = ConnectPDO::getPDO()->prepare('SELECT * FROM User WHERE id_user = '.$author_id);
+        $database->execute();
+        return $req = $database->fetch();
 
     }
 
     public static function selectArticleWithAuthor(){
-        $db = ConnectPDO::getPDO();
-        $req = $db->prepare('SELECT * FROM Article LEFT JOIN User ON Article.author_id = User.id_user');
-        $req->execute();
-        return $req = $req->fetch();
+        $database = ConnectPDO::getPDO()->prepare('SELECT * FROM Article LEFT JOIN User ON Article.author_id = User.id_user');
+        $database->execute();
+        return $req = $database->fetch();
     }
 
 
