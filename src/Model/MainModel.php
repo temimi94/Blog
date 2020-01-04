@@ -53,9 +53,9 @@ class MainModel{
         return $req;
     }
 
-    public function add($statement, $array = []){
+    public function add($statement){
         $req = ConnectPDO::getPDO()->prepare($statement);
-        $req->execute($array);
+        $req->execute();
         return $req;
     }
 

@@ -36,6 +36,11 @@ class UserModel extends MainModel{
         return $this->update($statement);
     }
 
+    public function deleteCommentByArticle($id_article){
+        $statement = 'DELETE FROM Comment WHERE Comment.id_article ='.$id_article;
+        return $this->update($statement);
+    }
+
     public function selectArticleUser($user_id)
     {
         return $this->readAll('SELECT Article.id_article, Article.title, Article.content, 
