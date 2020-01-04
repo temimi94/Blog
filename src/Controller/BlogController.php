@@ -16,8 +16,7 @@ class BlogController extends MainController {
         $blog = $BlogModel->selectArticle($id_blog);
         $comment = $BlogModel->selectCommentByArticle($id_blog);
 
-        $view = $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
-        return $view;
+        return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
     }
 
     private function getId(){
@@ -26,15 +25,13 @@ class BlogController extends MainController {
 
         /*Redirection si la variable est vide*/
         if(!$id_blog){
-            header('Location: index.php?page=listblog');
-            exit();
+            $this->redirect('listblog');
         }
         /*Vérifie si l'article existe */
         $BlogModel = new BlogModel;
         $verif = $BlogModel->selectId_article();;
         if(array_search($id_blog, array_column($verif, 'id_article', $id_blog)) === false){
-            header('Location: index.php?page=listblog');
-            exit();
+            $this->redirect('listblog');
         } // Create function ifArticleExist
         return $id_blog;
     }
@@ -47,11 +44,10 @@ class BlogController extends MainController {
         $post = $this->post->getPostArray();
 
         if(!empty($post)){
-            $article->createArticle($post['title'], $post['content'], $post['chapo'], $_SESSION['id_user']);
+            $article->createArticle($post['title'], $post['content'], $post['chapo'], $this->session->getUserVar('id_user'));
             $this->redirect('listblog');
         }elseif(empty($post)){
-            $view = $this->twig->render('createblog.twig');
-            return $view;
+            return $this->twig->render('createblog.twig');
         }
     }
 
@@ -63,7 +59,7 @@ class BlogController extends MainController {
 
         if(!empty($post)){
             $comment = new BlogModel();
-            $comment->createComment($id_blog, $post['comment'], $_SESSION['id_user']);
+            $comment->createComment($id_blog, $post['comment'], $this->session->getUserVar('id_user'));
             $this->redirect('blog&idblog='.$id_blog);
         }elseif(empty($post)){
             $this->redirect('blog&idblog=' .$id_blog);
