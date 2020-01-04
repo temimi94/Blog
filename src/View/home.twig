@@ -13,17 +13,17 @@
 
 {% block form %}
     <h3>Me contacter</h3>
-    <form>
+    <form method="post" action="index.php?page=home&method=mailcontact" >
         <div class="row">
             <div class="col">
-                <input type="text" class="form-control" placeholder="First name">
+                <input type="text" name="name" class="form-control" placeholder="First name">
             </div>
             <div class="col">
-                <input type="text" class="form-control" placeholder="Last name">
+                <input type="email" name="email" class="form-control" placeholder="Email">
             </div>
         </div>
         <div class="row">
-            <textarea type="text" class="form-control" rows="4" id="message"></textarea>
+            <textarea name="content" class="form-control" rows="4" id="message"></textarea>
         </div>
         <div class="row">
             <input type="submit" value="Envoyer"/>
