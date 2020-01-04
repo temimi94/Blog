@@ -4,7 +4,7 @@ DROP SCHEMA IF EXISTS `p5` ;
 -- -----------------------------------------------------
 -- Schema p5
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `p5` ;
+CREATE SCHEMA IF NOT EXISTS `p5` CHARACTER SET utf8;
 USE `p5` ;
 
 -- -----------------------------------------------------
