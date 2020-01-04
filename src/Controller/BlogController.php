@@ -20,9 +20,9 @@ class BlogController extends MainController {
         return $view;
     }
 
-    private static function getId(){
+    private function getId(){
         /* Filtre si c'est un entier */
-        $id_blog = filter_input(INPUT_GET, 'idblog', FILTER_VALIDATE_INT);
+        $id_blog = $this->get->getGetVar('idblog');
 
         /*Redirection si la variable est vide*/
         if(!$id_blog){
@@ -44,19 +44,19 @@ class BlogController extends MainController {
         $sess = new SessionController();
         $sess->isLegit();
         $article = new BlogModel();
+        $post = $this->post->getPostArray();
 
-        if(!empty($_POST)){
-            $post = array_map( 'htmlspecialchars', $_POST); /** Sécurise les données */ //Create function securPost
+        if(!empty($post)){
             $article->createArticle($post['title'], $post['content'], $post['chapo'], $_SESSION['id_user']);
             $this->redirect('listblog');
-        }elseif(empty($_POST)){
+        }elseif(empty($post)){
             $view = $this->twig->render('createblog.twig');
             return $view;
         }
     }
 
     public function CreatecommentMethod(){
-        $post = array_map( 'htmlspecialchars', $_POST);
+        $post = $this->post->getPostArray();
         $id_blog = self::getId();
         $sess = new SessionController();
         $sess->isLegit();

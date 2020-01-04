@@ -46,10 +46,6 @@ class AdminModel extends MainModel{
 
     public function approveArticle($article_id){
         $statement = 'UPDATE Article SET Article.validated = 1 WHERE Article.id_article = '.$article_id;
-        return $this->delete($statement);
+        return $this->add($statement);
     }
 }
-
-/**
-$statement = 'UPDATE Article SET Article.title =' .$article_title. ', Article.chapo = '.$article_chapo.',
-        Article.content = '.$article_content.'; Article.date_update ='.$date.' WHERE Article.id_article = '.$id_article;**/

@@ -11,10 +11,10 @@ class ListBlogController extends  MainController {
 
     public function DefaultMethod(){
         $ListBlogModel = new ListBlogModel;
-        $listBlog = $ListBlogModel->selectAllArticle();
+        $listBlog = $ListBlogModel->selectAllArticle(); //Afficher du plus récent au plus ancien
 
-        $view = new MainController;
-        $view = $view->twig->render('listblog.twig', ['listBlog' => $listBlog]);
+
+        $view = $this->twig->render('listblog.twig', ['listBlog' => $listBlog]);
         return $view;
     }
 

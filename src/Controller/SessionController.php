@@ -7,7 +7,7 @@ class SessionController extends MainController
 
     public function isLogged()
     {
-        if (!empty($_SESSION['session_id'])) {
+        if (!empty($this->session->getUserVar('session_id'))) {
             return true;
         } else {
             return false;
@@ -15,46 +15,42 @@ class SessionController extends MainController
     }
 
     public function isLegit(){ //Rajouter Utilisateur
-        if($_SESSION['rank'] != 'Administrateur' AND $_SESSION['rank'] != 'Utilisateur') $this->redirect('home');
+        if($this->session->getUserVar('rank') != 'Administrateur' AND $this->session->getUserVar('rank') != 'Utilisateur') $this->redirect('home');
     }
 
-    public function login($data = [], $session_check = false)
+    public function login($data = [] /*,$session_check = false*/)
     {
-        if($session_check == true){
+       /** if($session_check == true){
             session_start([
                 'cookie_lifetime' => 2,628e+6,
-                'read_and_close' => true]); /**Le cookie dure 1 mois **/
+                'read_and_close' => true]);
         }else {
             session_start([
-                'cookie_lifetime' => 7200, /** Le cookie dure 2 heures  */
+                'cookie_lifetime' => 7200,
                 'read_and_close' => true]);
-        }
+        }**/
 
-        $_SESSION['session_id'] = session_id();
-        $_SESSION['pseudo'] = $data['pseudo'];
-        $_SESSION['id_user'] = $data['id_user'];
-        $_SESSION['email'] = $data['email'];
-        $_SESSION['date_register'] = $data['date_register'];
-        $_SESSION['rank'] = $data['rank'];
+        $this->session->createSession($data);
         $this->verifyRank();
-        if($_SESSION['rank'] === 'Administrateur') $this->redirect('admin');
-        elseif($_SESSION['rank'] === 'Utilisateur') $this->redirect('user');
+        if($this->session->getUserVar('rank') === 'Administrateur') $this->redirect('admin');
+        elseif($this->session->getUserVar('rank') === 'Utilisateur') $this->redirect('user');
+        exit();
     }
 
     public function verifyRank()
     {
-        if ($_SESSION['rank'] == 1) {
-            $_SESSION['rank'] = 'Administrateur';
-        }elseif ($_SESSION['rank'] == 2) {
-            $_SESSION['rank'] = 'Utilisateur';
+        if ($this->session->getUserVar('rank') == 1) {
+            $this->session->setUserVar('rank', 'Administrateur');
+        }elseif ($this->session->getUserVar('rank') == 2) {
+            $this->session->setUserVar('rank', 'Utilisateur');
         }
     }
 
     public function verifySessionRank(){
-        if($_SESSION['rank'] === 'Administrateur'){
-            $_SESSION['rank'] = 1;
-        }elseif ($_SESSION['rank'] === 'Utilisateur'){
-            $_SESSION['rank'] = 2;
+        if($this->session->getUserVar('rank') === 'Administrateur'){
+            $this->session->setUserVar('rank', 1);
+        }elseif ($this->session->getUserVar('rank') === 'Utilisateur'){
+            $this->session->setUserVar('rank', 2);
         }
     }
 
@@ -62,5 +58,6 @@ class SessionController extends MainController
         unset($_SESSION);
         session_destroy();
     }
+
 
 }

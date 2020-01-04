@@ -12,9 +12,7 @@ class AdminController extends MainController
 
     public function DefaultMethod(){
         $this->isLegitAdmin();
-
-        $main = new MainController;
-        return $main->twig->render('admin.twig');
+        return $this->twig->render('admin.twig');
     }
 
     public function ListuserMethod(){
@@ -23,8 +21,7 @@ class AdminController extends MainController
         $req = new MainModel;
         $req = $req->selectAlluser();
 
-        $main = new MainController;
-        return $main->twig->render('admin.twig', ['user' => $req]);
+        return $this->twig->render('admin.twig', ['user' => $req]);
     }
 
     public function ListarticleMethod(){
@@ -33,23 +30,22 @@ class AdminController extends MainController
         $req = new AdminModel();
         $req = $req->selectArticleAdmin();
 
-        $main = new MainController;
-        return $main->twig->render('admin.twig', ['article' => $req]);
+        return $this->twig->render('admin.twig', ['article' => $req]);
     }
 
     public function EditarticleMethod(){
         $this->isLegitAdmin();
         $main = new MainController;
-
-        if(!empty($_POST)) { /** Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
+        $post = $this->post->getPostArray();
+        if(!empty($post)) { /** Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
             $edit = new AdminModel();
-            $post = array_map( 'htmlspecialchars', $_POST); /** Sécurise les données */
+
             $edit->updateArticle($post['id_article'], $post['title'], $post['chapo'], $post['content']);
 
             $this->redirect('admin&method=listarticle');
 
-        }elseif(empty($_POST)){ /**Si $_POST est vide, renvois sur formulaire pour saisir les données à changer **/
-            $get = filter_input(INPUT_GET, 'idarticle', FILTER_VALIDATE_INT);
+        }elseif(empty($post)){ /**Si $_POST est vide, renvois sur formulaire pour saisir les données à changer **/
+            $get = $this->get->getGetVar('idarticle');
             if($get === false) $this->redirect('admin');
 
             $req = new BlogModel();
@@ -62,13 +58,13 @@ class AdminController extends MainController
         $this->isLegitAdmin();
         
         $delete = new AdminModel;
-        $delete->deleteArticle(filter_input(INPUT_GET, 'idarticle', FILTER_VALIDATE_INT));
+
+        $delete->deleteArticle($this->get->getGetVar('idarticle'));
 
         $req = new ListBlogModel();
         $req = $req->selectAllArticle();
-
-        $main = new MainController;
-        return $main->twig->render('admin.twig', ['article' => $req]);
+//// Delete Comment Article
+        return $this->twig->render('admin.twig', ['article' => $req]);
     }
 
     public function ListcommentMethod(){
@@ -77,14 +73,13 @@ class AdminController extends MainController
         $req = new AdminModel();
         $req = $req->getAllComment();
 
-        $main = new MainController;
-        return $main->twig->render('admin.twig', ['comment' => $req]);
+        return $this->twig->render('admin.twig', ['comment' => $req]);
     }
 
     public function ApprovecommentMethod(){
         $this->isLegitAdmin();
 
-        $get = filter_input(INPUT_GET, 'idcomment', FILTER_VALIDATE_INT);
+        $get = $this->get->getGetVar('idcomment');
         if($get ===false) $this->redirect('admin');
 
         $req = new AdminModel();
@@ -95,7 +90,7 @@ class AdminController extends MainController
     public function DeletecommentMethod(){
         $this->isLegitAdmin();
 
-        $get = filter_input(INPUT_GET, 'idcomment', FILTER_VALIDATE_INT);
+        $get = $this->get->getGetVar('idcomment');
         if($get ===false) $this->redirect('admin');
 
         $req = new AdminModel();
@@ -106,7 +101,7 @@ class AdminController extends MainController
     public function ApprovearticleMethod(){
         $this->isLegitAdmin();
 
-        $get = filter_input(INPUT_GET, 'idarticle', FILTER_VALIDATE_INT);
+        $get = $this->get->getGetVar('idarticle');
         if($get == false) $this->redirect('admin');
 
         $req = new AdminModel();
@@ -115,7 +110,7 @@ class AdminController extends MainController
     }
 
     public function isLegitAdmin(){
-        if($_SESSION['rank'] != 'Administrateur')   {
+        if($this->session->getUserVar('rank') != 'Administrateur')   {
             $this->redirect('home');
             exit();
         }
