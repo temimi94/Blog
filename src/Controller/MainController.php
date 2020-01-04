@@ -5,7 +5,7 @@ use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
-class MainController
+class MainController extends GlobalController
 {
     /**
      * @var Environment|null
@@ -18,15 +18,16 @@ class MainController
      */
     public function __construct()
     {
+        parent::__construct();
 
-        if(!self::isLogged()) session_start();
+
 
         $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
             'cache' => false,
             'debug' => true
         ));
         $this->twig->addExtension(new DebugExtension());
-        $this->twig->addGlobal("session", $_SESSION); /**Ajoute la variable $_SESSION a Twig **/
+        $this->twig->addGlobal("session", $this->session->getUserArray()); /**Ajoute la variable $_SESSION a Twig **/
     }
 
     public function redirect(string $page){
@@ -41,7 +42,7 @@ class MainController
 
     public function isLogged()
     {
-        if (!empty($_SESSION['session_id'])) {
+        if (!empty($this->session->getUserVar('session_id'))) {
             return true;
         } else {
             return false;
