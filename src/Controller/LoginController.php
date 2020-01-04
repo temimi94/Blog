@@ -9,9 +9,9 @@ class LoginController extends MainController {
 
     public function DefaultMethod(){
 
-        $view = new MainController;
-        if($view->isLogged()) $this->redirect('home');
-        $view = $view->twig->render('login.twig');
+
+        if($this->isLogged()) $this->redirect('home');
+        $view = $this->twig->render('login.twig');
         return $view;
     }
 
@@ -21,22 +21,17 @@ class LoginController extends MainController {
 
         $login = new LoginModel();
         $view = new MainController();
-        //var_dump($_POST);
-        //$post = filter_input_array(INPUT_POST);
-        if(isset($_POST['email'])){
-            if($login->getUser(htmlspecialchars($_POST['email'])) === false){
+        $post = $this->post->getPostArray();
+
+        if(isset($post['email'])){
+            if($login->getUser($post['email']) === false){
                 $err = ['erreur' => 'Mauvaise adresse mail'];
                 return $view->twig->render('login.twig', ['erreur' => $err]);
             }else{
-                $data = $login->getUser($_POST['email']);
-                if(password_verify(htmlspecialchars($_POST['password']), htmlspecialchars($data['password']))){
+                $data = $login->getUser($post['email']);
+                if(password_verify($post['password'], htmlspecialchars($data['password']))){
                     $sess = new SessionController();
-                    if($_POST['remember_me'] === 'on') {
-                        $sess->login($data, true);
-                    }
-                    else {
-                        $sess->login($data);
-                    }
+                    $sess->login($data); //Ajouter remember me
                 }
                 else {
                     $err = ['erreur' =>'Mot de passe incorrect'];
@@ -55,7 +50,8 @@ class LoginController extends MainController {
     }
 
     public function RegisterMethod(){
-        $post = array_map( 'htmlspecialchars', $_POST);
+        $post = $this->post->getPostArray();
+
         if(!empty($post)){
             if($post['password1'] != $post['password2']) return $this->twig->render('register.twig', ['erreur' => 'Les mots de passes sont différents']);
 
@@ -65,5 +61,14 @@ class LoginController extends MainController {
             $this->redirect('home');
         }
         return $this->twig->render('register.twig');
+    }
+
+    public function ForgetMethod(){
+        $post = $this->post->getPostArray();
+        if(!empty($post)){
+            $mail = new MailController();
+            $mail->sendForgetMail();
+        }
+        return $this->twig->render('forget.twig');
     }
 }
