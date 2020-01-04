@@ -9,9 +9,9 @@ class SessionController extends MainController
     {
         if (!empty($this->session->getUserVar('session_id'))) {
             return true;
-        } else {
-            return false;
         }
+        return false;
+
     }
 
     public function isLegit(){ //Rajouter Utilisateur
@@ -34,7 +34,6 @@ class SessionController extends MainController
         $this->verifyRank();
         if($this->session->getUserVar('rank') === 'Administrateur') $this->redirect('admin');
         elseif($this->session->getUserVar('rank') === 'Utilisateur') $this->redirect('user');
-        exit();
     }
 
     public function verifyRank()
