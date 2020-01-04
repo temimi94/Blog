@@ -27,20 +27,18 @@ class LoginController extends MainController {
             if($login->getUser($post['email']) === false){
                 $err = ['erreur' => 'Mauvaise adresse mail'];
                 return $view->twig->render('login.twig', ['erreur' => $err]);
-            }else{
-                $data = $login->getUser($post['email']);
-                if(password_verify($post['password'], htmlspecialchars($data['password']))){
-                    $sess = new SessionController();
-                    $sess->login($data); //Ajouter remember me
-                }
-                else {
-                    $err = ['erreur' =>'Mot de passe incorrect'];
-                    return $view->twig->render('login.twig', ['erreur' => $err]);
-                }
             }
-        }else{
-            $this->redirect('home');
+            $data = $login->getUser($post['email']);
+            if(password_verify($post['password'], htmlspecialchars($data['password']))){
+                $sess = new SessionController();
+                $sess->login($data); //Ajouter remember me
+            }
+            $err = ['erreur' =>'Mot de passe incorrect'];
+            return $view->twig->render('login.twig', ['erreur' => $err]);
+
         }
+        $this->redirect('home');
+
     }
 
     public function LogoutMethod(){
