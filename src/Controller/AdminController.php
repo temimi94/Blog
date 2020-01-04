@@ -112,7 +112,6 @@ class AdminController extends MainController
     public function isLegitAdmin(){
         if($this->session->getUserVar('rank') != 'Administrateur')   {
             $this->redirect('home');
-            exit();
         }
     }
 
