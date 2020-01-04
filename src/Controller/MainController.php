@@ -44,8 +44,8 @@ class MainController extends GlobalController
     {
         if (!empty($this->session->getUserVar('session_id'))) {
             return true;
-        } else {
-            return false;
         }
+        return false;
+
     }
 }

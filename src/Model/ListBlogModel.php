@@ -9,9 +9,6 @@ require_once 'ConnectPDO.php';
 class ListBlogModel extends MainModel
 {
 
-    protected $db;
-
-
     public function selectAllArticle()
     {
         return $this->readAll('SELECT Article.id_article, Article.title, Article.content, 
@@ -21,14 +18,6 @@ class ListBlogModel extends MainModel
         WHERE Article.validated = 1');
     }
 
-    public function selectAllArticleWithAuthor()
-    {
-
-        $db = ConnectPDO::getPDO();
-        $req = $db->prepare('SELECT * FROM Article INNER JOIN User ON Article.author_id = User.id_user');
-        $req->execute();
-        return $req = $req->fetchAll();
-    }
 
 
 }
