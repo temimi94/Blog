@@ -17,62 +17,9 @@
 
 
         <div class="row">
-            <a href="index.php?page=user&method=listarticle">Liste de mes articles</a>
+            <a href="index.php?page=user&method=listComment">Liste de mes commentaires</a>
         </div>
-        <div class="row">
-            <a href="index.php?page=user&method=listcomment">Liste de mes commentaires</a>
-        </div>
-
-
     </div>
-
-    {% if article is defined %}
-        <hr>
-        <div class="container">
-            {% if article is empty %}
-                <div class="row">
-                    <p>Vous n'avez pas encore rédiger d'article</p>
-                </div>
-                {% else %}
-
-            {% for articles in article %}
-                <div class="row">
-                    <p>ID Article : {{ articles.id_article }}</p>
-                </div>
-                <div class="row">
-                    <p>Titre: {{ articles.title }}</p>
-                </div>
-                <div class="row">
-                    <p>Chapo : {{ articles.chapo }}</p>
-                </div>
-                <div class="row">
-                    <p>Contenu : {{ articles.content }}</p>
-                </div>
-                <div class="row">
-                    <p>Date de création: {{ articles.date }}</p>
-                </div>
-                {% if articles.date_update != null %}
-                    <div class="row">
-                        <p>Dernière modification le : {{ articles.date_update }}</p>
-                    </div>
-                {% endif %}
-                <div class="row">
-                    <p>Crée par : {{ articles.pseudo }}</p>
-                </div>
-                {% if articles.validated == 0 %}
-                <div class="row">
-                    <p>Article en attente d'approbation</p>
-                </div>
-                {% endif %}
-
-                <a class="btn btn-primary" href="index.php?page=user&method=editarticle&idarticle={{ articles.id_article }}">Editer</a>
-                <a class="btn btn-danger" href="index.php?page=user&method=deletearticle&idarticle={{ articles.id_article }}">Supprimer</a>
-                <hr>
-            {% endfor %}
-                    {% endif %}
-
-        </div>
-    {% endif %}
 
     {% if comment is defined %}
         <hr>
@@ -101,7 +48,7 @@
                     <p>Commentaire en attente d'approbation</p>
                 </div>
                 {% endif %}
-                <a class="btn btn-danger" href="index.php?page=user&method=deletecomment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                <a class="btn btn-danger" href="index.php?page=user&method=deleteComment&idcomment={{ comments.id_comment }}">Supprimer</a>
                 <hr>
             {% endfor %}
         </div>

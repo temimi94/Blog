@@ -10,7 +10,7 @@
             <a class="nav-link" href="index.php?page=home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=listblog">Liste des articles</a>
+            <a class="nav-link" href="index.php?page=list">Liste des articles</a>
         </li>
         {% if session.session_id is defined %}
 
@@ -21,10 +21,11 @@
             <a class="nav-link" href="index.php?page=user">Mon compte</a>
             {% endif %}
         </li>
-
+            {% if session.rank == 'Administrateur' %}
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=blog&method=createarticle">Créer un article</a> {# verifier autorisation create article#}
+            <a class="nav-link" href="index.php?page=blog&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
         </li>
+            {% endif %}
         {% endif %}
     </ul>
     {% if session.session_id is defined %}
