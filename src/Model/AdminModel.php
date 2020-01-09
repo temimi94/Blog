@@ -55,4 +55,16 @@ class AdminModel extends MainModel
         $statement = 'UPDATE Article SET Article.validated = 1 WHERE Article.id_article = ' . $article_id;
         return $this->add($statement);
     }
+
+    public function getAdminPassword($id_user)
+    {
+        return $this->read('SELECT User.password FROM User WHERE User.id_user =' . $id_user);
+    }
+
+    public function changeAdminPassword($new_password, $id_user)
+    {
+        $statement = 'UPDATE User SET User.password =? WHERE User.id_user = ' . $id_user;
+        $array = array($new_password);
+        return $this->update($statement, $array);
+    }
 }
