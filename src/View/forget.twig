@@ -1,0 +1,17 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    {% if erreur is defined %}
+        <div class="alert alert-danger" role="alert">{{ erreur.erreur }}</div>
+    {% endif %}
+<form method="post" action="index.php?page=login&method=forget">
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Réintialiser le mot de passe</button>
+</form>
+
+{% endblock %}
