@@ -4,8 +4,6 @@
 namespace App\Model;
 
 
-require_once 'ConnectPDO.php';
-
 class ListBlogModel extends MainModel
 {
 

@@ -9,6 +9,7 @@ class PostController
      * @var mixed
      */
     private $post;
+
     /**
      * PostController constructor.
      */
@@ -16,6 +17,7 @@ class PostController
     {
         $this->post = filter_input_array(INPUT_POST);
     }
+
     /**
      * @return mixed
      */
@@ -23,6 +25,7 @@ class PostController
     {
         return $this->post;
     }
+
     /**
      * @param string $var
      * @return mixed

@@ -6,16 +6,16 @@ namespace App\Controller;
 use App\Model\ListBlogModel;
 use App\Model\MainModel;
 
-class ListBlogController extends  MainController {
+class ListController extends MainController
+{
 
 
-    public function DefaultMethod(){
+    public function defaultMethod()
+    {
         $ListBlogModel = new ListBlogModel;
         $listBlog = $ListBlogModel->selectAllArticle(); //Afficher du plus récent au plus ancien
 
-
-        $view = $this->twig->render('listblog.twig', ['listBlog' => $listBlog]);
-        return $view;
+        return $this->twig->render('listblog.twig', ['listBlog' => $listBlog]);
     }
 
 

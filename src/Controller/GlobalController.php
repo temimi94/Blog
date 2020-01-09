@@ -6,7 +6,8 @@ use App\Controller\Globals\PostController;
 use App\Controller\Globals\GetController;
 use App\Controller\Globals\SessionController;
 
-abstract class GlobalController{
+abstract class GlobalController
+{
 
     protected $post;
 

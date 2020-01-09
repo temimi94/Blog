@@ -17,13 +17,13 @@
 
 
         <div class="row">
-            <a href="index.php?page=admin&method=listuser">Liste des utilisateurs</a>
+            <a href="index.php?page=admin&method=listUser">Liste des utilisateurs</a>
         </div>
         <div class="row">
-            <a href="index.php?page=admin&method=listarticle">Liste des articles</a>
+            <a href="index.php?page=admin&method=listArticle">Liste des articles</a>
         </div>
         <div class="row">
-            <a href="index.php?page=admin&method=listcomment">Liste des commentaires</a>
+            <a href="index.php?page=admin&method=listComment">Liste des commentaires</a>
         </div>
 
 
@@ -90,10 +90,10 @@
             </div>
 
             {% if articles.validated == '0' %}
-                <a class="btn btn-primary" href="index.php?page=admin&method=approvearticle&idarticle={{ articles.id_article }}">Approuver</a>
+                <a class="btn btn-primary" href="index.php?page=admin&method=approveArticle&idarticle={{ articles.id_article }}">Approuver</a>
             {% endif %}
-                <a class="btn btn-primary" href="index.php?page=admin&method=editarticle&idarticle={{ articles.id_article }}">Editer</a>
-                <a class="btn btn-danger" href="index.php?page=admin&method=deletearticle&idarticle={{ articles.id_article }}">Supprimer</a>
+                <a class="btn btn-primary" href="index.php?page=admin&method=editArticle&idarticle={{ articles.id_article }}">Editer</a>
+                <a class="btn btn-danger" href="index.php?page=admin&method=deleteArticle&idarticle={{ articles.id_article }}">Supprimer</a>
             <hr>
             {% endfor %}
 
@@ -125,9 +125,9 @@
                     <div class="row">
                         <p>Commentaire en attente de validation</p>
                     </div>
-                    <a class="btn btn-primary" href="index.php?page=admin&method=approvecomment&idcomment={{ comments.id_comment }}">Approuver</a>
+                    <a class="btn btn-primary" href="index.php?page=admin&method=approveComment&idcomment={{ comments.id_comment }}">Approuver</a>
                 {% endif %}
-                <a class="btn btn-danger" href="index.php?page=admin&method=deletecomment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                <a class="btn btn-danger" href="index.php?page=admin&method=deleteComment&idcomment={{ comments.id_comment }}">Supprimer</a>
                 <hr>
             {% endfor %}
         </div>

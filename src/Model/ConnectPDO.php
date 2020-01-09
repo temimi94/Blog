@@ -12,6 +12,7 @@ class ConnectPDO
      * @var null
      */
     private static $pdo = null;
+
     /**
      * Returns the Connection if it exists or creates it before returning it
      * @return PDO|null

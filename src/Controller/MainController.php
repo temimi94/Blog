@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Twig\Environment;
@@ -21,21 +22,23 @@ class MainController extends GlobalController
         parent::__construct();
 
 
-
         $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
             'cache' => false,
             'debug' => true
         ));
         $this->twig->addExtension(new DebugExtension());
-        $this->twig->addGlobal("session", $this->session->getUserArray()); /**Ajoute la variable $_SESSION a Twig **/
+        $this->twig->addGlobal("session", $this->session->getUserArray());
+        /**Ajoute la variable $_SESSION a Twig **/
     }
 
-    public function redirect(string $page){
-        header('Location: index.php?page='.$page);
+    public function redirect(string $page)
+    {
+        header('Location: index.php?page=' . $page);
         exit;
     }
 
-    public function err404(){
+    public function err404()
+    {
         header('HTTP/1.0 404 Not Found');
         exit;
     }
