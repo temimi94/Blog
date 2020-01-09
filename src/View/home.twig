@@ -2,7 +2,7 @@
 {% block title %}
     <h2>Kinder Théo, étudiant développeur PHP / Symfony chez OpenClassrooms</h2>
     <div class="row">
-    <img src="../public/img/myAvatar.png" alt="photo" class="img-fluid">
+    <img src="../public/img/myAvatar.png" alt="photo" class="img-thumbnail">
     </div>
 {% endblock %}
 
@@ -12,14 +12,23 @@
 
 
 {% block form %}
+
+{% if erreur is defined %}
+    <div class="alert alert-danger text-center" role="alert">{{ erreur }}</div>
+{% endif %}
+
+{% if success is defined %}
+    <div class="alert alert-success text-center" role="alert">{{ success }}</div>
+{% endif %}
+
     <h3>Me contacter</h3>
-    <form method="post" action="index.php?page=home&method=mailContact" >
+    <form method="post" action="index.php?page=home&method=sendMail">
         <div class="row">
             <div class="col">
-                <input type="text" name="name" class="form-control" placeholder="First name">
+                <input type="text" name="name" class="form-control" placeholder="Nom et prénom">
             </div>
             <div class="col">
-                <input type="email" name="email" class="form-control" placeholder="Email">
+                <input type="email" name="email" class="form-control" placeholder="Adresse email">
             </div>
         </div>
         <div class="row">
