@@ -40,6 +40,27 @@ class UserController extends MainController
         $this->redirect('user&method=listcomment');
     }
 
+    public function changePasswordMethod()
+    {
+        $this->isLegitUser();
+
+        $post = $this->post->getPostArray();
+
+        if (!empty($post)) {
+            if ($post['password1'] === $post['password2']) {
+                $password = new UserModel();
+                $pass = $password->getUserPassword($this->session->getUserVar('id_user'));
+                if (password_verify($post['oldpassword'], $pass['password'])) {
+                    $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
+                    $password->changeUserPassword($new_pass, $this->session->getUserVar('id_user'));
+                    return $this->twig->render('user.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+                }
+            }
+            return $this->twig->render('user.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+        }
+        return $this->twig->render('user.twig', ['password' => true]);
+    }
+
 
     public function isLegitUser()
     {
