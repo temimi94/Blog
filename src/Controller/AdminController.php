@@ -10,12 +10,14 @@ use App\Model\MainModel;
 class AdminController extends MainController
 {
 
-    public function DefaultMethod(){
+    public function defaultMethod()
+    {
         $this->isLegitAdmin();
         return $this->twig->render('admin.twig');
     }
 
-    public function ListuserMethod(){
+    public function listUserMethod()
+    {
         $this->isLegitAdmin();
 
         $req = new MainModel;
@@ -24,7 +26,8 @@ class AdminController extends MainController
         return $this->twig->render('admin.twig', ['user' => $req]);
     }
 
-    public function ListarticleMethod(){
+    public function listArticleMethod()
+    {
         $this->isLegitAdmin();
 
         $req = new AdminModel();
@@ -33,20 +36,23 @@ class AdminController extends MainController
         return $this->twig->render('admin.twig', ['article' => $req]);
     }
 
-    public function EditarticleMethod(){
+    public function editArticleMethod()
+    {
         $this->isLegitAdmin();
         $main = new MainController;
         $post = $this->post->getPostArray();
-        if(!empty($post)) { /** Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
+        if (!empty($post)) {
+            /** Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
             $edit = new AdminModel();
 
             $edit->updateArticle($post['id_article'], $post['title'], $post['chapo'], $post['content']);
 
             $this->redirect('admin&method=listarticle');
 
-        }elseif(empty($post)){ /**Si $_POST est vide, renvois sur formulaire pour saisir les données à changer **/
+        } elseif (empty($post)) {
+            /**Si $_POST est vide, renvois sur formulaire pour saisir les données à changer **/
             $get = $this->get->getGetVar('idarticle');
-            if($get === false) $this->redirect('admin');
+            if ($get === false) $this->redirect('admin');
 
             $req = new BlogModel();
             $req = $req->selectArticle($get);
@@ -54,9 +60,10 @@ class AdminController extends MainController
         }
     }
 
-    public function DeletearticleMethod(){
+    public function deleteArticleMethod()
+    {
         $this->isLegitAdmin();
-        
+
         $delete = new AdminModel;
 
         $delete->deleteArticle($this->get->getGetVar('idarticle'));
@@ -67,7 +74,8 @@ class AdminController extends MainController
         return $this->twig->render('admin.twig', ['article' => $req]);
     }
 
-    public function ListcommentMethod(){
+    public function listCommentMethod()
+    {
         $this->isLegitAdmin();
 
         $req = new AdminModel();
@@ -76,41 +84,45 @@ class AdminController extends MainController
         return $this->twig->render('admin.twig', ['comment' => $req]);
     }
 
-    public function ApprovecommentMethod(){
+    public function approveCommentMethod()
+    {
         $this->isLegitAdmin();
 
         $get = $this->get->getGetVar('idcomment');
-        if($get ===false) $this->redirect('admin');
+        if ($get === false) $this->redirect('admin');
 
         $req = new AdminModel();
         $req->approveComment($get);
         $this->redirect('admin&method=listcomment');
     }
 
-    public function DeletecommentMethod(){
+    public function deleteCommentMethod()
+    {
         $this->isLegitAdmin();
 
         $get = $this->get->getGetVar('idcomment');
-        if($get ===false) $this->redirect('admin');
+        if ($get === false) $this->redirect('admin');
 
         $req = new AdminModel();
         $req->deleteComment($get);
         $this->redirect('admin&method=listcomment');
     }
 
-    public function ApprovearticleMethod(){
+    public function approveArticleMethod()
+    {
         $this->isLegitAdmin();
 
         $get = $this->get->getGetVar('idarticle');
-        if($get == false) $this->redirect('admin');
+        if ($get == false) $this->redirect('admin');
 
         $req = new AdminModel();
         $req->approveArticle($get); // Set article.validated to 1. 0 is non approuved article
         $this->redirect('admin&method=listarticle');
     }
 
-    public function isLegitAdmin(){
-        if($this->session->getUserVar('rank') != 'Administrateur')   {
+    public function isLegitAdmin()
+    {
+        if ($this->session->getUserVar('rank') != 'Administrateur') {
             $this->redirect('home');
         }
     }
