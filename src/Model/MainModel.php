@@ -7,13 +7,6 @@ namespace App\Model;
 class MainModel
 {
 
-    public function selectAllUser()
-    {
-        $database = ConnectPDO::getPDO()->prepare('SELECT * FROM User');
-        $database->execute();
-        return $req = $database->fetchAll();
-    }
-
     public static function selectAuthorById($author_id)
     {
         $database = ConnectPDO::getPDO()->prepare('SELECT * FROM User WHERE id_user = ' . $author_id);
