@@ -19,6 +19,22 @@ class SessionController extends MainController
         if ($this->session->getUserVar('rank') != 'Administrateur' AND $this->session->getUserVar('rank') != 'Utilisateur') $this->redirect('home');
     }
 
+    public function createSession(array $data)
+    {
+        if ($data['rank'] == 1) $data['rank'] = 'Administrateur';
+        elseif ($data['rank'] == 2) $data['rank'] = 'Utilisateur';
+
+        $_SESSION['user'] = [
+            'session_id' => session_id(),
+            'pseudo' => $data['pseudo'],
+            'id_user' => $data['id_user'],
+            'email' => $data['email'],
+            'date_register' => $data['date_register'],
+            'rank' => $data['rank']
+        ];
+        $this->session->__construct();
+    }
+
     public function login($data = [] /*,$session_check = false*/)
     {
         /** if($session_check == true){
@@ -31,7 +47,7 @@ class SessionController extends MainController
          * 'read_and_close' => true]);
          * }**/
 
-        $this->session->createSession($data);
+        $this->createSession($data);
         $this->verifyRank();
         if ($this->session->getUserVar('rank') === 'Administrateur') $this->redirect('admin');
         elseif ($this->session->getUserVar('rank') === 'Utilisateur') $this->redirect('user');
