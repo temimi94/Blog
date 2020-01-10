@@ -20,7 +20,7 @@ class AdminController extends MainController
     {
         $this->isLegitAdmin();
 
-        $req = new MainModel;
+        $req = new AdminModel;
         $req = $req->selectAlluser();
 
         return $this->twig->render('admin.twig', ['user' => $req]);
@@ -139,11 +139,5 @@ class AdminController extends MainController
         return $this->twig->render('admin.twig', ['password' => true]);
     }
 
-    public function isLegitAdmin()
-    {
-        if ($this->session->getUserVar('rank') != 'Administrateur') {
-            $this->redirect('home');
-        }
-    }
 
 }
