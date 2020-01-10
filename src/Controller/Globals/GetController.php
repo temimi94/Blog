@@ -15,6 +15,8 @@ class GetController
             'idarticle' => FILTER_SANITIZE_NUMBER_INT,
             'idblog' => FILTER_SANITIZE_NUMBER_INT,
             'idcomment' => FILTER_SANITIZE_NUMBER_INT,
+            'token' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'iduser' => FILTER_SANITIZE_NUMBER_INT
         );
         $this->get = filter_input_array(INPUT_GET, $def);
     }

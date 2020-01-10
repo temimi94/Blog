@@ -21,7 +21,6 @@ class MainController extends GlobalController
     {
         parent::__construct();
 
-
         $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
             'cache' => false,
             'debug' => true
@@ -49,6 +48,13 @@ class MainController extends GlobalController
             return true;
         }
         return false;
-
     }
+
+    public function isLegitAdmin()
+    {
+        if ($this->session->getUserVar('rank') != 'Administrateur') {
+            $this->redirect('home');
+        }
+    }
+
 }

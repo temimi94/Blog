@@ -2,9 +2,12 @@
 
 {% block content %}
     {% if erreur is defined %}
-        <div class="alert alert-danger" role="alert">{{ erreur.erreur }}</div>
+        <div class="alert alert-danger text-center" role="alert">{{ erreur }}</div>
     {% endif %}
-<form method="post" action="index.php?page=login&method=forget">
+    {% if success is defined %}
+        <div class="alert alert-success text-center" role="alert">{{ success }}</div>
+    {% endif %}
+<form method="post" action="index.php?page=login&method=emailForget">
     <div class="form-group">
         <label for="email">Email address</label>
         <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">

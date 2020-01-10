@@ -5,6 +5,12 @@ namespace App\Model;
 
 class AdminModel extends MainModel
 {
+    public function selectAllUser()
+    {
+        $database = ConnectPDO::getPDO()->prepare('SELECT * FROM User');
+        $database->execute();
+        return $req = $database->fetchAll();
+    }
 
     public function deleteArticle($id_article)
     {

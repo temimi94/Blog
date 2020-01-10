@@ -17,7 +17,7 @@ class HomeController extends MainController
         $post = $this->post->getPostArray();
         $verif = $this->verifyPost($post);
         if ($verif !== true) return $this->twig->render('home.twig', ['erreur' => $verif]);
-        $mail->sendEmail($post);
+        $mail->sendContactEmail($post);
         if($mail == true) return $this->twig->render('home.twig', ['success' => 'Votre message nous a bien été transmis, je vous répondrais au plus tôt!']);
         return $this->twig->render('home.twig', ['erreur' => 'Une erreur s\' est produite lors de l\'envoi du mail']);
     }
