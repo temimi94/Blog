@@ -46,21 +46,4 @@ class SessionController
     }
 
 
-    public function createSession(array $data)
-    {
-        if ($data['rank'] == 1) $data['rank'] = 'Administrateur';
-        elseif ($data['rank'] == 2) $data['rank'] = 'Utilisateur';
-
-        $_SESSION['user'] = [
-            'session_id' => session_id(),
-            'pseudo' => $data['pseudo'],
-            'id_user' => $data['id_user'],
-            'email' => $data['email'],
-            'date_register' => $data['date_register'],
-            'rank' => $data['rank']
-        ];
-        $this->__construct();
-        /** Lance le constructeur pour mettre les données dans $this->session et $this->user */
-
-    }
 }
