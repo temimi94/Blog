@@ -1,39 +1,60 @@
 {% extends 'layout.twig' %}
-{% block title %} Page Article {% endblock %}
+{% block title %}
+    <div class="row">
+        <div class="col text-center">
+            <h3>{{ blog.title }}</h3>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
 
 
-    <div class="container">
-
-        <div class="row"><h3> {{ blog.title }} </h3>   </div>
-        <div class="row"><p> {{ blog.content }}</p></div>
-        <div class="row">
-        {% if blog.date_update <= blog.date %}
-        <p>A été créer le {{ blog.date }} par {{ blog.pseudo }}</p>
-        {% else %}
-        <p>A été modifier le {{ blog.date_update }} par {{ blog.pseudo }}</p>
-        {% endif %}
+    <div class="jumbotron blog-page">
+        <div class="container">
+            <div class="row">
+                <p>{{ blog.chapo }}</p>
+            </div>
         </div>
-
+        <hr>
+        <div class="container">
+            <div class="row">
+                <p>{{ blog.content }}</p>
+            </div>
+            <hr>
+            <div class="row date-blog-page">
+            {% if blog.date_update <= blog.date %}
+                <p>A été créer le {{ blog.date }} par <strong>{{ blog.pseudo }}</strong></p>
+            {% else %}
+                <p>A été modifier le {{ blog.date_update }} par <strong>{{ blog.pseudo }}</strong></p>
+            {% endif %}
+            </div>
+        </div>
     </div>
+
     <div class="container">
-        <h4>Commentaires</h4>
-        {% for comments in comment %}
-            <div class="row">
-                <p>{{ comments.content }}</p>
-            </div>
-            <div class="row">
-               {% if comments.date_update <= comment.date %}
-                    <p>A été crée le {{ comments.date }} par {{ comments.pseudo }}</p>
-                {% else %}
-                    <p>A été modifié le {{ comments.date_update }} par {{ comments.pseudo }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-
+        <div class="row">
+            <h4>Commentaires</h4>
+        </div>
     </div>
+    <div class="jumbotron blog-page">
+        <div class="container">
 
+            {% for comments in comment %}
+                <div class="row">
+                    <p>{{ comments.content }}</p>
+                </div>
+                <div class="row">
+                   {% if comments.date_update <= comment.date %}
+                        <p>A été crée le {{ comments.date }} par <strong>{{ comments.pseudo }}</strong></p>
+                    {% else %}
+                        <p>A été modifié le {{ comments.date_update }} par <strong>{{ comments.pseudo }}</strong></p>
+                    {% endif %}
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
 {% if session.session_id is defined  %}
     <hr>
     <div class="container">
@@ -41,10 +62,10 @@
             <div class="col-2"></div>
             <form class="col-8" action="index.php?page=blog&method=createComment&idblog={{ blog.id_article }}" method="post">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Message</label>
+                    <label for="exampleFormControlTextarea1">Commentaire</label>
                     <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
             </form>
             <div class="col-2"></div>
         </div>

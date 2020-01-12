@@ -1,49 +1,74 @@
 {% extends 'layout.twig' %}
 
+{% block title %}
+    <div class="row">
+        <div class="col text-center">
+            <h3>Panel d'administration</h3>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
 
     <div class="container">
         <div class="row">
-            <h3>Admin panel</h3>
-        </div>
-        <div class="row">
-            <p>Informations du compte</p>
-        </div>
-            <div class="row"><p>Session ID : {{ session.session_id }}</p></div>
-            <div class="row"><p>Pseudo : {{ session.pseudo }}</p></div>
-            <div class="row"><p>Adresse mail : {{ session.email }}</p></div>
-            <div class="row"><p>Date de création du compte : {{ session.date_register }}</p></div>
-            <div class="row"><p>Rang : {{ session.rank }}</p></div>
+            <div class="col-lg-6 pb-2">
+                <table class="panel">
+                    <tr>
+                        <td>
+                            <h4>Informations du compte</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Session ID :</td>
+                        <td>{{ session.session_id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pseudo :</td>
+                        <td>{{ session.pseudo }}</td>
 
+                    </tr>
+                    <tr>
+                        <td>Adresse email :</td>
+                        <td>{{ session.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date de création du compte : </td>
+                        <td>{{ session.date_register }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rang : </td>
+                        <td>{{ session.rank }}</td>
+                    </tr>
+                </table>
+            </div>
 
-        <div class="row">
-            <a href="index.php?page=admin&method=listUser">Liste des utilisateurs</a>
+            <div class="col-lg-6 pt-2 link ">
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listUser">Liste des utilisateurs</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listArticle">Liste des articles</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listComment">Liste des commentaires</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a></div>
+            </div>
         </div>
-        <div class="row">
-            <a href="index.php?page=admin&method=listArticle">Liste des articles</a>
-        </div>
-        <div class="row">
-            <a href="index.php?page=admin&method=listComment">Liste des commentaires</a>
-        </div>
-        <div class="row">
-            <a href="index.php?page=admin&method=changePassword">Changer de mot de passe</a>
-        </div>
-
     </div>
 
 
     {% if password is defined %}
         {% if erreur is defined %}
-            <button class="alert alert-danger">{{ erreur }}</button>
+            <div class="row justify-content-center">
+                <button class="alert alert-danger">{{ erreur }}</button>
+            </div>
         {% endif %}
         {% if success is defined %}
-            <button class="alert alert-success">{{ success }}</button>
+            <div class="row justify-content-center">
+                <button class="alert alert-success">{{ success }}</button>
+            </div>
         {% endif %}
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center">
                 <p>Changement de mot de passe</p>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <form method="post" action="index.php?page=admin&method=changePassword">
                     <div class="form-group">
                         <label for="passwrd">Ancien mot de passe</label>
@@ -100,28 +125,32 @@
         <div class="container">
             {% for articles in article %}
             <div class="row">
-                <p>ID Article : {{ articles.id_article }}</p>
+                <div class="col-6"><p>ID Article : {{ articles.id_article }}</p></div>
+                <div class="col-6"> <p>Titre: {{ articles.title }}</p></div>
+            </div>
+                <div class="row">
+                    <p>Chapo : {{ articles.chapo }}</p>
+                </div>
+
+            <div class="row">
+                <p>{{ articles.content }}</p>
             </div>
             <div class="row">
-                <p>Titre: {{ articles.title }}</p>
+                <div class="col-4">
+                    <p>Date de création: {{ articles.date|date('d/m/Y \\à H:i:s') }}</p>
+                </div>
+                <div class="col-4">
+                    {% if articles.date_update != null %}
+                    <div class="row">
+                        <p>Dernière modification le : {{ articles.date_update|date('d/m/Y \\à H:i:s') }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    <p>Crée par : {{ articles.pseudo }}</p>
+                </div>
             </div>
-            <div class="row">
-                <p>Chapo : {{ articles.chapo }}</p>
-            </div>
-            <div class="row">
-                <p>Contenu : {{ articles.content }}</p>
-            </div>
-            <div class="row">
-            <p>Date de création: {{ articles.date }}</p>
-            </div>
-                {% if articles.date_update != null %}
-            <div class="row">
-                <p>Dernière modification le : {{ articles.date_update }}</p>
-            </div>
-                {% endif %}
-            <div class="row">
-                <p>Crée par : {{ articles.pseudo }}</p>
-            </div>
+
 
             {% if articles.validated == '0' %}
                 <a class="btn btn-primary" href="index.php?page=admin&method=approveArticle&idarticle={{ articles.id_article }}">Approuver</a>
@@ -138,30 +167,29 @@
         <hr>
         <div class="container">
             {% for comments in comment %}
-                <div class="row">
+                <div class="row justify-content-center">
                     <p>ID : {{ comments.id_comment }}</p>
                 </div>
-                <div class="row">
-
+                <div class="row justify-content-center">
                     <p>Commentaire : {{ comments.content }}</p>
                 </div>
-                <div class="row">
+                <div class="row justify-content-center">
                     <p>Ecrit par : {{ comments.pseudo }} le {{ comments.date }}</p>
                 </div>
-                <div class="row">
+                <div class="row justify-content-center">
                     <p>Article : {{ comments.title }}</p>
                 </div>
+
+                <div class="row justify-content-around">
                 {% if comments.validate == '1' %}
-                <div class="row">
                     <p>Commentaire approuvé</p>
-                </div>
                 {% elseif comments.validate == '0' %}
-                    <div class="row">
-                        <p>Commentaire en attente de validation</p>
-                    </div>
+                    <p>Commentaire en attente de validation</p>
                     <a class="btn btn-primary" href="index.php?page=admin&method=approveComment&idcomment={{ comments.id_comment }}">Approuver</a>
                 {% endif %}
                 <a class="btn btn-danger" href="index.php?page=admin&method=deleteComment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                </div>
+
                 <hr>
             {% endfor %}
         </div>
