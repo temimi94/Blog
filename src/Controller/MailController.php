@@ -8,20 +8,31 @@ use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
 
+/**
+ * Class MailController
+ * @package App\Controller
+ */
 class MailController extends MainController
 {
+    /**
+     *
+     */
     public function defaultMethod(){
         $this->redirect('home');
     }
 
+    /**
+     * @param array $user
+     * @return int
+     */
     public function sendContactEmail(array $user)
     {
-        require_once('../config/setupMail.php'); //$configMail dans le dossier setupMail.php
+        require_once('../config/setupMail.php'); //MAIL Const
 
         // Create the Transport
-        $transport = (new Swift_SmtpTransport($configMail['smtp'],$configMail['port']))
-            ->setUsername($configMail['username'])
-            ->setPassword($configMail['password']);
+        $transport = (new Swift_SmtpTransport(MAIL_SMTP, MAIL_PORT))
+            ->setUsername(MAIL_USERNAME)
+            ->setPassword(MAIL_PASSWORD);
 
         // Create the Mailer using your created Transport
         $mailer = new Swift_Mailer($transport);
@@ -37,9 +48,14 @@ class MailController extends MainController
         return $result;
     }
 
+    /**
+     * @param array $user
+     * @return int
+     */
+
     public function sendForgetEmailMethod(array $user){ // $user contient user_id & email
 
-        require_once('../config/setupMail.php'); //$configMail dans le dossier setupMail.php
+        require_once('../config/setupMail.php'); //MAIL Const
 
         $token = bin2hex(openssl_random_pseudo_bytes(24));
         $token_req = new LoginModel();
@@ -49,9 +65,9 @@ class MailController extends MainController
         $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePassword&token=" . $token . "&iduser=" .$id_user;
 
         // Create the Transport
-        $transport = (new Swift_SmtpTransport($configMail['smtp'],$configMail['port']))
-            ->setUsername($configMail['username'])
-            ->setPassword($configMail['password']);
+        $transport = (new Swift_SmtpTransport(MAIL_SMTP,MAIL_PORT))
+            ->setUsername(MAIL_USERNAME)
+            ->setPassword(MAIL_PASSWORD);
 
         // Create the Mailer using your created Transport
         $mailer = new Swift_Mailer($transport);
@@ -62,7 +78,7 @@ class MailController extends MainController
         <p>Le lien ne sera valide que 15 minutes</p>", $link);
         // Create a message
         $message = (new Swift_Message('Mot de passe oublié Blog PHP P5 Kinder Théo'))
-            ->setFrom($configMail['username'])
+            ->setFrom(MAIL_USERNAME)
             ->setTo('kinder.theo@gmail.com') //change to $user['email']
             ->setBody($content, 'text/html');
 

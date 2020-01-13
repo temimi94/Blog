@@ -1,4 +1,4 @@
-{% extends 'layout.twig' %}
+{% extends 'layout/layout.twig' %}
 {% block title %}
     <div class="row">
         <div class="col text-center">
@@ -24,9 +24,9 @@
             <hr>
             <div class="row date-blog-page">
             {% if blog.date_update <= blog.date %}
-                <p>A été créer le {{ blog.date }} par <strong>{{ blog.pseudo }}</strong></p>
+                <p>A été créé le {{ blog.date }} par <strong>{{ blog.pseudo }}</strong></p>
             {% else %}
-                <p>A été modifier le {{ blog.date_update }} par <strong>{{ blog.pseudo }}</strong></p>
+                <p>A été modifié le {{ blog.date_update }} par <strong>{{ blog.pseudo }}</strong></p>
             {% endif %}
             </div>
         </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="row">
                    {% if comments.date_update <= comment.date %}
-                        <p>A été crée le {{ comments.date }} par <strong>{{ comments.pseudo }}</strong></p>
+                        <p>A été créé le {{ comments.date }} par <strong>{{ comments.pseudo }}</strong></p>
                     {% else %}
                         <p>A été modifié le {{ comments.date_update }} par <strong>{{ comments.pseudo }}</strong></p>
                     {% endif %}

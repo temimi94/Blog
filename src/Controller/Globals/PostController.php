@@ -3,6 +3,10 @@
 namespace App\Controller\Globals;
 
 
+/**
+ * Class PostController
+ * @package App\Controller\Globals
+ */
 class PostController
 {
     /**

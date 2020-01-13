@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"> <!-- TODO Add Javascript-->
     <a class="navbar-brand" href="#">Projet 5 - PHP</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -10,17 +10,10 @@
             <a class="nav-link" href="index.php?page=home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=list">Liste des articles</a>
+            <a class="nav-link" href="index.php?page=blog&method=list">Liste des articles</a>
         </li>
-        {% if session.session_id is defined %}
 
-        <li class="nav-item">
-            {% if session.rank == 'Administrateur' %}
-            <a class="nav-link" href="index.php?page=admin">Mon compte</a>
-            {% elseif session.rank == 'Utilisateur' %}
-            <a class="nav-link" href="index.php?page=user">Mon compte</a>
-            {% endif %}
-        </li>
+        {% if session.session_id is defined %}
             {% if session.rank == 'Administrateur' %}
         <li class="nav-item">
             <a class="nav-link" href="index.php?page=blog&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
@@ -28,6 +21,19 @@
             {% endif %}
         {% endif %}
     </ul>
+
+    {% if session.session_id is defined %}
+    <ul class="navbar-nav justify-content-end">
+        <li class="nav-item">
+            {% if session.rank == 'Administrateur' %}
+                <a class="nav-link" href="index.php?page=admin">Mon compte</a>
+            {% elseif session.rank == 'Utilisateur' %}
+                <a class="nav-link" href="index.php?page=user">Mon compte</a>
+            {% endif %}
+        </li>
+    </ul>
+    {% endif %}
+
     {% if session.session_id is defined %}
         <form class="nav-item">
             <a class="btn btn-warning" href="index.php?page=login&method=logout">Logout</a>

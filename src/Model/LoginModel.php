@@ -3,39 +3,68 @@
 namespace App\Model;
 
 
+/**
+ * Class LoginModel
+ * @package App\Model
+ */
 class LoginModel extends MainModel
 {
+    /**
+     * @param $user_email
+     * @return mixed
+     */
     public function getUser($user_email)
     {
-        return $this->read('SELECT * FROM User WHERE User.email ="' . $user_email . '"');
+        return $this->fetch('SELECT * FROM User WHERE User.email ="' . $user_email . '"');
     }
 
+    /**
+     * @param $id_user
+     * @return mixed
+     */
     public function getUserById($id_user){
-        return $this->read('SELECT * FROM User WHERE User.id_user =' .$id_user);
+        return $this->fetch('SELECT * FROM User WHERE User.id_user =' .$id_user);
     }
 
+    /**
+     * @param $pseudo
+     * @param $email
+     * @param $password
+     * @return bool|\PDOStatement
+     */
     public function createUser($pseudo, $email, $password)
     {
         $statement = 'INSERT INTO User (pseudo, email, password, date_register) VALUES (?, ?, ?, ?)';
         $date = date("Y-m-d H:i:s");
 
         $comment = array($pseudo, $email, $password, $date);
-        return $this->update($statement, $comment);
+        return $this->execArray($statement, $comment);
     }
 
+    /**
+     * @param $token
+     * @param $id_user
+     * @return bool|\PDOStatement
+     * @throws \Exception
+     */
     public function createToken($token, $id_user){
         $date = new \DateTime('+ 15 minutes');
         $date = $date->format('Y-m-d H:i:s');
         $statement = 'UPDATE User SET User.token =?, User.token_expiration =? WHERE User.id_user = ' . $id_user;
         $array = array($token, $date);
-        return $this->update($statement, $array);
+        return $this->execArray($statement, $array);
     }
 
+    /**
+     * @param $new_password
+     * @param $id_user
+     * @return bool|\PDOStatement
+     */
     public function changePassword($new_password, $id_user)
     {
         $statement = 'UPDATE User SET User.password =? WHERE User.id_user = ' . $id_user;
         $array = array($new_password);
-        return $this->update($statement, $array);
+        return $this->execArray($statement, $array);
     }
 
 }

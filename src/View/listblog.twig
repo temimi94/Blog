@@ -1,4 +1,4 @@
-{% extends 'layout.twig' %}
+{% extends 'layout/layout.twig' %}
 {% block title %}
     <div class="row">
         <div class="col text-center">
@@ -18,9 +18,9 @@
                         <div class="row">
                             <div class="col-6">
                                 {% if blog.date_update <= blog.date %}
-                                    <p>A été créer le {{ blog.date|date('d/m/Y \\à H:i:s') }}</p>
+                                    <p>A été créé le {{ blog.date|date('d/m/Y \\à H:i:s') }}</p>
                                 {% else %}
-                                    <p>A été modifier le {{ blog.date_update|date('d/m/Y \\à H:i:s') }}</p>
+                                    <p>A été modifié le {{ blog.date_update|date('d/m/Y \\à H:i:s') }}</p>
                                 {% endif %}
                             </div>
                             <div class="col-6">

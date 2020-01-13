@@ -1,6 +1,10 @@
 <?php
+// TODO
+// define constant global
+define('MAIL_SMTP', '');// l'adresse de votre serveur de mail
 
-$configMail['smtp'] = ''; // l'adresse de votre serveur de mail
-$configMail['port'] = 25; // le port utilisé pour l'envoi des mails
-$configMail['username'] = ''; // l'adresse mail utilisée
-$configMail['password'] = ''; // le mot de passe de votre serveur de mail (ou de votre compte admin)
+define('MAIL_PORT', '');// le port utilisé pour l'envoi des mails
+
+define('MAIL_USERNAME', '');// l'adresse mail utilisée
+
+define('MAIL_PASSWORD', '');// le mot de passe de votre serveur de mail (ou de votre compte admin)

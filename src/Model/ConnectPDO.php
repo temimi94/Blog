@@ -5,6 +5,10 @@ namespace App\Model;
 
 use PDO;
 
+/**
+ * Class ConnectPDO
+ * @package App\Model
+ */
 class ConnectPDO
 {
     /**
