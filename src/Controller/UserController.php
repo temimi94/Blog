@@ -3,20 +3,34 @@
 namespace App\Controller;
 
 use App\Model\UserModel;
-use App\Model\BlogModel;
-use App\Model\ListBlogModel;
-use App\Model\MainModel;
 
+
+/**
+ * Class UserController
+ * @package App\Controller
+ */
 class UserController extends MainController
 {
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function defaultMethod()
     {
         $this->isLegitUser();
-        return $this->twig->render('user.twig');
+        return $this->twig->render('user/user.twig');
     }
 
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listCommentMethod()
     {
         $this->isLegitUser();
@@ -24,10 +38,13 @@ class UserController extends MainController
         $req = new UserModel();
         $req = $req->getUserComment($this->session->getUserVar('id_user'));
 
-        return $this->twig->render('user.twig', ['comment' => $req]);
+        return $this->twig->render('user/user.twig', ['comment' => $req]);
     }
 
 
+    /**
+     *
+     */
     public function deleteCommentMethod()
     {
         $this->isLegitUser();
@@ -40,6 +57,12 @@ class UserController extends MainController
         $this->redirect('user&method=listcomment');
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function changePasswordMethod()
     {
         $this->isLegitUser();
@@ -53,14 +76,13 @@ class UserController extends MainController
                 if (password_verify($post['oldpassword'], $pass['password'])) {
                     $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
                     $password->changeUserPassword($new_pass, $this->session->getUserVar('id_user'));
-                    return $this->twig->render('user.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+                    return $this->twig->render('user/user.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
                 }
             }
-            return $this->twig->render('user.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+            return $this->twig->render('user/user.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
         }
-        return $this->twig->render('user.twig', ['password' => true]);
+        return $this->twig->render('user/user.twig', ['password' => true]);
     }
-
 
     public function isLegitUser()
     {

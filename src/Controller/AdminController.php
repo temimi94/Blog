@@ -7,38 +7,66 @@ use App\Model\BlogModel;
 use App\Model\ListBlogModel;
 use App\Model\MainModel;
 
+/**
+ * Class AdminController
+ * @package App\Controller
+ */
 class AdminController extends MainController
 {
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function defaultMethod()
     {
         $this->isLegitAdmin();
-        return $this->twig->render('admin.twig');
+        return $this->twig->render('admin/admin.twig');
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listUserMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $req = new AdminModel;
         $req = $req->selectAlluser();
 
-        return $this->twig->render('admin.twig', ['user' => $req]);
+        return $this->twig->render('admin/admin.twig', ['user' => $req]);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listArticleMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $req = new AdminModel();
         $req = $req->selectArticleAdmin();
 
-        return $this->twig->render('admin.twig', ['article' => $req]);
+        return $this->twig->render('admin/admin.twig', ['article' => $req]);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function editArticleMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
         $post = $this->post->getPostArray();
         if (!empty($post)) {
             /** Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
@@ -55,36 +83,51 @@ class AdminController extends MainController
 
             $req = new BlogModel();
             $req = $req->selectArticle($get);
-            return $this->twig->render('adminUpdateArticle.twig', ['article' => $req]);
+            return $this->twig->render('admin/adminUpdateArticle.twig', ['article' => $req]);
         }
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function deleteArticleMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $delete = new AdminModel;
         $delete->deleteArticle($this->get->getGetVar('idarticle'));
 
-        $req = new ListBlogModel();
+        $req = new BlogModel();
         $req = $req->selectAllArticle();
 //// Delete Comment Article
-        return $this->twig->render('admin.twig', ['article' => $req]);
+        return $this->twig->render('admin/admin.twig', ['article' => $req]);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listCommentMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $req = new AdminModel();
         $req = $req->getAllComment();
 
-        return $this->twig->render('admin.twig', ['comment' => $req]);
+        return $this->twig->render('admin/admin.twig', ['comment' => $req]);
     }
 
+    /**
+     *
+     */
     public function approveCommentMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $get = $this->get->getGetVar('idcomment');
         if ($get === false) $this->redirect('admin');
@@ -94,9 +137,12 @@ class AdminController extends MainController
         $this->redirect('admin&method=listcomment');
     }
 
+    /**
+     *
+     */
     public function deleteCommentMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $get = $this->get->getGetVar('idcomment');
         if ($get === false) $this->redirect('admin');
@@ -106,9 +152,12 @@ class AdminController extends MainController
         $this->redirect('admin&method=listcomment');
     }
 
+    /**
+     *
+     */
     public function approveArticleMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $get = $this->get->getGetVar('idarticle');
         if ($get == false) $this->redirect('admin');
@@ -118,9 +167,15 @@ class AdminController extends MainController
         $this->redirect('admin&method=listarticle');
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function changePasswordMethod()
     {
-        $this->isLegitAdmin();
+        $this->isLegitAdmin();;
 
         $post = $this->post->getPostArray();
 
@@ -131,12 +186,24 @@ class AdminController extends MainController
                 if (password_verify($post['oldpassword'], $pass['password'])) {
                     $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
                     $password->changeAdminPassword($new_pass, $this->session->getUserVar('id_user'));
-                    return $this->twig->render('admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+                    return $this->twig->render('..admin/admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
                 }
             }
-            return $this->twig->render('admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+            return $this->twig->render('admin/admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
         }
-        return $this->twig->render('admin.twig', ['password' => true]);
+        return $this->twig->render('admin/admin.twig', ['password' => true]);
+    }
+
+    /**
+     *
+     */
+    public function isLegitAdmin()
+    {
+        if ($this->session->getUserVar('rank') != 'Administrateur') {
+            $main = new MainController();
+            $main->redirect('home');
+            //$this->redirect('home');
+        }
     }
 
 

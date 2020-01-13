@@ -3,11 +3,21 @@
 namespace App\Controller\Globals;
 
 
+/**
+ * Class GetController
+ * @package App\Controller\Globals
+ */
 class GetController
 {
 
+    /**
+     * @var mixed
+     */
     private $get;
 
+    /**
+     * GetController constructor.
+     */
     public function __construct()
     {
         $def = array(
@@ -21,11 +31,18 @@ class GetController
         $this->get = filter_input_array(INPUT_GET, $def);
     }
 
+    /**
+     * @return mixed
+     */
     public function getGetArray()
     {
         return $this->get;
     }
 
+    /**
+     * @param string $var
+     * @return mixed
+     */
     public function getGetVar(string $var)
     {
         return $this->get[$var];

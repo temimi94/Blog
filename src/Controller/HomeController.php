@@ -3,14 +3,30 @@
 namespace App\Controller;
 
 
+/**
+ * Class HomeController
+ * @package App\Controller
+ */
 class HomeController extends MainController
 {
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function defaultMethod()
     {
         return $this->twig->render('home.twig');
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function sendMailMethod()
     {
         $mail = new MailController();
@@ -22,6 +38,10 @@ class HomeController extends MainController
         return $this->twig->render('home.twig', ['erreur' => 'Une erreur s\' est produite lors de l\'envoi du mail']);
     }
 
+    /**
+     * @param $post
+     * @return bool|string
+     */
     private function verifyPost($post){
         if(empty($post['content'])){
             return 'Il vous manque un message!';
