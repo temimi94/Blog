@@ -4,9 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.6">
-    <title>Jumbotron Template · Bootstrap</title>
+    <meta name="author" content="Kinder Théo">
+    <title>Projet 5 - PHP - Développeur d'application Symfony - OpenClassrooms</title>
 
 
     <!-- Bootstrap core CSS -->
@@ -33,28 +32,38 @@
     <link href="../public/css/style.css" rel="stylesheet">
 </head>
 <body>
-    {{  include ('layout/navbar.twig') }}
-<main role="main">
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
-            <h1 class="display-3">{% block title %}{% endblock %}</h1>
+    <div class="page">
+        <div class="container site-header">
+            {{  include ('layout/navbar.twig') }}
         </div>
+        <main role="main" class="site-content">
+            <div class="jumbotron">
+
+                <div class="container">
+                    <div class="row pt-5">
+                        <div class="col-lg-2 text-center">
+                            <img src="../public/img/myAvatar.png" class="rounded-circle" alt="Avatar">
+                        </div>
+                        <div class="col-lg-10 text-center">
+                            <h2>Kinder Théo<br> étudiant développeur PHP / Symfony chez OpenClassrooms</h2>
+                        </div>
+                    </div>
+                    {% block title %}{% endblock %}
+                </div>
+
+            </div>
+
+                <div class="container pb-5">
+                    {% block content %}{% endblock %}
+                </div>
+
+        </main>
+
+        <footer class="site-footer footer bg-dark text-white-50">
+            <div class="container mt-3 mb-3 text-md-center">
+              {{  include('layout/footer.twig') }}
+            </div>
+        </footer>
     </div>
-
-    <div class="container">
-        <!-- Example row of columns -->
-        {% block content %}{% endblock %}
-    </div> <!-- /container -->
-
-    <div class="container">
-        {% block form %}{% endblock %}
-    </div>
-
-</main>
-
-<footer class="footer bg-dark text-white-50">
-    {{  include('layout/footer.twig') }}
-</footer>
+</body>
 </html>

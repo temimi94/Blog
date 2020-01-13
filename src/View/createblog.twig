@@ -1,4 +1,11 @@
 {% extends 'layout.twig' %}
+{% block title %}
+    <div class="row">
+        <div class="col text-center">
+            <h3>Création d'un article</h3>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
 
@@ -11,7 +18,7 @@
             </div>
 
             <div class="form-group">
-                <label for="chapo">Chapo</label>
+                <label for="chapo">Extrait</label>
                 <input type="text" class="form-control" id="chapo" name="chapo">
             </div>
 

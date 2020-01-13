@@ -1,17 +1,9 @@
 {% extends 'layout.twig' %}
 {% block title %}
-    <h2>Kinder Théo, étudiant développeur PHP / Symfony chez OpenClassrooms</h2>
-    <div class="row">
-    <img src="../public/img/myAvatar.png" alt="photo" class="img-thumbnail">
-    </div>
+
 {% endblock %}
 
 {% block content %}
-{% endblock %}
-
-
-
-{% block form %}
 
 {% if erreur is defined %}
     <div class="alert alert-danger text-center" role="alert">{{ erreur }}</div>
@@ -20,22 +12,28 @@
 {% if success is defined %}
     <div class="alert alert-success text-center" role="alert">{{ success }}</div>
 {% endif %}
+    <div class="form-group text-center">
+        <h3>Me contacter</h3>
+        <form method="post" action="index.php?page=home&method=sendMail">
+            <div class="row">
+                <div class="col-lg-6 pt-3">
+                    <input type="text" name="name" class="form-control text-center" placeholder="Nom et prénom">
+                </div>
+                <div class="col-lg-6 pt-3">
+                    <input type="email" name="email" class="form-control text-center" placeholder="Adresse email">
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col pt-3">
+                        <textarea name="content" class="form-control" rows="4" id="message"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pt-3">
+                        <input type="submit" value="Envoyer"/>
+                    </div>
+                </div>
 
-    <h3>Me contacter</h3>
-    <form method="post" action="index.php?page=home&method=sendMail">
-        <div class="row">
-            <div class="col">
-                <input type="text" name="name" class="form-control" placeholder="Nom et prénom">
-            </div>
-            <div class="col">
-                <input type="email" name="email" class="form-control" placeholder="Adresse email">
-            </div>
-        </div>
-        <div class="row">
-            <textarea name="content" class="form-control" rows="4" id="message"></textarea>
-        </div>
-        <div class="row">
-            <input type="submit" value="Envoyer"/>
-        </div>
-    </form>
+        </form>
+    </div>
 {% endblock %}
