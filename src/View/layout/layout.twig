@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+    <meta name="description" content="Blog PHP - Projet 5 - Développeur d'application PHP/Symfony - OpenClassrooms ">
     <meta name="author" content="Kinder Théo">
     <title>Projet 5 - PHP - Développeur d'application Symfony - OpenClassrooms</title>
 
@@ -54,6 +54,12 @@
             </div>
 
                 <div class="container pb-5">
+                    {% if erreur is defined %}
+                        <div class="alert alert-danger text-center" role="alert">{{ erreur }}</div>
+                    {% endif %}
+                    {% if success is defined %}
+                        <div class="alert alert-success text-center" role="alert">{{ success }}</div>
+                    {% endif %}
                     {% block content %}{% endblock %}
                 </div>
 

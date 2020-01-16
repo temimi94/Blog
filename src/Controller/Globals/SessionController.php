@@ -3,6 +3,7 @@
 namespace App\Controller\Globals;
 
 use App\Controller\MainController;
+use App\Model\LoginModel;
 
 /**
  * Class SessionController
@@ -32,29 +33,24 @@ class SessionController
         if ($data['rank'] == 1) $data['rank'] = 'Administrateur';
         elseif ($data['rank'] == 2) $data['rank'] = 'Utilisateur';
 
-        $_SESSION['user'] = [
-            'session_id' => session_id(),
+        $this->session['user'] = [
+            'session_id' => session_id() . microtime() . rand(0, 9999999999),
             'pseudo' => $data['pseudo'],
             'id_user' => $data['id_user'],
             'email' => $data['email'],
             'date_register' => $data['date_register'],
             'rank' => $data['rank']
         ];
-
-        $this->setUserVar('session_id', session_id()); //Au lieu de lancer $this->construct
-        $this->setUserVar('pseudo', $data['pseudo']);
-        $this->setUserVar('id_user', $data['id_user']);
-        $this->setUserVar('email', $data['email']);
-        $this->setUserVar('date_register', $data['date_register']);
-        $this->setUserVar('rank', $data['rank']);
+        $this->user = $this->session['user'];
+        $_SESSION['user'] = $this->session['user'];
     }
 
     public function isLegit()
-    { //Rajouter Utilisateur
-        if ($this->getUserVar('rank') != 'Administrateur' AND $this->getUserVar('rank') != 'Utilisateur'){
+    {
+        if ($this->getUserVar('rank') != 'Administrateur' AND $this->getUserVar('rank') != 'Utilisateur') {
             $main = new MainController();
             $main->redirect('home');
-        } //$this->redirect('home');
+        }
     }
 
     public function isLogged()
@@ -67,24 +63,38 @@ class SessionController
 
     /**
      * @param array $data
+     * @param bool $remember_me
      */
-    public function login($data = [] /*,$session_check = false*/)
+    public function login($data = [], $remember_me = null)
     {
         /* TODO
-          if($session_check == true){
-          session_start([
-          'cookie_lifetime' => 2,628e+6,
-          'read_and_close' => true]);
-          }else {
-          session_start([
-          'cookie_lifetime' => 7200,
-          'read_and_close' => true]);
-          }*/
+        Générer et ajouter un AuthToken dans la BDD et dans le cookie
+        Vérifier si le AuthToken présent dans le cookie correspond au AuthToken dans la BDD et se connecter automatiquement */
+        if ($remember_me == true) {
+            $auth_token = bin2hex(openssl_random_pseudo_bytes(32));
+            $token = new LoginModel();
+            $token->createAuthToken($auth_token, $data['id_user']);
+            setcookie('gtk',$auth_token, time()+604800); //Create cookie that expires in 1 week
+        }
         $main = new MainController();
         $this->createSession($data);
         $this->verifyRank();
         if ($this->getUserVar('rank') === 'Administrateur') $main->redirect('admin');
         elseif ($this->getUserVar('rank') === 'Utilisateur') $main->redirect('user');
+    }
+
+    public function verifyAuth(){
+        if(isset($_COOKIE['gtk']) AND !$this->isLogged()){ // AND !isset($_SESSION['remember_me'])
+            $token = filter_input(INPUT_COOKIE, 'gtk');
+            $req = new LoginModel();
+            $req = $req->searchAuthToken($token);
+            if($req){
+                $this->createSession($req);
+                $this->verifyRank();
+            }else{
+                exit();
+            }
+        }
     }
 
 
@@ -101,6 +111,7 @@ class SessionController
     {
         unset($_SESSION);
         session_destroy();
+        setcookie('gtk', '', time()-3600);
     }
 
     public function getUserArray()

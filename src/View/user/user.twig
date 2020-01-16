@@ -55,17 +55,7 @@
     </div>
 
     {% if password is defined %}
-        {% if erreur is defined %}
-            <div class="row justify-content-center">
-                <button class="alert alert-danger mdp">{{ erreur }}</button>
-            </div>
-        {% endif %}
-        {% if success is defined %}
-            <div class="row justify-content-center">
-                <button class="alert alert-success justify-content-center">{{ success }}</button>
 
-            </div>
-        {% endif %}
         <div class="container pt-3">
             <div class="row justify-content-center">
                 <p>Changement de mot de passe</p>
@@ -89,16 +79,7 @@
             </div>
         </div>
     {% endif %}
-
-
-    {% if comment is defined %}
-        <hr>
-        <div class="container">
-    {% if comment is empty %}
-        <div class="row justify-content-center">
-            <p>Vous n'avez pas encore rédiger de commentaire</p>
-        </div>
-    {% else %}
+    {% if comments is defined %}
             {% for comments in comment %}
                 <div class="row justify-content-center">
                     <p>ID : {{ comments.id_comment }}</p>
@@ -124,6 +105,5 @@
             {% endfor %}
         </div>
         {% endif %}
-    {% endif %}
 
 {% endblock %}

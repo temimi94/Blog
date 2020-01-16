@@ -1,11 +1,6 @@
 {% extends 'layout/layout.twig' %}
 
 {% block content %}
-
-    {% if erreur is defined %}
-        <div class="alert alert-danger" role="alert">{{ erreur }}</div>
-    {% endif %}
-
     <form method="post" action="index.php?page=login&method=register">
         <div class="form-group">
             <label for="text">Pseudo</label>
