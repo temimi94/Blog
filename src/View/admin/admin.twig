@@ -54,16 +54,6 @@
 
 
     {% if password is defined %}
-        {% if erreur is defined %}
-            <div class="row justify-content-center">
-                <button class="alert alert-danger">{{ erreur }}</button>
-            </div>
-        {% endif %}
-        {% if success is defined %}
-            <div class="row justify-content-center">
-                <button class="alert alert-success">{{ success }}</button>
-            </div>
-        {% endif %}
         <div class="container">
             <div class="row justify-content-center">
                 <p>Changement de mot de passe</p>

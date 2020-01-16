@@ -5,13 +5,6 @@
 
 {% block content %}
 
-{% if erreur is defined %}
-    <div class="alert alert-danger text-center" role="alert">{{ erreur }}</div>
-{% endif %}
-
-{% if success is defined %}
-    <div class="alert alert-success text-center" role="alert">{{ success }}</div>
-{% endif %}
     <div class="form-group text-center">
         <h3>Me contacter</h3>
         <form method="post" action="index.php?page=home&method=sendMail">
