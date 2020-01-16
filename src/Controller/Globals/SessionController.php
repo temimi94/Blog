@@ -91,8 +91,6 @@ class SessionController
             if($req){
                 $this->createSession($req);
                 $this->verifyRank();
-            }else{
-                exit();
             }
         }
     }
