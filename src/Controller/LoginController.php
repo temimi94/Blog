@@ -26,7 +26,6 @@ class LoginController extends MainController
         return $view;
     }
 
-    /**Create password with password_hash('string', PASSWORD_DEFAULT);**/
 
     public function loginMethod()
     {
@@ -40,10 +39,14 @@ class LoginController extends MainController
             }
             $data = $login->getUser($post['email']);
             if (password_verify($post['password'], htmlspecialchars($data['password']))) {
-                $this->session->login($data); //TODO Ajouter remember me
+                if (isset($post['remember_me'])) {
+                    $this->session->login($data, true);//login() will redirect to the good home page
+                }else {
+                    $this->session->login($data, false);
+                }
+            } else {
+                return $view->twig->render('login/login.twig', ['erreur' => 'Mot de passe incorrect']);
             }
-            return $view->twig->render('login/login.twig', ['erreur' => 'Mot de passe incorrect']);
-
         }
         $this->redirect('login');
     }
@@ -108,12 +111,17 @@ class LoginController extends MainController
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
+     *
+     * Verify token in GET
+     * Check if token is the same as in the database
+     * Then check date if it expires (15min)
+     * Then compare password and change it
      */
     public function changePasswordMethod()
     {
         $post = $this->post->getPostArray();
         $get = $this->get->getGetArray();
-        if (!empty($post)) {
+        if (!empty($post)) { //TODO Change Token par ForgotToken
 
             $req = new LoginModel();
             $verif = $req->getUserById($get['iduser']);

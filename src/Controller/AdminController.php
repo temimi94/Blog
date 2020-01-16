@@ -69,7 +69,7 @@ class AdminController extends MainController
         $this->isLegitAdmin();;
         $post = $this->post->getPostArray();
         if (!empty($post)) {
-            /** Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
+            /* Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
             $edit = new AdminModel();
 
             $edit->updateArticle($post['id_article'], $post['title'], $post['chapo'], $post['content']);
@@ -77,7 +77,7 @@ class AdminController extends MainController
             $this->redirect('admin&method=listarticle');
 
         } elseif (empty($post)) {
-            /**Si $_POST est vide, renvois sur formulaire pour saisir les données à changer **/
+            /*Si $_POST est vide, renvois sur formulaire pour saisir les données à changer */
             $get = $this->get->getGetVar('idarticle');
             if ($get === false) $this->redirect('admin');
 
@@ -186,7 +186,7 @@ class AdminController extends MainController
                 if (password_verify($post['oldpassword'], $pass['password'])) {
                     $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
                     $password->changeAdminPassword($new_pass, $this->session->getUserVar('id_user'));
-                    return $this->twig->render('..admin/admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+                    return $this->twig->render(' admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
                 }
             }
             return $this->twig->render('admin/admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);

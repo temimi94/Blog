@@ -47,7 +47,7 @@ class BlogController extends MainController
 
         /*Redirection si la variable est vide*/
         if (!$id_blog) {
-            $this->redirect('list');
+            $this->redirect('home');
         }
         /*Vérifie si l'article existe */
         $BlogModel = new BlogModel;
@@ -74,25 +74,33 @@ class BlogController extends MainController
         $post = $this->post->getPostArray();
 
         if (!empty($post)) {
+            $verif = $this->post->verifyPost();
+            if($verif !== true) return $this->twig->render('createblog.twig', ['erreur' => $verif]);
             $article->createArticle($post['title'], $post['content'], $post['chapo'], $this->session->getUserVar('id_user'));
-            $this->redirect('list');
-        } elseif (empty($post)) {
+            return $this->twig->render('createblog.twig', ['success' => 'Votre article nous a bien été envoyé! Il ne manque plus qu\'à le valider!']);
+        } elseif(empty($post)) {
             return $this->twig->render('createblog.twig');
         }
+        //$this->redirect('blog&method=createArticle');
     }
 
 
     public function createCommentMethod()
     {
-        $post = $this->post->getPostArray();
-        if(empty($post['comment'])) return $this->redirect('list'); //TODO Vérifier si le contenu de $post['content'] possède au moins 5 caractère
-        $id_blog = self::getId();
         if($this->session->isLogged() == false) $this->redirect('home');
 
+        $post = $this->post->getPostArray();
+        $verif = $this->post->verifyPost();
+        $id_blog = self::getId();
+
+        $BlogModel = new BlogModel; /* Gérer la redirection */
+        $blog = $BlogModel->selectArticle($id_blog);
+        $comment = $BlogModel->selectCommentByArticle($id_blog);
+
+        if($verif !== true ) return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment, 'erreur' => $verif]);
         if (!empty($post)) {
-            $comment = new BlogModel();
-            $comment->createComment($id_blog, $post['comment'], $this->session->getUserVar('id_user'));
-            $this->redirect('blog&idblog=' . $id_blog);
+            $BlogModel->createComment($id_blog, $post['comment'], $this->session->getUserVar('id_user'));
+            return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment, 'success' => 'Votre commentaire a bien été envoyé.']);
         } elseif (empty($post)) {
             $this->redirect('blog&idblog=' . $id_blog);
         }
