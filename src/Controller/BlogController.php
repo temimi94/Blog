@@ -29,6 +29,12 @@ class BlogController extends MainController
         return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listMethod()
     {
         $blog = new BlogModel;
@@ -85,6 +91,12 @@ class BlogController extends MainController
     }
 
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function createCommentMethod()
     {
         if($this->session->isLogged() == false) $this->redirect('home');

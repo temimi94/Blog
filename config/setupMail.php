@@ -1,6 +1,5 @@
 <?php
-// TODO
-// define constant global
+
 define('MAIL_SMTP', '');// l'adresse de votre serveur de mail
 
 define('MAIL_PORT', '');// le port utilisé pour l'envoi des mails

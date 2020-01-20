@@ -47,14 +47,20 @@ class LoginModel extends MainModel
      * @return bool|\PDOStatement
      * @throws \Exception
      */
-    public function createToken($token, $id_user){ //TODO Change Token to Forgot Token
+    public function createForgotToken($token, $id_user){
         $date = new \DateTime('+ 15 minutes');
         $date = $date->format('Y-m-d H:i:s');
-        $statement = 'UPDATE User SET User.token =?, User.token_expiration =? WHERE User.id_user = ' . $id_user;
+        $statement = 'UPDATE User SET User.forgot_token =?, User.forgot_token_expiration =? WHERE User.id_user = ' . $id_user;
         $array = array($token, $date);
         return $this->execArray($statement, $array);
     }
 
+    /**
+     * @param $token
+     * @param $id_user
+     * @return bool|\PDOStatement
+     * @throws \Exception
+     */
     public function createAuthToken($token, $id_user){
         $date = new \DateTime('+ 1 weeks');
         $date = $date->format('Y-m-d H:i:s');
@@ -63,6 +69,10 @@ class LoginModel extends MainModel
         return $this->execArray($statement, $array);
     }
 
+    /**
+     * @param $token
+     * @return mixed
+     */
     public function searchAuthToken($token){
         $statement = "SELECT * FROM User WHERE User.auth_token= '" .$token."'";
         return $this->fetch($statement);

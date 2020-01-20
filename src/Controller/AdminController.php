@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Model\AdminModel;
 use App\Model\BlogModel;
-use App\Model\ListBlogModel;
-use App\Model\MainModel;
 
 /**
  * Class AdminController
@@ -98,12 +96,10 @@ class AdminController extends MainController
         $this->isLegitAdmin();;
 
         $delete = new AdminModel;
-        $delete->deleteArticle($this->get->getGetVar('idarticle'));
+        $id_article = $this->get->getGetVar('idarticle');
+        $delete->deleteArticle($id_article);
 
-        $req = new BlogModel();
-        $req = $req->selectAllArticle();
-//// Delete Comment Article
-        return $this->twig->render('admin/admin.twig', ['article' => $req]);
+        $this->redirect('admin&method=listArticle');
     }
 
     /**
@@ -173,25 +169,21 @@ class AdminController extends MainController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function changePasswordMethod()
+    public function changeAdminPasswordMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegitAdmin();
 
         $post = $this->post->getPostArray();
-
-        if (!empty($post)) {
-            if ($post['password1'] === $post['password2']) {
-                $password = new AdminModel();
-                $pass = $password->getAdminPassword($this->session->getUserVar('id_user'));
-                if (password_verify($post['oldpassword'], $pass['password'])) {
-                    $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
-                    $password->changeAdminPassword($new_pass, $this->session->getUserVar('id_user'));
-                    return $this->twig->render(' admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
-                }
-            }
-            return $this->twig->render('admin/admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+        if(empty($post)){
+            return $this->twig->render('admin/admin.twig', ['password' => true]);
         }
-        return $this->twig->render('admin/admin.twig', ['password' => true]);
+        $change = new LoginController();
+        $change = $change->changePassword();
+        if($change === true){
+            return $this->twig->render('admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié']);
+        }
+        return $this->twig->render('admin/admin.twig', ['erreur' => $change, 'password' => true]);
+
     }
 
     /**
@@ -200,9 +192,7 @@ class AdminController extends MainController
     public function isLegitAdmin()
     {
         if ($this->session->getUserVar('rank') != 'Administrateur') {
-            $main = new MainController();
-            $main->redirect('home');
-            //$this->redirect('home');
+            $this->redirect('home');
         }
     }
 

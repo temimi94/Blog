@@ -12,31 +12,12 @@ class UserModel extends MainModel
 
     /**
      * @param $id_article
-     * @param $user_id
-     * @return bool|\PDOStatement
-     */
-    public function deleteUserArticle($id_article, $user_id)
-    {
-        $statement = 'DELETE FROM Article WHERE id_article =' . $id_article . ' AND Article.author_id = ' . $user_id;
-        return $this->exec($statement);
-    }
-
-    /**
-     * @param $id_article
      * @param $article_title
      * @param $article_chapo
      * @param $article_content
      * @return bool|\PDOStatement
      */
-    public function updateUserArticle($id_article, $article_title, $article_chapo, $article_content)
-    {
-        $date = date("Y-m-d H:i:s");
 
-        $statement = 'UPDATE Article SET Article.title =?, Article.chapo =?,
-        Article.content =?, Article.date_update =? WHERE Article.id_article = ' . $id_article;
-        $array = array($article_title, $article_chapo, $article_content, $date);
-        return $this->execArray($statement, $array);
-    }
 
     /**
      * @param $user_id
@@ -50,15 +31,6 @@ class UserModel extends MainModel
         INNER JOIN User ON Comment.id_user = User.id_user WHERE Comment.id_user = ' . $user_id);
     }
 
-    /**
-     * @param $id_comment
-     * @return bool|\PDOStatement
-     */
-    public function approveComment($id_comment)
-    {
-        $statement = 'UPDATE Comment SET Comment.validate = 1 WHERE Comment.id_comment = ' . $id_comment;
-        return $this->execArray($statement);
-    }
 
     /**
      * @param $id_comment
@@ -70,37 +42,7 @@ class UserModel extends MainModel
         return $this->execArray($statement);
     }
 
-    /**
-     * @param $id_article
-     * @return bool|\PDOStatement
-     */
-    public function deleteCommentByArticle($id_article)
-    {
-        $statement = 'DELETE FROM Comment WHERE Comment.id_article =' . $id_article;
-        return $this->execArray($statement);
-    }
 
-    /**
-     * @param $user_id
-     * @return array
-     */
-    public function selectArticleUser($user_id)
-    {
-        return $this->fetchAll('SELECT Article.id_article, Article.title, Article.content, 
-        Article.date, Article.chapo, Article.date_update, 
-        Article.author_id, Article.validated, User.id_user, User.pseudo, User.email 
-        FROM Article INNER JOIN User ON Article.author_id = User.id_user WHERE Article.author_id =' . $user_id);
-    }
-
-    /**
-     * @param $article_id
-     * @return bool|\PDOStatement
-     */
-    public function approveArticle($article_id)
-    {
-        $statement = 'UPDATE Article SET Article.validated = 1 WHERE Article.id_article = ' . $article_id;
-        return $this->exec($statement);
-    }
 
     /**
      * @param $id_user

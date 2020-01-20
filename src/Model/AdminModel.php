@@ -26,7 +26,9 @@ class AdminModel extends MainModel
      */
     public function deleteArticle($id_article)
     {
-        $statement = 'DELETE FROM Article WHERE id_article ="' . $id_article . '"';
+        $statement .= 'DELETE FROM Comment WHERE id_article =' .$id_article . ';';
+        $this->exec($statement);
+        $statement = 'DELETE FROM Article WHERE id_article =' . $id_article . ';';
         return $this->exec($statement);
     }
 
@@ -119,4 +121,5 @@ class AdminModel extends MainModel
         $array = array($new_password);
         return $this->execArray($statement, $array);
     }
+
 }

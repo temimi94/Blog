@@ -38,7 +38,7 @@ class UserController extends MainController
         $req = new UserModel();
         $req = $req->getUserComment($this->session->getUserVar('id_user'));
 
-        return $this->twig->render('user/user.twig', ['comment' => $req]);
+        return $this->twig->render('user/user.twig', ['comments' => $req]);
     }
 
 
@@ -62,6 +62,11 @@ class UserController extends MainController
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
+     * First if verify if $_POST isn't empty
+     * Second if verify if the passwords entered are the same
+     * Third if verify if the actual password is the same is in the database
+     * Then fourth if change password the actual password with the new one
+     * All ifs render the twig page with an error message or a success message
      */
     public function changePasswordMethod()
     {
@@ -69,21 +74,20 @@ class UserController extends MainController
 
         $post = $this->post->getPostArray();
 
-        if (!empty($post)) {
-            if ($post['password1'] === $post['password2']) {
-                $password = new UserModel();
-                $pass = $password->getUserPassword($this->session->getUserVar('id_user'));
-                if (password_verify($post['oldpassword'], $pass['password'])) {
-                    $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
-                    $password->changeUserPassword($new_pass, $this->session->getUserVar('id_user'));
-                    return $this->twig->render('user/user.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
-                }
-            }
-            return $this->twig->render('user/user.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+        if(empty($post)){
+            return $this->twig->render('user/user.twig', ['password' => true]);
         }
-        return $this->twig->render('user/user.twig', ['password' => true]);
+        $change = new LoginController();
+        $change = $change->changePassword();
+        if($change === true){
+            return $this->twig->render('user/user.twig', ['success' => 'Votre mot de passe a bien été modifié']);
+        }
+        return $this->twig->render('user/user.twig', ['erreur' => $change, 'password' => true]);
     }
 
+    /**
+     *
+     */
     public function isLegitUser()
     {
         if ($this->session->getUserVar('rank') != 'Utilisateur') $this->redirect('home');

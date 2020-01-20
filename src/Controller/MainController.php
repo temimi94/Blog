@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\LoginModel;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
@@ -46,8 +45,16 @@ class MainController extends GlobalController
         exit;
     }
 
-    public function redirectTwigErr(string $twig, $error = null){
-        return $this->twig->render($twig, ['error' => $error]);
+    /**
+     * @param string $twig
+     * @param string|null $errormsg
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function redirectTwigErr(string $twig, string $errormsg = null){
+        return $this->twig->render($twig, ['error' => $errormsg]);
     }
 
 
@@ -58,6 +65,7 @@ class MainController extends GlobalController
         $link = filter_input(INPUT_SERVER, 'REQUEST_URI');
         return $link;
     }
+
 
 
 }

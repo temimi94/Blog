@@ -66,10 +66,11 @@ class PostController
      * @return array
      * return a correct error message
      */
-    private function errorPostMessage($error){ /* TODO Recréer cette fonction pour la rendre dynamique */
+
+    private function errorPostMessage($error){ /* TODO Recréer cette fonction */
         $error = explode(' ', $error);
         switch($error[0]) {
-            case 'name';
+            case 'name':
                 $error[0] = 'Le nom';
                 break;
             case 'content';
