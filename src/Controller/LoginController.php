@@ -214,17 +214,7 @@ class LoginController extends MainController
     public function changePassword(){ //Call when logged in user/admin panel
         $rank = $this->session->getUserVar('rank');
         $post = $this->post->getPostArray();
-
-        if($rank === 'Administrateur'){
-            $road = 'admin/admin.twig';
-        }elseif($rank === 'Utilisateur'){
-            $road = 'user/user.twig';
-        }
-
-        if(empty($post)){
-            return $this->twig->render($road, ['password' => true]);
-        }
-
+        
         if($post['password1'] != $post['password2']){
             return 'Les mots de passes sont différents';
             //return $this->twig->render($road, ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
