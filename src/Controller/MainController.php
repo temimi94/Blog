@@ -45,6 +45,14 @@ class MainController extends GlobalController
         exit;
     }
 
+    /**
+     * @param string $twig
+     * @param string|null $errormsg
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function redirectTwigErr(string $twig, string $errormsg = null){
         return $this->twig->render($twig, ['error' => $errormsg]);
     }

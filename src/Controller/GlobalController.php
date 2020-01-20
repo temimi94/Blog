@@ -35,6 +35,9 @@ abstract class GlobalController
 
     protected $cookie;
 
+    /**
+     * GlobalController constructor.
+     */
     public function __construct()
     {
         $this->post = new PostController();

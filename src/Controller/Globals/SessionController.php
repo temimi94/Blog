@@ -17,8 +17,14 @@ class SessionController
      */
     private $session;
 
+    /**
+     * @var
+     */
     private $user;
 
+    /**
+     * SessionController constructor.
+     */
     public function __construct()
     {
         $this->session = filter_var_array($_SESSION);
@@ -28,6 +34,9 @@ class SessionController
         }
     }
 
+    /**
+     * @param array $data
+     */
     public function createSession(array $data)
     {
         if ($data['rank'] == 1) $data['rank'] = 'Administrateur';
@@ -45,6 +54,9 @@ class SessionController
         $_SESSION['user'] = $this->session['user'];
     }
 
+    /**
+     * @return bool
+     */
     public function isLogged()
     {
         if (!empty($this->getUserVar('session_id'))) {
@@ -74,6 +86,9 @@ class SessionController
         elseif ($this->getUserVar('rank') === 'Utilisateur') $main->redirect('user');
     }
 
+    /**
+     *
+     */
     public function verifyAuth(){
         $cookie = new CookieController();
         $cookie = $cookie->getCookieVar('gtk');
@@ -89,6 +104,9 @@ class SessionController
     }
 
 
+    /**
+     *
+     */
     public function verifyRank()
     {
         if ($this->getUserVar('rank') == 1) {
@@ -98,6 +116,9 @@ class SessionController
         }
     }
 
+    /**
+     *
+     */
     public function logout()
     {
         unset($_SESSION);
@@ -107,17 +128,28 @@ class SessionController
         //setcookie('gtk', '', time()-3600);
     }
 
+    /**
+     * @return mixed
+     */
     public function getUserArray()
     {
         return $this->user;
     }
 
+    /**
+     * @param $var
+     * @return mixed
+     */
     public function getUserVar($var)
     {
         return $this->user[$var];
     }
 
 
+    /**
+     * @param string $var
+     * @param $data
+     */
     public function setUserVar(string $var, $data)
     {
         $this->user[$var] = $data;

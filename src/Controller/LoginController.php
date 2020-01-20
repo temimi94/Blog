@@ -29,6 +29,12 @@ class LoginController extends MainController
     }
 
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function loginMethod()
     {
         $login = new LoginModel();
@@ -176,45 +182,15 @@ class LoginController extends MainController
         return $this->twig->render('login/login.twig', ['success' => 'Votre mot de passe a bien été modifié!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
         //Change le mot de passe et renvois la page login avec un message de succès
 
-
-        /*
-        if (!empty($post)) {
-
-            $req = new LoginModel();
-            $verif = $req->getUserById($get['iduser']);
-
-            if ($verif === false) {
-                return $this->twig->render('login/changepassword.twig', ['erreur' => 'Il y a eu une erreur!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-            } //Si l'on ne trouve pas l'utilisateur
-
-            if ($get['token'] != $verif['token']) {
-                return $this->twig->render('login/changepassword.twig', ['erreur' => 'Le token n\'est pas bon!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-            } //Si les token sont différents
-
-
-            $date_verif = date_create_from_format('Y-m-d H:i:s', $verif['token_expiration']);  //Si le token expire
-            $date = new DateTime("now");
-            if ($date > $date_verif) return $this->twig->render('login/changepassword.twig', ['erreur' => 'Le token a expiré!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-
-            if ($post['password1'] != $post['password2']){
-                return $this->twig->render('login/changepassword.twig', ['erreur' => 'Les mots de passes entrés ne sont pas identiques!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-            }
-            if ($post['password1'] == $post['password2']) {
-                $password = password_hash($post['password1'], PASSWORD_DEFAULT);
-                $req->changePassword($password, $get['iduser']);
-                return $this->twig->render('login/login.twig', ['success' => 'Votre mot de passe a bien été modifié!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-            }
-            return $this->twig->render('login/changepassword.twig', ['erreur' => 'Les mots de passes entrés ne sont pas identiques!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-        } elseif (empty($post)) {
-            return $this->twig->render('login/changepassword.twig', ['token' => $get['token'], 'iduser' => $get['iduser']]);
-        } */
-
     }
 
+    /**
+     * @return bool|string
+     */
     public function changePassword(){ //Call when logged in user/admin panel
         $rank = $this->session->getUserVar('rank');
         $post = $this->post->getPostArray();
-        
+
         if($post['password1'] != $post['password2']){
             return 'Les mots de passes sont différents';
             //return $this->twig->render($road, ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
