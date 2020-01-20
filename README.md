@@ -27,10 +27,10 @@ Le site est consultable [ici](https://blog.kindertheo.net)
 
 Les identifiants par défaut sont :
 
-######Administrateur
+####Administrateur
 >admin@admin.com
 >password
 
-######Utilisateur
+####Utilisateur
 >user@user.com
 >123
