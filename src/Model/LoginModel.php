@@ -55,6 +55,12 @@ class LoginModel extends MainModel
         return $this->execArray($statement, $array);
     }
 
+    /**
+     * @param $token
+     * @param $id_user
+     * @return bool|\PDOStatement
+     * @throws \Exception
+     */
     public function createAuthToken($token, $id_user){
         $date = new \DateTime('+ 1 weeks');
         $date = $date->format('Y-m-d H:i:s');
@@ -63,6 +69,10 @@ class LoginModel extends MainModel
         return $this->execArray($statement, $array);
     }
 
+    /**
+     * @param $token
+     * @return mixed
+     */
     public function searchAuthToken($token){
         $statement = "SELECT * FROM User WHERE User.auth_token= '" .$token."'";
         return $this->fetch($statement);
