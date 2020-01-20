@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 
+use App\Model\AdminModel;
 use App\Model\LoginModel;
+use App\Model\UserModel;
 use DateTime;
 
 /**
@@ -206,5 +208,42 @@ class LoginController extends MainController
         } elseif (empty($post)) {
             return $this->twig->render('login/changepassword.twig', ['token' => $get['token'], 'iduser' => $get['iduser']]);
         } */
+
+    }
+
+    public function changePassword(){ //Call when logged in user/admin panel
+        $rank = $this->session->getUserVar('rank');
+        $post = $this->post->getPostArray();
+
+        if($rank === 'Administrateur'){
+            $road = 'admin/admin.twig';
+        }elseif($rank === 'Utilisateur'){
+            $road = 'user/user.twig';
+        }
+
+        if(empty($post)){
+            return $this->twig->render($road, ['password' => true]);
+        }
+
+        if($post['password1'] != $post['password2']){
+            return 'Les mots de passes sont différents';
+            //return $this->twig->render($road, ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+        }
+
+        $password = new UserModel();
+        $pass = $password->getUserPassword($this->session->getUserVar('id_user'));
+
+        if(!password_verify($post['oldpassword'], $pass['password'])){
+            return 'Votre mot de passe actuel n\'est pas bon';
+            //return $this->twig->render($road, ['erreur' => 'Votre mot de passe actuel n\'est pas bon', 'password' => true]);
+        }
+
+        if(password_verify($post['oldpassword'], $pass['password'])){
+            $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
+            $password->changeUserPassword($new_pass, $this->session->getUserVar('id_user'));
+            return true;
+            //return $this->twig->render($road, ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+        }
+
     }
 }

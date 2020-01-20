@@ -171,10 +171,20 @@ class AdminController extends MainController
      */
     public function changeAdminPasswordMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegitAdmin();
 
         $post = $this->post->getPostArray();
+        if(empty($post)){
+            return $this->twig->render('admin/admin.twig', ['password' => true]);
+        }
+        $change = new LoginController();
+        $change = $change->changePassword();
+        if($change === true){
+            return $this->twig->render('admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié']);
+        }
+        return $this->twig->render('admin/admin.twig', ['erreur' => $change, 'password' => true]);
 
+/*
         if(empty($post)){
             return $this->twig->render('admin/admin.twig', ['password' => true]);
         }

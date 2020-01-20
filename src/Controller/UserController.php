@@ -77,6 +77,18 @@ class UserController extends MainController
         if(empty($post)){
             return $this->twig->render('user/user.twig', ['password' => true]);
         }
+        $change = new LoginController();
+        $change = $change->changePassword();
+        if($change === true){
+            return $this->twig->render('user/user.twig', ['success' => 'Votre mot de passe a bien été modifié']);
+        }
+        return $this->twig->render('user/user.twig', ['erreur' => $change, 'password' => true]);
+
+        /*
+
+        if(empty($post)){
+            return $this->twig->render('user/user.twig', ['password' => true]);
+        }
 
         if($post['password1'] != $post['password2']){
             return $this->twig->render('user/user.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
