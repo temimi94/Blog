@@ -188,7 +188,6 @@ class LoginController extends MainController
      * @return bool|string
      */
     public function changePassword(){ //Call when logged in user/admin panel
-        $rank = $this->session->getUserVar('rank');
         $post = $this->post->getPostArray();
 
         if($post['password1'] != $post['password2']){
