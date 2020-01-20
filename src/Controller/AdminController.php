@@ -173,12 +173,33 @@ class AdminController extends MainController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function changePasswordMethod()
+    public function changeAdminPasswordMethod()
     {
         $this->isLegitAdmin();;
 
         $post = $this->post->getPostArray();
 
+        if(empty($post)){
+            return $this->twig->render('admin/admin.twig', ['password' => true]);
+        }
+
+        if($post['password1'] != $post['password2']){
+            return $this->twig->render('admin/admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+        }
+
+        $password = new AdminModel();
+        $pass = $password->getAdminPassword($this->session->getUserVar('id_user'));
+
+        if(!password_verify($post['oldpassword'], $pass['password'])){
+            return $this->twig->render('admin/admin.twig', ['erreur' => 'Votre mot de passe actuel n\'est pas bon', 'password' => true]);
+        }
+
+        if(password_verify($post['oldpassword'], $pass['password'])){
+            $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
+            $password->changeAdminPassword($new_pass, $this->session->getUserVar('id_user'));
+            return $this->twig->render('admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+        }
+/*
         if (!empty($post)) {
             if ($post['password1'] === $post['password2']) {
                 $password = new AdminModel();
@@ -186,12 +207,13 @@ class AdminController extends MainController
                 if (password_verify($post['oldpassword'], $pass['password'])) {
                     $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
                     $password->changeAdminPassword($new_pass, $this->session->getUserVar('id_user'));
-                    return $this->twig->render(' admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
+                    return $this->twig->render('admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
                 }
+            }elseif(!$post['password1'] === $post['password2']) {
+                return $this->twig->render('admin/admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
             }
-            return $this->twig->render('admin/admin.twig', ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
         }
-        return $this->twig->render('admin/admin.twig', ['password' => true]);
+        return $this->twig->render('admin/admin.twig', ['password' => true]); */
     }
 
     /**
