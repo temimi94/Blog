@@ -55,7 +55,6 @@
     </div>
 
     {% if password is defined %}
-
         <div class="container pt-3">
             <div class="row justify-content-center">
                 <p>Changement de mot de passe</p>
@@ -79,7 +78,10 @@
             </div>
         </div>
     {% endif %}
+
     {% if comments is defined %}
+    <div class="container">
+        {% if comments is not empty %}
             {% for comments in comment %}
                 <div class="row justify-content-center">
                     <p>ID : {{ comments.id_comment }}</p>
@@ -103,6 +105,12 @@
                 </div>
                 <hr>
             {% endfor %}
+        {% endif %}
+        {% if comments is empty %}
+            <div class="row justify-content-center">
+                <p>Vous n'avez pas écrit de commentaire</p>
+            </div>
+        {% endif %}
         </div>
         {% endif %}
 
