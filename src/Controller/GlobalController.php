@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Globals\CookieController;
 use App\Controller\Globals\PostController;
 use App\Controller\Globals\GetController;
 use App\Controller\Globals\SessionController;
@@ -31,11 +32,15 @@ abstract class GlobalController
     /**
      * GlobalController constructor.
      */
+
+    protected $cookie;
+
     public function __construct()
     {
         $this->post = new PostController();
         $this->get = new GetController();
         $this->session = new SessionController();
+        $this->cookie = new CookieController();
     }
 
 }

@@ -45,14 +45,6 @@ class SessionController
         $_SESSION['user'] = $this->session['user'];
     }
 
-    public function isLegit()
-    {
-        if ($this->getUserVar('rank') != 'Administrateur' AND $this->getUserVar('rank') != 'Utilisateur') {
-            $main = new MainController();
-            $main->redirect('home');
-        }
-    }
-
     public function isLogged()
     {
         if (!empty($this->getUserVar('session_id'))) {
@@ -67,14 +59,13 @@ class SessionController
      */
     public function login($data = [], $remember_me = null)
     {
-        /* TODO
-        Générer et ajouter un AuthToken dans la BDD et dans le cookie
-        Vérifier si le AuthToken présent dans le cookie correspond au AuthToken dans la BDD et se connecter automatiquement */
         if ($remember_me == true) {
             $auth_token = bin2hex(openssl_random_pseudo_bytes(32));
             $token = new LoginModel();
             $token->createAuthToken($auth_token, $data['id_user']);
-            setcookie('gtk',$auth_token, time()+604800); //Create cookie that expires in 1 week
+            $cookie = new CookieController();
+            $cookie->createCookie('gtk', $auth_token, time()+604800);//Create cookie that expires in 1 week
+            //setcookie('gtk',$auth_token, time()+604800);
         }
         $main = new MainController();
         $this->createSession($data);
@@ -84,7 +75,9 @@ class SessionController
     }
 
     public function verifyAuth(){
-        if(isset($_COOKIE['gtk']) AND !$this->isLogged()){ // AND !isset($_SESSION['remember_me'])
+        $cookie = new CookieController();
+        $cookie = $cookie->getCookieVar('gtk');
+        if(!empty($cookie) AND !$this->isLogged()){ // AND !isset($_SESSION['remember_me'])
             $token = filter_input(INPUT_COOKIE, 'gtk');
             $req = new LoginModel();
             $req = $req->searchAuthToken($token);
@@ -109,7 +102,9 @@ class SessionController
     {
         unset($_SESSION);
         session_destroy();
-        setcookie('gtk', '', time()-3600);
+        $cookie = new CookieController();
+        $cookie->destroyCookie('gtk');
+        //setcookie('gtk', '', time()-3600);
     }
 
     public function getUserArray()
@@ -122,16 +117,6 @@ class SessionController
         return $this->user[$var];
     }
 
-
-    public function getSessionArray()
-    {
-        return $this->session;
-    }
-
-    public function getSessionVar($var)
-    {
-        return $this->session[$var];
-    }
 
     public function setUserVar(string $var, $data)
     {

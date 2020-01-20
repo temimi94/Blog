@@ -60,7 +60,7 @@ class MailController extends MainController
         $token = bin2hex(openssl_random_pseudo_bytes(24));
         $token_req = new LoginModel();
         $id_user = $user['id_user'];
-        $token_req->createToken($token, $id_user);
+        $token_req->createForgotToken($token, $id_user);
 
         $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePassword&token=" . $token . "&iduser=" .$id_user;
 
