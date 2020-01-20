@@ -40,7 +40,7 @@ class MailController extends MainController
         // Create a message
         $message = (new Swift_Message('Contact Blog PHP P5 OpenClassrooms'))
             ->setFrom([$user['email'] => $user['name']])
-            ->setTo('kinder.theo@gmail.com')
+            ->setTo(MAIL_USERNAME)
             ->setBody($user['content']);
 
         // Send the message
@@ -79,7 +79,7 @@ class MailController extends MainController
         // Create a message
         $message = (new Swift_Message('Mot de passe oublié Blog PHP P5 Kinder Théo'))
             ->setFrom(MAIL_USERNAME)
-            ->setTo('kinder.theo@gmail.com') //change to $user['email']
+            ->setTo($user['email']) //change to $user['email']
             ->setBody($content, 'text/html');
 
         // Send the message
