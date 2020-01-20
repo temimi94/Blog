@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Model\AdminModel;
 use App\Model\BlogModel;
-use App\Model\ListBlogModel;
-use App\Model\MainModel;
 
 /**
  * Class AdminController
@@ -98,12 +96,10 @@ class AdminController extends MainController
         $this->isLegitAdmin();;
 
         $delete = new AdminModel;
-        $delete->deleteArticle($this->get->getGetVar('idarticle'));
+        $id_article = $this->get->getGetVar('idarticle');
+        $delete->deleteArticle($id_article);
 
-        $req = new BlogModel();
-        $req = $req->selectAllArticle();
-//// Delete Comment Article
-        return $this->twig->render('admin/admin.twig', ['article' => $req]);
+        $this->redirect('admin&method=listArticle');
     }
 
     /**
@@ -222,9 +218,7 @@ class AdminController extends MainController
     public function isLegitAdmin()
     {
         if ($this->session->getUserVar('rank') != 'Administrateur') {
-            $main = new MainController();
-            $main->redirect('home');
-            //$this->redirect('home');
+            $this->redirect('home');
         }
     }
 

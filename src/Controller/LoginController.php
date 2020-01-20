@@ -49,9 +49,9 @@ class LoginController extends MainController
 
         if (isset($post['remember_me'])) {
             $this->session->login($data, true);//login() will redirect to the good home page
-        } else {
-            $this->session->login($data, false);
         }
+        $this->session->login($data, false);
+
 
        /*
         if (isset($post['email'])) {
@@ -156,11 +156,11 @@ class LoginController extends MainController
             return $this->twig->render('login/changepassword.twig', ['erreur' => 'Il y a eu une erreur!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
         } //Si l'on ne trouve pas l'utilisateur
 
-        if ($get['token'] != $verif['token']) {
+        if ($get['token'] != $verif['forgot_token']) {
             return $this->twig->render('login/changepassword.twig', ['erreur' => 'Le token n\'est pas bon!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
         } //Si les token sont différents
 
-        $date_verif = date_create_from_format('Y-m-d H:i:s', $verif['token_expiration']);
+        $date_verif = date_create_from_format('Y-m-d H:i:s', $verif['forgot_token_expiration']);
         $date = new DateTime("now");
         if ($date > $date_verif) return $this->twig->render('login/changepassword.twig', ['erreur' => 'Le token a expiré!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
         //Si le token expire
@@ -176,7 +176,7 @@ class LoginController extends MainController
 
 
         /*
-        if (!empty($post)) { //TODO Change Token par ForgotToken
+        if (!empty($post)) {
 
             $req = new LoginModel();
             $verif = $req->getUserById($get['iduser']);
