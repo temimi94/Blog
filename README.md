@@ -14,13 +14,10 @@
 
 Installation :
 
-* Mettre à jour config/database.php
-
-* Mettre à jour config/setupMail.php
-
-* Importer le fichier import.sql dans votre base de données
-
-* Lancer dans le terminal `composer install`
+*  Mettre à jour config/database.php
+*  Mettre à jour config/setupMail.php
+*  Importer le fichier import.sql dans votre base de données
+*  Lancer dans le terminal `composer install`
 
 -----------------
 
@@ -32,10 +29,8 @@ Les identifiants par défaut sont :
 
 ######Administrateur
 >admin@admin.com
-
 >password
 
 ######Utilisateur
 >user@user.com
-
 >123
