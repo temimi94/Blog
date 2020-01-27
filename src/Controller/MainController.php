@@ -91,7 +91,7 @@ abstract class MainController extends ImportController
      */
     public function verifyAuth(){
         if(!$this->session->isLogged()){
-            
+
             $cookie = $this->cookie->getCookieVar('gtk');
             if(!empty($cookie) AND !$this->session->isLogged()){
                 $token = filter_input(INPUT_COOKIE, 'gtk');
