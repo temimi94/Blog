@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Globals;
 
 
 use App\Model\LoginModel;
@@ -12,15 +12,8 @@ use Swift_SmtpTransport;
  * Class MailController
  * @package App\Controller
  */
-class MailController extends MainController
+class MailController
 {
-    /**
-     *
-     */
-    public function defaultMethod(){
-        $this->redirect('home');
-    }
-
     /**
      * @param array $user
      * @return int
@@ -51,9 +44,10 @@ class MailController extends MainController
     /**
      * @param array $user
      * @return int
+     * @throws \Exception
      */
 
-    public function sendForgetEmailMethod(array $user){ // $user contient user_id & email
+    public function sendForgetPassword(array $user){ // $user contient user_id & email
 
         require_once('../config/setupMail.php'); //MAIL Const
 
@@ -62,7 +56,7 @@ class MailController extends MainController
         $id_user = $user['id_user'];
         $token_req->createForgotToken($token, $id_user);
 
-        $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePassword&token=" . $token . "&iduser=" .$id_user;
+        $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePasswordByMail&token=" . $token . "&iduser=" .$id_user;
 
         // Create the Transport
         $transport = (new Swift_SmtpTransport(MAIL_SMTP,MAIL_PORT))
@@ -86,4 +80,6 @@ class MailController extends MainController
         $result = $mailer->send($message);
         return $result; /** return false if mail not send */
     }
+
+
 }
