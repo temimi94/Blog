@@ -10,12 +10,15 @@ use Twig\Loader\FilesystemLoader;
  * Class MainController
  * @package App\Controller
  */
-class MainController extends GlobalController
+abstract class MainController extends ImportController
 {
     /**
      * @var Environment|null
      */
     protected $twig = null;
+
+    protected $mail;
+
 
     /**
      * MainController constructor
@@ -25,7 +28,7 @@ class MainController extends GlobalController
     public function __construct()
     {
         parent::__construct();
-        $this->session->verifyAuth();
+        $this->verifyAuth();
 
         $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
             'cache' => false,
@@ -33,6 +36,7 @@ class MainController extends GlobalController
         ));
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addGlobal("session", $this->session->getUserArray());
+        $this->twig->addGlobal("get", $this->get->getGetArray());
     }
 
     /**
@@ -53,8 +57,22 @@ class MainController extends GlobalController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function redirectTwigErr(string $twig, string $errormsg = null){
-        return $this->twig->render($twig, ['error' => $errormsg]);
+    public function renderTwigErr(string $twig, string $errormsg = null){
+
+        return $this->twig->render($twig, ['erreur' => $errormsg]);
+    }
+
+    /**
+     * @param string $twig
+     * @param string|null $success
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function renderTwigSuccess(string $twig, string $success = null){
+
+        return $this->twig->render($twig, ['success' => $success]);
     }
 
 
@@ -62,10 +80,28 @@ class MainController extends GlobalController
      * @return mixed
      */
     public function getCurrentLink(){
-        $link = filter_input(INPUT_SERVER, 'REQUEST_URI');
+        $link = filter_input(INPUT_SERVER, 'QUERY_STRING');
+        $link = str_replace('page=', '', $link);
+
         return $link;
     }
 
+    /**
+     *
+     */
+    public function verifyAuth(){
+        if(!$this->session->isLogged()){
+            
+            $cookie = $this->cookie->getCookieVar('gtk');
+            if(!empty($cookie) AND !$this->session->isLogged()){
+                $token = filter_input(INPUT_COOKIE, 'gtk');
+                $req = $this->loginSql->searchAuthToken($token);
+                if($req){
+                    $this->session->createSession($req);
+                }
+            }
+        }
+    }
 
 
 }
