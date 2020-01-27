@@ -45,10 +45,10 @@
 
             <div class="col-lg-6 pt-2 link ">
                 <div class="row pb-2 justify-content-center">
-                    <a class="btn btn-default btn-secondary"href="index.php?page=user&method=listComment">Liste de mes commentaires</a>
+                    <a class="btn btn-default btn-secondary"href="index.php?page=user&method=listMyComment">Liste de mes commentaires</a>
                 </div>
                 <div class="row pb-2 justify-content-center">
-                    <a class="btn btn-default btn-secondary" href="index.php?page=login&method=changePassword">Changer de mot de passe</a>
+                    <a class="btn btn-default btn-secondary" href="index.php?page=user&method=changePassword">Changer de mot de passe</a>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
                 {% if comments.validate == 0 %}
                     <p>Commentaire en attente d'approbation</p>
                 {% endif %}
-                    <a class="btn btn-danger" href="index.php?page=user&method=deleteComment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                    <a class="btn btn-danger" href="index.php?page=user&method=deleteMyComment&idcomment={{ comments.id_comment }}">Supprimer</a>
                 </div>
                 <hr>
             {% endfor %}

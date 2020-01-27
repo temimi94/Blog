@@ -16,7 +16,7 @@
         {% if session.session_id is defined %}
             {% if session.rank == 'Administrateur' %}
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=blog&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
+            <a class="nav-link" href="index.php?page=admin&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
         </li>
             {% endif %}
         {% endif %}

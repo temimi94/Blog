@@ -46,8 +46,8 @@
             <div class="col-lg-6 pt-2 link ">
                 <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listUser">Liste des utilisateurs</a></div>
                 <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listArticle">Liste des articles</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listComment">Liste des commentaires</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changeAdminPassword">Changer de mot de passe</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listAllComment">Liste des commentaires</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a></div>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
                 <p>Changement de mot de passe</p>
             </div>
             <div class="row justify-content-center">
-                <form method="post" action="index.php?page=admin&method=changeAdminPassword">
+                <form method="post" action="index.php?page=admin&method=changePassword">
                     <div class="form-group">
                         <label for="passwrd">Ancien mot de passe</label>
                         <input type="password" name="oldpassword" class="form-control" id="passwrd" placeholder="Ancien mot de passe">
@@ -182,7 +182,7 @@
 
                 <hr>
             {% endfor %}
-            {% if comments is empty %}
+            {% if comment is empty %}
                 <div class="row justify-content-center">
                     <p>Il n'y a aucun commentaires</p>
                 </div>
