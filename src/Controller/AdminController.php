@@ -1,78 +1,47 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Model\AdminModel;
-use App\Model\BlogModel;
 
-/**
- * Class AdminController
- * @package App\Controller
- */
-class AdminController extends MainController
-{
+class AdminController extends UserController {
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
+    const TWIG = 'admin/admin.twig';
+
     public function defaultMethod()
     {
-        $this->isLegitAdmin();
-        return $this->twig->render('admin/admin.twig');
+        $this->isLegit();
+        return $this->twig->render(self::TWIG);
     }
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function listUserMethod()
-    {
-        $this->isLegitAdmin();;
+    public function listUserMethod(){
+        $this->isLegit();;
 
-        $req = new AdminModel;
-        $req = $req->selectAlluser();
+        $req = $this->adminSql->selectAlluser();
 
-        return $this->twig->render('admin/admin.twig', ['user' => $req]);
+        return $this->twig->render(self::TWIG, ['user' => $req]);
     }
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
     public function listArticleMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();;
 
-        $req = new AdminModel();
-        $req = $req->selectArticleAdmin();
+        $req = $this->adminSql->selectArticleAdmin();
 
-        return $this->twig->render('admin/admin.twig', ['article' => $req]);
+        return $this->twig->render(self::TWIG, ['article' => $req]);
     }
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
     public function editArticleMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();
         $post = $this->post->getPostArray();
         if (!empty($post)) {
             /* Si $_POST existe et possède des données, les données sont ajoutées à la bdd */
-            $edit = new AdminModel();
 
-            $edit->updateArticle($post['id_article'], $post['title'], $post['chapo'], $post['content']);
+            $this->adminSql->updateArticle($post['id_article'], $post['title'], $post['chapo'], $post['content']);
 
-            $this->redirect('admin&method=listarticle');
+            $this->redirect('admin&method=listArticle');
 
         } elseif (empty($post)) {
             /*Si $_POST est vide, renvois sur formulaire pour saisir les données à changer */
@@ -81,119 +50,112 @@ class AdminController extends MainController
                 $this->redirect('admin');
             }
 
-            $req = new BlogModel();
-            $req = $req->selectArticle($get);
+            $req = $this->blogSql->selectArticle($get);
+
             return $this->twig->render('admin/adminUpdateArticle.twig', ['article' => $req]);
         }
     }
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
     public function deleteArticleMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();;
 
-        $delete = new AdminModel;
         $id_article = $this->get->getGetVar('idarticle');
-        $delete->deleteArticle($id_article);
+        $this->adminSql->deleteArticle($id_article);
 
         $this->redirect('admin&method=listArticle');
     }
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function listCommentMethod()
+    public function listAllCommentMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();;
 
-        $req = new AdminModel();
-        $req = $req->getAllComment();
+        $req = $this->adminSql->getAllComment();
 
-        return $this->twig->render('admin/admin.twig', ['comment' => $req]);
+        return $this->twig->render(self::TWIG, ['comment' => $req]);
     }
 
-    /**
-     *
-     */
     public function approveCommentMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();;
 
         $get = $this->get->getGetVar('idcomment');
         if ($get === false) $this->redirect('admin');
 
-        $req = new AdminModel();
-        $req->approveComment($get);
-        $this->redirect('admin&method=listcomment');
+        $this->adminSql->approveComment($get);
+        $this->redirect('admin&method=listComment');
     }
 
-    /**
-     *
-     */
     public function deleteCommentMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();;
 
         $get = $this->get->getGetVar('idcomment');
         if ($get === false) $this->redirect('admin');
 
-        $req = new AdminModel();
-        $req->deleteComment($get);
-        $this->redirect('admin&method=listcomment');
+        $this->adminSql->deleteComment($get);
+        $this->redirect('admin&method=listComment');
     }
 
-    /**
-     *
-     */
     public function approveArticleMethod()
     {
-        $this->isLegitAdmin();;
+        $this->isLegit();;
 
         $get = $this->get->getGetVar('idarticle');
         if ($get == false) $this->redirect('admin');
 
-        $req = new AdminModel();
-        $req->approveArticle($get); // Set article.validated to 1. 0 is non approuved article
-        $this->redirect('admin&method=listarticle');
+        $this->adminSql->approveArticle($get); // Set article.validated to 1. 0 is non approuved article
+        $this->redirect('admin&method=listArticle');
     }
 
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function changeAdminPasswordMethod() //TODO Déplacer
+    public function changePasswordMethod()
     {
-        $this->isLegitAdmin();
+
+        $this->isLegit();
 
         $post = $this->post->getPostArray();
         if(empty($post)){
-            return $this->twig->render('admin/admin.twig', ['password' => true]);
+
+            return $this->twig->render(self::TWIG, ['password' => true]);
         }
-        $change = new LoginController();
-        $change = $change->changePasswordWhenLogged();
+
+        $change = $this->changePasswordWhenLogged();
         if($change === true){
-            return $this->twig->render('admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié']);
+
+            return $this->twig->render(self::TWIG, ['success' => 'Votre mot de passe a bien été modifié']);
         }
-        return $this->twig->render('admin/admin.twig', ['erreur' => $change, 'password' => true]);
+
+        return $this->twig->render(self::TWIG, ['erreur' => $change, 'password' => true]);
 
     }
 
-    /**
-     *
-     */
-    public function isLegitAdmin()
+    public function createArticleMethod()
     {
-        if ($this->session->getUserVar('rank') != 'Administrateur') {
+
+        $this->isLegit();
+
+        $post = $this->post->getPostArray();
+
+        if (!empty($post)) {
+            $verif = $this->post->verifyPost();
+            if($verif !== true) {
+
+                return $this->twig->render('createblog.twig', ['erreur' => $verif]);
+            }
+            $this->blogSql->createArticle($post['title'], $post['content'], $post['chapo'], $this->session->getUserVar('id_user'));
+
+            return $this->renderTwigSuccess('createblog.twig', 'Votre article nous a bien été envoyé! Il ne manque plus qu\'à le valider!');
+        } elseif(empty($post)) {
+
+            return $this->twig->render('createblog.twig');
+        }
+        //$this->redirect('blog&method=createArticle');
+    }
+
+
+    public function isLegit()
+    {
+        if ($this->session->getUserVar('rank') !== 'Administrateur') {
             $this->redirect('home');
         }
     }

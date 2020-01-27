@@ -20,7 +20,7 @@ class UserController extends MainController
      */
     public function defaultMethod()
     {
-        $this->isLegitUser();
+        $this->isLegit();
 
         return $this->twig->render('user/user.twig');
     }
@@ -32,9 +32,9 @@ class UserController extends MainController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function listCommentMethod()
+    public function listMyCommentMethod()
     {
-        $this->isLegitUser();
+        $this->isLegit();
 
         $req = $this->userSql->getUserComment($this->session->getUserVar('id_user'));
 
@@ -45,9 +45,9 @@ class UserController extends MainController
     /**
      *
      */
-    public function deleteCommentMethod()
+    public function deleteMyCommentMethod()
     {
-        $this->isLegitUser();
+        $this->isLegit();
 
         $get = $this->get->getGetVar('idcomment');
         if ($get === false) {
@@ -57,7 +57,7 @@ class UserController extends MainController
 
         $this->userSql->deleteComment($get);
 
-        $this->redirect('user&method=listcomment');
+        $this->redirect('user&method=listMyComment');
     }
 
     /**
@@ -71,9 +71,9 @@ class UserController extends MainController
      * Then fourth if change password the actual password with the new one
      * All ifs render the twig page with an error message or a success message
      */
-    public function changePasswordMethod() // TODO Déplacer
+    public function changePasswordMethod()
     {
-        $this->isLegitUser();
+        $this->isLegit();
         $twigPage = 'user/user.twig';
         $post = $this->post->getPostArray();
 
@@ -81,8 +81,7 @@ class UserController extends MainController
             return $this->twig->render($twigPage, ['password' => true]);
         }
 
-        $change = new LoginController(); //TODO A Changer
-        $change = $change->changePasswordWhenLogged();
+        $change = $this->changePasswordWhenLogged();
         if($change === true){
 
             return $this->renderTwigSuccess($twigPage, 'Votre mot de passe a bien été modifié');
@@ -92,9 +91,41 @@ class UserController extends MainController
     }
 
     /**
+     * @return bool|string
+     * Return the error msg if happen or true if the password can be change
+     * goto ifError to skip all the conditions if one is true
+     */
+    public function changePasswordWhenLogged(){
+
+        $post = $this->post->getPostArray();
+        $errorMsg = null;
+
+        if($post['password1'] != $post['password2']){
+            $errorMsg = 'Les mots de passes sont différents';
+            goto ifError;
+        }
+
+        $pass = $this->userSql->getUserPassword($this->session->getUserVar('id_user'));
+
+        if(!password_verify($post['oldpassword'], $pass['password'])){
+            $errorMsg = 'Votre mot de passe actuel n\'est pas bon';
+            goto ifError;
+        }
+
+        $newPass = password_hash($post['password1'], PASSWORD_DEFAULT);
+        $this->userSql->changeUserPassword($newPass, $this->session->getUserVar('id_user'));
+        $errorMsg = true;
+
+        ifError:
+
+        return $errorMsg;
+    }
+
+
+    /**
      *
      */
-    public function isLegitUser()
+    public function isLegit()
     {
         if ($this->session->getUserVar('rank') != 'Utilisateur') {
             $this->redirect('home');
