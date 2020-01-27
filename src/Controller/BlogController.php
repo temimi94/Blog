@@ -70,8 +70,8 @@ class BlogController extends MainController
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     */
-    public function createArticleMethod() //TODO Déplacer
+     *//*
+    public function createArticleMethod()
     {
         $admin = new AdminController();
         $admin->isLegitAdmin();
@@ -80,14 +80,19 @@ class BlogController extends MainController
 
         if (!empty($post)) {
             $verif = $this->post->verifyPost();
-            if($verif !== true) return $this->twig->render('createblog.twig', ['erreur' => $verif]);
+            if($verif !== true) {
+
+                return $this->twig->render('createblog.twig', ['erreur' => $verif]);
+            }
             $this->blogSql->createArticle($post['title'], $post['content'], $post['chapo'], $this->session->getUserVar('id_user'));
+
             return $this->twig->render('createblog.twig', ['success' => 'Votre article nous a bien été envoyé! Il ne manque plus qu\'à le valider!']);
         } elseif(empty($post)) {
+
             return $this->twig->render('createblog.twig');
         }
         //$this->redirect('blog&method=createArticle');
-    }
+    }*/
 
 
     /**
@@ -110,8 +115,10 @@ class BlogController extends MainController
         if($verif !== true ) return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment, 'erreur' => $verif]);
         if (!empty($post)) {
             $this->blogSql->createComment($idBlog, $post['comment'], $this->session->getUserVar('id_user'));
+
             return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment, 'success' => 'Votre commentaire a bien été envoyé.']);
         } elseif (empty($post)) {
+
             $this->redirect('blog&idblog=' . $idBlog);
         }
     }
