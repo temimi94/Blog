@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 
-use App\Model\AdminModel;
 use App\Model\LoginModel;
 use App\Model\UserModel;
 use DateTime;
@@ -14,7 +13,6 @@ use DateTime;
  */
 class LoginController extends MainController
 {
-
     /**
      * @return string
      * @throws \Twig\Error\LoaderError
@@ -28,7 +26,6 @@ class LoginController extends MainController
         return $view;
     }
 
-
     /**
      * @return string
      * @throws \Twig\Error\LoaderError
@@ -37,53 +34,87 @@ class LoginController extends MainController
      */
     public function loginMethod()
     {
-        $login = new LoginModel();
-        $view = new MainController();
         $post = $this->post->getPostArray();
+        $errorMsg = null;
+        $twigPage = 'login/login.twig';
 
-        if(empty($post['email'] OR empty($post['password']))){
+        if(empty($post)){
             return $this->twig->render('login/login.twig');
         } //Si $_POST est vide
 
-        if ($login->getUser($post['email']) === false) {
-            return $view->twig->render('login/login.twig', ['erreur' => 'Mauvaise adresse mail']);
+        $data = $this->loginSql->getUser($post['email']); //Récupère les données de l'utilisateur avec l'email
+
+        if ($data === false) {
+            $errorMsg = 'Mauvaise adresse mail';
+            goto ifError;
         }//Si l'adresse email n'est pas bonne
 
-        $data = $login->getUser($post['email']); //Récupère les données de l'utilisateur avec l'email
 
         if(!password_verify($post['password'], $data['password'])){
-            return $view->twig->render('login/login.twig', ['erreur' => 'Mot de passe incorrect']);
+            $errorMsg = "Mot de passe incorrect";
+            goto ifError;
         }
 
         if (isset($post['remember_me'])) {
-            $this->session->login($data, true);//login() will redirect to the good home page
+            $this->auth($data, true);//login() will redirect to the good home page
         }
-        $this->session->login($data, false);
+        $this->auth($data, false);
 
+        ifError:
+        return $this->renderTwigErr($twigPage, $errorMsg);
 
-       /*
-        if (isset($post['email'])) {
-            if ($login->getUser($post['email']) === false) {
-                return $view->twig->render('login/login.twig', ['erreur' => 'Mauvaise adresse mail']);
-            }
-            $data = $login->getUser($post['email']);
-            if (password_verify($post['password'], $data['password'])) {
-                if (isset($post['remember_me'])) {
-                    $this->session->login($data, true);//login() will redirect to the good home page
-                } else {
-                    $this->session->login($data, false);
-                }
-            }
-            return $view->twig->render('login/login.twig', ['erreur' => 'Mot de passe incorrect']);
-        }*/
     }
 
-    /**
-     *
-     */
+    public function auth($data = [], $remember_me = null) //TODO Peut etre déplacer dans Functions/AuthController
+    {
+        if ($remember_me == true) {
+            $auth_token = bin2hex(openssl_random_pseudo_bytes(32));
+            $this->loginSql->createAuthToken($auth_token, $data['id_user']);
+            $this->cookie->createCookie('gtk', $auth_token, time()+604800);//Create cookie that expires in 1 week
+        }
+        $this->session->createSession($data);
+        if ($this->session->getUserVar('rank') === 'Administrateur'){
+            $this->redirect('admin');
+        }
+        elseif ($this->session->getUserVar('rank') === 'Utilisateur'){
+            $this->redirect('user');
+        }
+    }
+
+    public function emailForgetMethod(){
+        $post = $this->post->getPostVar('email');
+        $twigPage = 'login/forget.twig';
+
+        if(empty($post)){
+            return $this->twig->render($twigPage);
+        }//Affiche le formulaire si $_POST est vide
+
+        $search = $this->loginSql->getUser($post);
+        if ($search === false){
+            $errorMsg = 'Vous n\'avez pas de compte chez nous';
+            goto ifError;
+        }//Vérifie si l'utilisateur est dans la base de données
+
+        $user = array('email' => $search['email'],
+            'id_user' => $search['id_user']);
+        $mail = $this->mail->sendForgetPassword($user); //Envoi le mail
+
+        if ($mail === false){
+            $errorMsg = 'Une erreur est survenue lors de l\'envoi du mail';
+            goto ifError;
+        }//Si il y a une erreur dans l'envoi du mail
+
+        return $this->renderTwigSuccess($twigPage, 'Nous vous avons envoyé un lien par email. Il ne sera actif que 15 minutes.');
+
+        ifError:
+        return $this->renderTwigErr($twigPage, $errorMsg);
+    }
+
     public function logoutMethod()
     {
-        $this->session->logout();
+        unset($_SESSION);
+        session_destroy();
+        $this->cookie->destroyCookie('gtk');
         $this->redirect('home');
     }
 
@@ -96,48 +127,37 @@ class LoginController extends MainController
     public function registerMethod()
     {
         $post = $this->post->getPostArray();
+        $twigPage = 'login/register.twig';
 
-        if (!empty($post)) {
-            if ($post['password1'] != $post['password2']) return $this->twig->render('login/register.twig', ['erreur' => 'Les mots de passes sont différents']);
-
-            $post['password'] = password_hash($post['password1'], PASSWORD_DEFAULT);
-            $register = new LoginModel();
-            $register->createUser($post['pseudo'], $post['email'], $post['password']);
-            $this->redirect('home');
+        if(empty($post)){
+            return $this->twig->render('login/register.twig');
         }
-        return $this->twig->render('login/register.twig');
+
+        $verif = $this->post->verifyPost();
+        if($verif !== true){
+            $errorMsg = $verif;
+            goto ifError;
+        }
+
+        if ($post['password1'] != $post['password2']) {
+            $errorMsg = 'Les mots de passes sont différents';
+            goto ifError;
+        }
+
+        $post['password'] = password_hash($post['password1'], PASSWORD_DEFAULT);
+
+        $this->loginSql->createUser($post['pseudo'], $post['email'], $post['password']);
+
+        return $this->renderTwigSuccess('home.twig', 'Votre compte a bien été créer');
+
+        ifError:
+
+        return $this->renderTwigErr($twigPage, $errorMsg);
+
     }
 
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function emailForgetMethod()
-    {
-        $post = $this->post->getPostVar('email');
-        if (!empty($post)) {
-            $search = new LoginModel();
-            $search = $search->getUser($post); //Vérifie si l'utilisateur est dans la base de données
-            if ($search === false) return $this->twig->render('login/forget.twig', ['erreur' => 'Vous n\'avez pas de compte chez nous!']);
-
-            $mail = new MailController();
-            $user = array('email' => $search['email'],
-                'id_user' => $search['id_user']);
-            $mail->sendForgetEmailMethod($user); //Envoi le mail
-
-            if ($mail === false) return $this->twig->render('login/forget.twig', ['erreur' => 'Une erreur est survenue lors de l\'envoi du mail']);
-            return $this->twig->render('login/forget.twig', ['success' => 'Nous vous avons envoyé un lien par email. Il sera actif que 15 minutes.']);
-        }
-        return $this->twig->render('login/forget.twig');
-    }
-
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      *
      * First if check if $_POST isn't empty
      * Second if verify is user id find in get match with an user id in the database
@@ -145,70 +165,112 @@ class LoginController extends MainController
      * Fourth if verify if the token's date isn't passed (15min)
      * Fifth if verify if the passwords are the same
      * Then change password
-     *
-     * $this->twig->render got 'token' and 'iduser' everytime because it is needed to redirect with the good link
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Exception
      */
-    public function changePasswordMethod()
+    public function changePasswordByMailMethod() //Change Password when password forgotten mail
     {
         $post = $this->post->getPostArray();
         $get = $this->get->getGetArray();
+        $twigPage = 'login/changepassword.twig';
+        $errorMsg = null;
 
         if(empty($post)){
-            return $this->twig->render('login/changepassword.twig', ['token' => $get['token'], 'iduser' => $get['iduser']]);
-        }
+            return $this->twig->render($twigPage);
+        }//Affiche la page si le formulaire n'est pas complété
 
-        $req = new LoginModel();
-        $verif = $req->getUserById($get['iduser']);
+        $verifPost = $this->post->verifyPost();
+        if($verifPost !== true) {
+            $errorMsg = $verifPost;
+            goto ifError;
+        }//Si le mot de passe est trop court (5 caractères) null ou vide
+
+        $verif = $this->loginSql->getUserById($get['iduser']);
 
         if ($verif === false) {
-            return $this->twig->render('login/changepassword.twig', ['erreur' => 'Il y a eu une erreur!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
+            $errorMsg = 'Il y a eu une erreur!';
+            goto ifError;
         } //Si l'on ne trouve pas l'utilisateur
 
-        if ($get['token'] != $verif['forgot_token']) {
-            return $this->twig->render('login/changepassword.twig', ['erreur' => 'Le token n\'est pas bon!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-        } //Si les token sont différents
-
-        $date_verif = date_create_from_format('Y-m-d H:i:s', $verif['forgot_token_expiration']);
-        $date = new DateTime("now");
-        if ($date > $date_verif) return $this->twig->render('login/changepassword.twig', ['erreur' => 'Le token a expiré!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
-        //Si le token expire
+        $verification = $this->verifyToken($verif['forgot_token'], $verif['forgot_token_expiration'], $get['token']);
+        if($verification !== true) {
+            $errorMsg = $verification;
+            goto ifError;
+        }
 
         if ($post['password1'] != $post['password2']){
-            return $this->twig->render('login/changepassword.twig', ['erreur' => 'Les mots de passes entrés ne sont pas identiques!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
+            $errorMsg = 'Les mots de passes entrés ne sont pas identiques';
+            goto ifError;
         }//Si les mots de passes ne sont pas identifiques
 
         $password = password_hash($post['password1'], PASSWORD_DEFAULT);
-        $req->changePassword($password, $get['iduser']);
-        return $this->twig->render('login/login.twig', ['success' => 'Votre mot de passe a bien été modifié!', 'token' => $get['token'], 'iduser' => $get['iduser']]);
+        $this->loginSql->changePassword($password, $get['iduser']);
+
+        return $this->renderTwigSuccess('login/login.twig', 'Votre mot de passe a bien été modifié');
         //Change le mot de passe et renvois la page login avec un message de succès
+
+        ifError:
+
+        return $this->renderTwigErr($twigPage, $errorMsg);
 
     }
 
     /**
+     * @param $tokenInDb
+     * @param $tokenInDbDate
+     * @param $currentToken
      * @return bool|string
+     * @throws \Exception
      */
-    public function changePassword(){ //Call when logged in user/admin panel
+    private function verifyToken(string $tokenInDb, string $tokenInDbDate, string $currentToken){
+        $tokenInDbDate = date_create_from_format('Y-m-d H:i:s', $tokenInDbDate);
+        $date = new DateTime("now");
+        if($tokenInDb != $currentToken){
+
+            return 'Le token n\'est pas bon!';
+        }
+        elseif($date > $tokenInDbDate){
+
+            return 'Le token a expiré!';
+        }
+        else{
+
+            return true;
+        }
+    }
+
+    /**
+     * @return bool|string
+     * Return the error msg if happen or true if the password can be change
+     * goto ifError to skip all the conditions if one is true
+     */
+    public function changePasswordWhenLogged(){ //Call when logged in user/admin panel TODO Peut etre déplacé dans AuthController
+
         $post = $this->post->getPostArray();
+        $errorMsg = null;
 
         if($post['password1'] != $post['password2']){
-            return 'Les mots de passes sont différents';
-            //return $this->twig->render($road, ['erreur' => 'Les mots de passes sont différents', 'password' => true]);
+            $errorMsg = 'Les mots de passes sont différents';
+            goto ifError;
         }
 
-        $password = new UserModel();
-        $pass = $password->getUserPassword($this->session->getUserVar('id_user'));
+        $pass = $this->userSql->getUserPassword($this->session->getUserVar('id_user'));
 
         if(!password_verify($post['oldpassword'], $pass['password'])){
-            return 'Votre mot de passe actuel n\'est pas bon';
-            //return $this->twig->render($road, ['erreur' => 'Votre mot de passe actuel n\'est pas bon', 'password' => true]);
+            $errorMsg = 'Votre mot de passe actuel n\'est pas bon';
+            goto ifError;
         }
 
-        if(password_verify($post['oldpassword'], $pass['password'])){
-            $new_pass = password_hash($post['password1'], PASSWORD_DEFAULT);
-            $password->changeUserPassword($new_pass, $this->session->getUserVar('id_user'));
-            return true;
-            //return $this->twig->render($road, ['success' => 'Votre mot de passe a bien été modifié', 'password' => true]);
-        }
+        $newPass = password_hash($post['password1'], PASSWORD_DEFAULT);
+        $this->userSql->changeUserPassword($newPass, $this->session->getUserVar('id_user'));
+        $errorMsg = true;
+
+        ifError:
+
+        return $errorMsg;
 
     }
+
 }

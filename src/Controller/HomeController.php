@@ -29,14 +29,24 @@ class HomeController extends MainController
      */
     public function sendMailMethod()
     {
-        $mail = new MailController();
-
+        $twigPage = 'home.twig';
         $verif = $this->post->verifyPost();
-        if ($verif !== true) return $this->twig->render('home.twig', ['erreur' => $verif]);
+
+        if ($verif !== true) {
+
+            return $this->renderTwigErr($twigPage, $verif);
+        }
+
         $post = $this->post->getPostArray();
-        $mail->sendContactEmail($post);
-        if ($mail == true) return $this->twig->render('home.twig', ['success' => 'Votre message nous a bien été transmis, je vous répondrais au plus tôt!']);
-        return $this->twig->render('home.twig', ['erreur' => 'Une erreur s\' est produite lors de l\'envoi du mail']);
+
+        $mail = $this->mail->sendContactEmail($post);
+
+        if ($mail == true) {
+
+            return $this->renderTwigSuccess($twigPage, 'Votre message nous a bien été transmis, je vous répondrais au plus tôt!');
+        }
+
+        return $this->renderTwigErr($twigPage, 'Une erreur s\'est produite lors de l\'envoi du mail');
     }
 
 }
