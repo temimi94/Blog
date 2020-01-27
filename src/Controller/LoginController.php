@@ -65,7 +65,7 @@ class LoginController extends MainController
 
     }
 
-    public function auth($data = [], $remember_me = null) //TODO Peut etre déplacer dans Functions/AuthController
+    private function auth($data = [], $remember_me = null)
     {
         if ($remember_me == true) {
             $auth_token = bin2hex(openssl_random_pseudo_bytes(32));
@@ -246,7 +246,8 @@ class LoginController extends MainController
      * Return the error msg if happen or true if the password can be change
      * goto ifError to skip all the conditions if one is true
      */
-    public function changePasswordWhenLogged(){ //Call when logged in user/admin panel TODO Peut etre déplacé dans AuthController
+    /*
+    public function changePasswordWhenLogged(){ //Call when logged in user/admin panel
 
         $post = $this->post->getPostArray();
         $errorMsg = null;
@@ -270,7 +271,6 @@ class LoginController extends MainController
         ifError:
 
         return $errorMsg;
-
     }
-
+****/
 }
