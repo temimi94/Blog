@@ -9,6 +9,9 @@ namespace App\Controller\Globals;
  */
 class SessionController
 {
+    const ADMIN = 'Administrateur';
+
+    const USER = 'Utilisateur';
 
     /**
      * @var mixed
@@ -37,8 +40,8 @@ class SessionController
      */
     public function createSession(array $data)
     {
-        if ($data['rank'] == 1) $data['rank'] = 'Administrateur';
-        elseif ($data['rank'] == 2) $data['rank'] = 'Utilisateur';
+        if ($data['rank'] == 1) $data['rank'] = self::ADMIN;
+        elseif ($data['rank'] == 2) $data['rank'] = self::USER;
 
         $this->session['user'] = [
             'session_id' => session_id() . microtime() . rand(0, 9999999999),
@@ -70,10 +73,10 @@ class SessionController
      */
     private function verifyRank()
     {
-        if ($this->getUserVar('rank') == 1) { //TODO CONST ADMIN/USER
-            $this->setUserVar('rank', 'Administrateur');
+        if ($this->getUserVar('rank') == 1) {
+            $this->setUserVar('rank', self::ADMIN);
         } elseif ($this->getUserVar('rank') == 2) {
-            $this->setUserVar('rank', 'Utilisateur');
+            $this->setUserVar('rank', self::USER);
         }
     }
 
