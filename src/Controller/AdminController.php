@@ -77,7 +77,9 @@ class AdminController extends MainController
         } elseif (empty($post)) {
             /*Si $_POST est vide, renvois sur formulaire pour saisir les données à changer */
             $get = $this->get->getGetVar('idarticle');
-            if ($get === false) $this->redirect('admin');
+            if ($get === false){
+                $this->redirect('admin');
+            }
 
             $req = new BlogModel();
             $req = $req->selectArticle($get);
@@ -169,7 +171,7 @@ class AdminController extends MainController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function changeAdminPasswordMethod()
+    public function changeAdminPasswordMethod() //TODO Déplacer
     {
         $this->isLegitAdmin();
 
@@ -178,7 +180,7 @@ class AdminController extends MainController
             return $this->twig->render('admin/admin.twig', ['password' => true]);
         }
         $change = new LoginController();
-        $change = $change->changePassword();
+        $change = $change->changePasswordWhenLogged();
         if($change === true){
             return $this->twig->render('admin/admin.twig', ['success' => 'Votre mot de passe a bien été modifié']);
         }
