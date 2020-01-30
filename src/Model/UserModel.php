@@ -9,16 +9,6 @@ namespace App\Model;
  */
 class UserModel extends MainModel
 {
-
-    /**
-     * @param $id_article
-     * @param $article_title
-     * @param $article_chapo
-     * @param $article_content
-     * @return bool|\PDOStatement
-     */
-
-
     /**
      * @param $user_id
      * @return array

@@ -40,7 +40,7 @@ class BlogModel extends MainModel
     /**
      * @return array
      */
-    public function selectId_article()
+    public function selectIdArticle()
     {
         return $this->fetchAll('SELECT id_article FROM Article');
     }

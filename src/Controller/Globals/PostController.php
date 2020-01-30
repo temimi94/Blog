@@ -42,9 +42,13 @@ class PostController
     /**
      * Verify if $_POST is empty or less than 5 character
      * @return bool|string
+     * Return true if verif passed, false if null ou empty, else return the error message
      */
     public function verifyPost(){
         $post = $this->getPostArray();
+        if($post == null OR empty($post)){
+            return false;
+        }
         foreach ($post as $k => $v ){
             if(empty($v)){
                 $error = $k .' est vide.';
@@ -65,37 +69,27 @@ class PostController
      * @param $error
      * @return array
      * return a correct error message
+     * $error[0] is the name of the input
      */
 
-    private function errorPostMessage($error){ /* TODO Recréer cette fonction */
+    private function errorPostMessage($error){
         $error = explode(' ', $error);
-        switch($error[0]) {
-            case 'name':
-                $error[0] = 'Le nom';
-                break;
-            case 'content';
-                $error[0] = 'Le contenu';
-                break;
-            case 'title';
-                $error[0] = 'Le titre';
-                break;
-            case 'email';
-                $error[0] = 'L\'email';
-                break;
-            case 'comment';
-                $error[0] = 'Le commentaire';
-                break;
-            case 'chapo';
-                $error[0] = 'L\'extrait';
-                break;
-            case 'pseudo';
-                $error[0] = 'Le pseudo';
-                break;
-            case 'password';
-                $error[0] = 'Le mot de passe';
-                break;
-        }
-        $error = implode(' ', $error);
+        $array = array('name' => 'Le nom',
+            'content' => 'Le contenu',
+            'title' => 'Le titre',
+            'email' => 'L\'email',
+            'mail' => 'L\'email',
+            'comment' => 'Le commentaire',
+            'chapo' => 'L\'extrait',
+            'pseudo' => 'Le pseudo',
+            'password' => 'Le mot de passe',
+            'password1' => 'Le mot de passe',
+            'password2' => 'Le mot de passe',
+            'oldpassword' => 'Le mot de passe');
+
+        $error[0] = $array[$error[0]];
+        $error = implode(' ',$error);
+
         return $error;
     }
 

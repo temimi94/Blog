@@ -2,8 +2,6 @@
 
 namespace App\Controller\Globals;
 
-use App\Controller\MainController;
-use App\Model\LoginModel;
 
 /**
  * Class SessionController
@@ -11,6 +9,9 @@ use App\Model\LoginModel;
  */
 class SessionController
 {
+    const ADMIN = 'Administrateur';
+
+    const USER = 'Utilisateur';
 
     /**
      * @var mixed
@@ -39,8 +40,8 @@ class SessionController
      */
     public function createSession(array $data)
     {
-        if ($data['rank'] == 1) $data['rank'] = 'Administrateur';
-        elseif ($data['rank'] == 2) $data['rank'] = 'Utilisateur';
+        if ($data['rank'] == 1) $data['rank'] = self::ADMIN;
+        elseif ($data['rank'] == 2) $data['rank'] = self::USER;
 
         $this->session['user'] = [
             'session_id' => session_id() . microtime() . rand(0, 9999999999),
@@ -52,6 +53,7 @@ class SessionController
         ];
         $this->user = $this->session['user'];
         $_SESSION['user'] = $this->session['user'];
+        $this->verifyRank();
     }
 
     /**
@@ -65,67 +67,17 @@ class SessionController
         return false;
     }
 
-    /**
-     * @param array $data
-     * @param bool $remember_me
-     */
-    public function login($data = [], $remember_me = null)
-    {
-        if ($remember_me == true) {
-            $auth_token = bin2hex(openssl_random_pseudo_bytes(32));
-            $token = new LoginModel();
-            $token->createAuthToken($auth_token, $data['id_user']);
-            $cookie = new CookieController();
-            $cookie->createCookie('gtk', $auth_token, time()+604800);//Create cookie that expires in 1 week
-            //setcookie('gtk',$auth_token, time()+604800);
-        }
-        $main = new MainController();
-        $this->createSession($data);
-        $this->verifyRank();
-        if ($this->getUserVar('rank') === 'Administrateur') $main->redirect('admin');
-        elseif ($this->getUserVar('rank') === 'Utilisateur') $main->redirect('user');
-    }
 
     /**
      *
      */
-    public function verifyAuth(){
-        $cookie = new CookieController();
-        $cookie = $cookie->getCookieVar('gtk');
-        if(!empty($cookie) AND !$this->isLogged()){ // AND !isset($_SESSION['remember_me'])
-            $token = filter_input(INPUT_COOKIE, 'gtk');
-            $req = new LoginModel();
-            $req = $req->searchAuthToken($token);
-            if($req){
-                $this->createSession($req);
-                $this->verifyRank();
-            }
-        }
-    }
-
-
-    /**
-     *
-     */
-    public function verifyRank()
+    private function verifyRank()
     {
         if ($this->getUserVar('rank') == 1) {
-            $this->setUserVar('rank', 'Administrateur');
+            $this->setUserVar('rank', self::ADMIN);
         } elseif ($this->getUserVar('rank') == 2) {
-            $this->setUserVar('rank', 'Utilisateur');
+            $this->setUserVar('rank', self::USER);
         }
-    }
-
-    /**
-     *
-     */
-    public function logout()
-    {
-        unset($_SESSION);
-        session_destroy();
-        $cookie = new CookieController();
-        $cookie->destroyCookie('gtk');
-        //setcookie('gtk', '', time()-3600);
     }
 
     /**

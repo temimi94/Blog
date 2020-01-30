@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\UserModel;
-
 
 /**
  * Class UserController
@@ -11,7 +9,10 @@ use App\Model\UserModel;
  */
 class UserController extends MainController
 {
-
+    /**
+     *
+     */
+    const TWIG = 'user/user.twig';
     /**
      * @return string
      * @throws \Twig\Error\LoaderError
@@ -20,8 +21,9 @@ class UserController extends MainController
      */
     public function defaultMethod()
     {
-        $this->isLegitUser();
-        return $this->twig->render('user/user.twig');
+        $this->isLegit();
+
+        return $this->twig->render(self::TWIG);
     }
 
 
@@ -31,30 +33,32 @@ class UserController extends MainController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function listCommentMethod()
+    public function listMyCommentMethod()
     {
-        $this->isLegitUser();
+        $this->isLegit();
 
-        $req = new UserModel();
-        $req = $req->getUserComment($this->session->getUserVar('id_user'));
+        $req = $this->userSql->getUserComment($this->session->getUserVar('id_user'));
 
-        return $this->twig->render('user/user.twig', ['comments' => $req]);
+        return $this->twig->render(self::TWIG, ['comments' => $req]);
     }
 
 
     /**
      *
      */
-    public function deleteCommentMethod()
+    public function deleteMyCommentMethod()
     {
-        $this->isLegitUser();
+        $this->isLegit();
 
         $get = $this->get->getGetVar('idcomment');
-        if ($get === false) $this->redirect('user');
+        if ($get === false) {
 
-        $req = new UserModel();
-        $req->deleteComment($get);
-        $this->redirect('user&method=listcomment');
+            $this->redirect('user');
+        }
+
+        $this->userSql->deleteComment($get);
+
+        $this->redirect('user&method=listMyComment');
     }
 
     /**
@@ -70,27 +74,62 @@ class UserController extends MainController
      */
     public function changePasswordMethod()
     {
-        $this->isLegitUser();
-
+        $this->isLegit();
         $post = $this->post->getPostArray();
 
         if(empty($post)){
-            return $this->twig->render('user/user.twig', ['password' => true]);
+            return $this->twig->render(self::TWIG, ['password' => true]);
         }
-        $change = new LoginController();
-        $change = $change->changePassword();
+
+        $change = $this->changePasswordWhenLogged();
         if($change === true){
-            return $this->twig->render('user/user.twig', ['success' => 'Votre mot de passe a bien été modifié']);
+
+            return $this->renderTwigSuccess(self::TWIG, 'Votre mot de passe a bien été modifié');
         }
-        return $this->twig->render('user/user.twig', ['erreur' => $change, 'password' => true]);
+
+        return $this->twig->render(self::TWIG, ['erreur' => $change, 'password' => true]);
     }
+
+    /**
+     * @return bool|string
+     * Return the error msg if happen or true if the password can be change
+     * goto ifError to skip all the conditions if one is true
+     */
+    public function changePasswordWhenLogged(){
+
+        $post = $this->post->getPostArray();
+        $errorMsg = null;
+
+        if($post['password1'] != $post['password2']){
+            $errorMsg = 'Les mots de passes sont différents';
+            goto ifError;
+        }
+
+        $pass = $this->userSql->getUserPassword($this->session->getUserVar('id_user'));
+
+        if(!password_verify($post['oldpassword'], $pass['password'])){
+            $errorMsg = 'Votre mot de passe actuel n\'est pas bon';
+            goto ifError;
+        }
+
+        $newPass = password_hash($post['password1'], PASSWORD_DEFAULT);
+        $this->userSql->changeUserPassword($newPass, $this->session->getUserVar('id_user'));
+        $errorMsg = true;
+
+        ifError:
+
+        return $errorMsg;
+    }
+
 
     /**
      *
      */
-    public function isLegitUser()
+    public function isLegit()
     {
-        if ($this->session->getUserVar('rank') != 'Utilisateur') $this->redirect('home');
+        if ($this->session->getUserVar('rank') != 'Utilisateur') {
+            $this->redirect('home');
+        }
     }
 
 }

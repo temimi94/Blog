@@ -1,8 +1,8 @@
-#Projet 5
-
-##Création d'un blog PHP
-
-###OpenclassRooms
+Projet 5
+==
+Création d'un blog PHP
+-
+###OpenclassRooms #
 
 -----------------
 
@@ -27,10 +27,12 @@ Le site est consultable [ici](https://blog.kindertheo.net)
 
 Les identifiants par défaut sont :
 
-######Administrateur
+Administrateur
+
 >admin@admin.com
 >password
 
-######Utilisateur
+Utilisateur
+
 >user@user.com
 >123
