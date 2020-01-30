@@ -1,8 +1,8 @@
-Projet 5
-==
-Création d'un blog PHP
--
-###OpenclassRooms #
+#Projet 5
+
+##Création d'un blog PHP
+
+###OpenclassRooms
 
 -----------------
 
@@ -12,13 +12,49 @@ Création d'un blog PHP
 
 -----------------
 
-Installation :
+#Installation :
 
-*   Mettre à jour config/database.php
-*   Mettre à jour config/setupMail.php
-*   Importer le fichier import.sql dans votre base de données
+*   Lancer la commande ` git https://github.com/kindertheo/Projet-5-PHP-OpenClassrooms.git`
+*   Lancer la commande `cd Projet-5-PHP-OpenClassrooms`
 *   Lancer dans le terminal `composer install`
 
+##Remarque
+
+*   Mettre à jour config/database.php
+
+Pour que vous puissiez vous connecter à votre base de données, veuillez modifier le fichier avec vos identifiants, hôte et nom de base de données
+Ces informations sont trouvables chez votre hébergeur.
+
+`<?php
+ 
+ define('DB_DSN', 'mysql:host=localhost;dbname=p5;charset=UTF8');
+ 
+ define('DB_USER', '');
+ 
+ define('DB_PASS', '');
+ 
+ define('DB_OPTIONS', array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));`
+ 
+
+*   Mettre à jour config/setupMail.php
+
+Pour que vous puissiez pleinement profiter de l'envoi d'email, veuillez ajouter dans les '' vos identifiants, ports et protocole smtp
+Ces informations sont trouvables chez votre hébergeur.
+
+`<?php
+
+define('MAIL_SMTP', '');
+
+define('MAIL_PORT', '');
+
+define('MAIL_USERNAME', '');
+
+define('MAIL_PASSWORD', '');`
+
+
+*   Importer le fichier import.sql dans votre base de données
+Pour que le site marche correctement il est important d'utilisé ce modèle de base de données
+Il créera la base de données, les tables, les champs et inserera des données utiles au début du site (compte admin et utilisateur, premiers articles, commentaires...)
 -----------------
 
 Le site est consultable [ici](https://blog.kindertheo.net)
