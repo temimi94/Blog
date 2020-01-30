@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\UserModel;
-
 
 /**
  * Class UserController
@@ -11,7 +9,10 @@ use App\Model\UserModel;
  */
 class UserController extends MainController
 {
-
+    /**
+     *
+     */
+    const TWIG = 'user/user.twig';
     /**
      * @return string
      * @throws \Twig\Error\LoaderError
@@ -22,7 +23,7 @@ class UserController extends MainController
     {
         $this->isLegit();
 
-        return $this->twig->render('user/user.twig');
+        return $this->twig->render(self::TWIG);
     }
 
 
@@ -38,7 +39,7 @@ class UserController extends MainController
 
         $req = $this->userSql->getUserComment($this->session->getUserVar('id_user'));
 
-        return $this->twig->render('user/user.twig', ['comments' => $req]);
+        return $this->twig->render(self::TWIG, ['comments' => $req]);
     }
 
 
@@ -74,20 +75,19 @@ class UserController extends MainController
     public function changePasswordMethod()
     {
         $this->isLegit();
-        $twigPage = 'user/user.twig';
         $post = $this->post->getPostArray();
 
         if(empty($post)){
-            return $this->twig->render($twigPage, ['password' => true]);
+            return $this->twig->render(self::TWIG, ['password' => true]);
         }
 
         $change = $this->changePasswordWhenLogged();
         if($change === true){
 
-            return $this->renderTwigSuccess($twigPage, 'Votre mot de passe a bien été modifié');
+            return $this->renderTwigSuccess(self::TWIG, 'Votre mot de passe a bien été modifié');
         }
 
-        return $this->twig->render($twigPage, ['erreur' => $change, 'password' => true]);
+        return $this->twig->render(self::TWIG, ['erreur' => $change, 'password' => true]);
     }
 
     /**

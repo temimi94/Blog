@@ -17,6 +17,9 @@ abstract class MainController extends ImportController
      */
     protected $twig = null;
 
+    /**
+     * @var
+     */
     protected $mail;
 
 
@@ -90,17 +93,14 @@ abstract class MainController extends ImportController
      *
      */
     public function verifyAuth(){
-        if(!$this->session->isLogged()){
-
-            $cookie = $this->cookie->getCookieVar('gtk');
-            if(!empty($cookie) AND !$this->session->isLogged()){
-                $token = filter_input(INPUT_COOKIE, 'gtk');
-                $req = $this->loginSql->searchAuthToken($token);
-                if($req){
-                    $this->session->createSession($req);
-                }
+        $cookie = $this->cookie->getCookieVar('gtk');
+        if(!empty($cookie) AND !$this->session->isLogged()){
+            $req = $this->loginSql->searchAuthToken($cookie);
+            if($req){
+                $this->session->createSession($req);
             }
         }
+
     }
 
 

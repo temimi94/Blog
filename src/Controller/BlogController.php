@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\BlogModel;
 
 /**
  * Class BlogController
@@ -10,7 +9,10 @@ use App\Model\BlogModel;
  */
 class BlogController extends MainController
 {
-
+    /**
+     *
+     */
+    const TWIG = 'blog.twig';
 
     /**
      * @return string
@@ -22,11 +24,10 @@ class BlogController extends MainController
     {
         $id_blog = self::getId();
 
-        $BlogModel = new BlogModel;
-        $blog = $BlogModel->selectArticle($id_blog);
-        $comment = $BlogModel->selectCommentByArticle($id_blog);
+        $blog = $this->blogSql->selectArticle($id_blog);
+        $comment = $this->blogSql->selectCommentByArticle($id_blog);
 
-        return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment]);
+        return $this->twig->render(self::TWIG, ['blog' => $blog, 'comment' => $comment]);
     }
 
     /**
@@ -56,7 +57,6 @@ class BlogController extends MainController
             $this->redirect('home');
         }
         /*Vérifie si l'article existe */
-        $BlogModel = new BlogModel;
         $verif = $this->blogSql->selectIdArticle();;
         if (array_search($idBlog, array_column($verif, 'id_article', $idBlog)) === false) {
             $this->redirect('list');
@@ -70,40 +70,12 @@ class BlogController extends MainController
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     *//*
-    public function createArticleMethod()
-    {
-        $admin = new AdminController();
-        $admin->isLegitAdmin();
-
-        $post = $this->post->getPostArray();
-
-        if (!empty($post)) {
-            $verif = $this->post->verifyPost();
-            if($verif !== true) {
-
-                return $this->twig->render('createblog.twig', ['erreur' => $verif]);
-            }
-            $this->blogSql->createArticle($post['title'], $post['content'], $post['chapo'], $this->session->getUserVar('id_user'));
-
-            return $this->twig->render('createblog.twig', ['success' => 'Votre article nous a bien été envoyé! Il ne manque plus qu\'à le valider!']);
-        } elseif(empty($post)) {
-
-            return $this->twig->render('createblog.twig');
-        }
-        //$this->redirect('blog&method=createArticle');
-    }*/
-
-
-    /**
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function createCommentMethod()
     {
-        if($this->session->isLogged() == false) $this->redirect('home');
+        if($this->session->isLogged() == false) {
+            $this->redirect('home');
+        }
 
         $post = $this->post->getPostArray();
         $verif = $this->post->verifyPost();
@@ -112,11 +84,14 @@ class BlogController extends MainController
         $blog = $this->blogSql->selectArticle($idBlog);
         $comment = $this->blogSql->selectCommentByArticle($idBlog);
 
-        if($verif !== true ) return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment, 'erreur' => $verif]);
+        if($verif !== true ){
+
+            return $this->twig->render(self::TWIG, ['blog' => $blog, 'comment' => $comment, 'erreur' => $verif]);
+        }
         if (!empty($post)) {
             $this->blogSql->createComment($idBlog, $post['comment'], $this->session->getUserVar('id_user'));
 
-            return $this->twig->render('blog.twig', ['blog' => $blog, 'comment' => $comment, 'success' => 'Votre commentaire a bien été envoyé.']);
+            return $this->twig->render(self::TWIG, ['blog' => $blog, 'comment' => $comment, 'success' => 'Votre commentaire a bien été envoyé.']);
         } elseif (empty($post)) {
 
             $this->redirect('blog&idblog=' . $idBlog);

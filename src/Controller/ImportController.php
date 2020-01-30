@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Controller\Globals\MailController;
 use App\Controller\Globals\CookieController;
 use App\Controller\Globals\PostController;
 use App\Controller\Globals\GetController;
 use App\Controller\Globals\SessionController;
+
 use App\Model\AdminModel;
 use App\Model\BlogModel;
 use App\Model\LoginModel;
@@ -44,18 +44,28 @@ abstract class ImportController
      */
     protected $mail;
 
+    /**
+     * @var AdminModel
+     */
     protected $adminSql;
 
+    /**
+     * @var BlogModel
+     */
     protected $blogSql;
 
+    /**
+     * @var LoginModel
+     */
     protected $loginSql;
 
+    /**
+     * @var UserModel
+     */
     protected $userSql;
 
-
-
     /**
-     * GlobalController constructor.
+     * ImportController constructor.
      */
     public function __construct()
     {

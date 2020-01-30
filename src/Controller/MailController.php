@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Globals;
+namespace App\Controller;
 
 
 use App\Model\LoginModel;
@@ -52,9 +52,9 @@ class MailController
         require_once('../config/setupMail.php'); //MAIL Const
 
         $token = bin2hex(openssl_random_pseudo_bytes(24));
-        $token_req = new LoginModel();
+        $tokenReq = new LoginModel();
         $id_user = $user['id_user'];
-        $token_req->createForgotToken($token, $id_user);
+        $tokenReq->createForgotToken($token, $id_user);
 
         $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePasswordByMail&token=" . $token . "&iduser=" .$id_user;
 

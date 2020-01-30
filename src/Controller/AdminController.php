@@ -3,18 +3,36 @@
 
 namespace App\Controller;
 
-use App\Model\AdminModel;
 
+/**
+ * Class AdminController
+ * @package App\Controller
+ */
 class AdminController extends UserController {
 
+    /**
+     *
+     */
     const TWIG = 'admin/admin.twig';
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function defaultMethod()
     {
         $this->isLegit();
         return $this->twig->render(self::TWIG);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listUserMethod(){
         $this->isLegit();;
 
@@ -23,6 +41,12 @@ class AdminController extends UserController {
         return $this->twig->render(self::TWIG, ['user' => $req]);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listArticleMethod()
     {
         $this->isLegit();;
@@ -32,6 +56,12 @@ class AdminController extends UserController {
         return $this->twig->render(self::TWIG, ['article' => $req]);
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function editArticleMethod()
     {
         $this->isLegit();
@@ -56,6 +86,9 @@ class AdminController extends UserController {
         }
     }
 
+    /**
+     *
+     */
     public function deleteArticleMethod()
     {
         $this->isLegit();;
@@ -66,6 +99,12 @@ class AdminController extends UserController {
         $this->redirect('admin&method=listArticle');
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function listAllCommentMethod()
     {
         $this->isLegit();;
@@ -75,6 +114,9 @@ class AdminController extends UserController {
         return $this->twig->render(self::TWIG, ['comment' => $req]);
     }
 
+    /**
+     *
+     */
     public function approveCommentMethod()
     {
         $this->isLegit();;
@@ -86,6 +128,9 @@ class AdminController extends UserController {
         $this->redirect('admin&method=listComment');
     }
 
+    /**
+     *
+     */
     public function deleteCommentMethod()
     {
         $this->isLegit();;
@@ -97,6 +142,9 @@ class AdminController extends UserController {
         $this->redirect('admin&method=listComment');
     }
 
+    /**
+     *
+     */
     public function approveArticleMethod()
     {
         $this->isLegit();;
@@ -108,6 +156,12 @@ class AdminController extends UserController {
         $this->redirect('admin&method=listArticle');
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function changePasswordMethod()
     {
 
@@ -129,6 +183,12 @@ class AdminController extends UserController {
 
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function createArticleMethod()
     {
 
@@ -153,6 +213,9 @@ class AdminController extends UserController {
     }
 
 
+    /**
+     *
+     */
     public function isLegit()
     {
         if ($this->session->getUserVar('rank') !== 'Administrateur') {
