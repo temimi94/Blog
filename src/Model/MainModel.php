@@ -56,7 +56,6 @@ class MainModel
         return $req;
     }
 
-    //TODO Refaire les models
-    //Chaque model redirige vers une table
+    //TODO Peut etre mettre en static
 
 }

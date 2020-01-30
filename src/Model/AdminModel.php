@@ -20,13 +20,15 @@ class AdminModel extends MainModel
         return $req;
     }
 
+
+
     /**
      * @param $id_article
      * @return bool|\PDOStatement
      */
     public function deleteArticle($id_article)
     {
-        $statement .= 'DELETE FROM Comment WHERE id_article =' .$id_article . ';';
+        $statement = 'DELETE FROM Comment WHERE id_article =' .$id_article . ';';
         $this->exec($statement);
         $statement = 'DELETE FROM Article WHERE id_article =' . $id_article . ';';
         return $this->exec($statement);
