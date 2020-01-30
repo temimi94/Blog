@@ -200,7 +200,6 @@ class LoginController extends MainController
     {
         $post = $this->post->getPostArray();
         $get = $this->get->getGetArray();
-        $errorMsg = null;
 
         if(empty($post)){
 
