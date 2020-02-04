@@ -44,16 +44,22 @@ class SessionController
         elseif ($data['rank'] == 2) $data['rank'] = self::USER;
 
         $this->session['user'] = [
-            'session_id' => session_id() . microtime() . rand(0, 9999999999),
+            'session_id' => session_id(),
             'pseudo' => $data['pseudo'],
-            'id_user' => $data['id_user'],
+            'idUser' => $data['idUser'], //Todo le nom peut etre changer
             'email' => $data['email'],
-            'date_register' => $data['date_register'],
+            'dateRegister' => $data['dateRegister'],
             'rank' => $data['rank']
         ];
         $this->user = $this->session['user'];
         $_SESSION['user'] = $this->session['user'];
         $this->verifyRank();
+    }
+
+    public function logout()
+    {
+        unset($_SESSION);
+        session_destroy();
     }
 
     /**
@@ -67,18 +73,22 @@ class SessionController
         return false;
     }
 
-
-    /**
-     *
-     */
-    private function verifyRank()
+    public function isAdmin()
     {
-        if ($this->getUserVar('rank') == 1) {
-            $this->setUserVar('rank', self::ADMIN);
-        } elseif ($this->getUserVar('rank') == 2) {
-            $this->setUserVar('rank', self::USER);
+        if ($this->getUserVar('rank') !== 'Administrateur') {
+            header('Location: index.php?page=home');
         }
+        return true;
     }
+
+    public function isUser()
+    {
+        if ($this->getUserVar('rank') !== 'Utilisateur') {
+            header('Location: index.php?page=home');
+        }
+        return true;
+    }
+
 
     /**
      * @return mixed
@@ -107,5 +117,16 @@ class SessionController
         $this->user[$var] = $data;
     }
 
+    /**
+     *
+     */
+    private function verifyRank()
+    {
+        if ($this->getUserVar('rank') == 1) {
+            $this->setUserVar('rank', self::ADMIN);
+        } elseif ($this->getUserVar('rank') == 2) {
+            $this->setUserVar('rank', self::USER);
+        }
+    }
 
 }

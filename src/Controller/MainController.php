@@ -78,6 +78,11 @@ abstract class MainController extends ImportController
         return $this->twig->render($twig, ['success' => $success]);
     }
 
+    public function render(string $twig, array $param = []){
+
+        return $this->twig->render($twig, $param);
+    }
+
 
     /**
      * @return mixed
