@@ -1,0 +1,38 @@
+{% extends 'layout/layout.twig' %}
+{% block title %}
+    <div class="row">
+        <div class="col text-center">
+          <h3>Liste des blogs</h3>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+        {% for article in listArticle %}
+                <div class="card blog-card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ article.title }}</h4>
+                        <p class="card-text">{{ article.chapo|slice(0,200) }}...
+                            <a class="card-link" href="index.php?page=article&idArticle={{ article.idArticle }}">Lire la suite</a>
+                        </p>
+                        <div class="row">
+                            <div class="col-6">
+                                {% if article.dateUpdate <= article.date %}
+                                    <p>A été créé le {{ article.date|date('d/m/Y \\à H:i:s') }}</p>
+                                {% else %}
+                                    <p>A été modifié le {{ article.dateUpdate|date('d/m/Y \\à H:i:s') }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <p>Crée par {{ article.pseudo }}</p>
+                            </div>
+                        </div>
+
+                  </div>
+                  <hr>
+                </div>
+
+        {% endfor %}
+
+{% endblock %}
+

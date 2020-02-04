@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <td>Date de création du compte : </td>
-                        <td>{{ session.date_register|date('d/m/Y \\à H:i:s')  }}</td>
+                        <td>{{ session.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
                     </tr>
                     <tr>
                         <td>Rang : </td>
@@ -84,7 +84,7 @@
         {% if comments is not empty %}
             {% for comments in comment %}
                 <div class="row justify-content-center">
-                    <p>ID : {{ comments.id_comment }}</p>
+                    <p>ID : {{ comments.idComment }}</p>
                 </div>
                 <div class="row justify-content-center">
 
@@ -101,7 +101,7 @@
                 {% if comments.validate == 0 %}
                     <p>Commentaire en attente d'approbation</p>
                 {% endif %}
-                    <a class="btn btn-danger" href="index.php?page=user&method=deleteMyComment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                    <a class="btn btn-danger" href="index.php?page=user&method=deleteMyComment&idComment={{ comments.idComment }}">Supprimer</a>
                 </div>
                 <hr>
             {% endfor %}
