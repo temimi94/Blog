@@ -19,11 +19,11 @@ class LoginModel extends MainModel
     }
 
     /**
-     * @param $id_user
+     * @param $idUser
      * @return mixed
      */
-    public function getUserById($id_user){
-        return $this->fetch('SELECT * FROM User WHERE User.id_user =' .$id_user);
+    public function getUserById($idUser){
+        return $this->fetch('SELECT * FROM User WHERE User.idUser =' .$idUser);
     }
 
     /**
@@ -34,7 +34,7 @@ class LoginModel extends MainModel
      */
     public function createUser($pseudo, $email, $password)
     {
-        $statement = 'INSERT INTO User (pseudo, email, password, date_register) VALUES (?, ?, ?, ?)';
+        $statement = 'INSERT INTO User (pseudo, email, password, dateRegister) VALUES (?, ?, ?, ?)';
         $date = date("Y-m-d H:i:s");
 
         $comment = array($pseudo, $email, $password, $date);
@@ -43,28 +43,28 @@ class LoginModel extends MainModel
 
     /**
      * @param $token
-     * @param $id_user
+     * @param $idUser
      * @return bool|\PDOStatement
      * @throws \Exception
      */
-    public function createForgotToken($token, $id_user){
+    public function createForgotToken($token, $idUser){
         $date = new \DateTime('+ 15 minutes');
         $date = $date->format('Y-m-d H:i:s');
-        $statement = 'UPDATE User SET User.forgot_token =?, User.forgot_token_expiration =? WHERE User.id_user = ' . $id_user;
+        $statement = 'UPDATE User SET User.forgotToken =?, User.forgotTokenExpiration =? WHERE User.idUser = ' . $idUser;
         $array = array($token, $date);
         return $this->execArray($statement, $array);
     }
 
     /**
      * @param $token
-     * @param $id_user
+     * @param $idUser
      * @return bool|\PDOStatement
      * @throws \Exception
      */
-    public function createAuthToken($token, $id_user){
+    public function createAuthToken($token, $idUser){
         $date = new \DateTime('+ 1 weeks');
         $date = $date->format('Y-m-d H:i:s');
-        $statement = 'UPDATE User SET User.auth_token=?, User.auth_token_expiration=? WHERE User.id_user=' . $id_user;
+        $statement = 'UPDATE User SET User.authToken=?, User.authTokenExpiration=? WHERE User.idUser=' . $idUser;
         $array = array($token, $date);
         return $this->execArray($statement, $array);
     }
@@ -74,18 +74,18 @@ class LoginModel extends MainModel
      * @return mixed
      */
     public function searchAuthToken($token){
-        $statement = "SELECT * FROM User WHERE User.auth_token= '" .$token."'";
+        $statement = "SELECT * FROM User WHERE User.authToken= '" .$token."'";
         return $this->fetch($statement);
     }
 
     /**
      * @param $new_password
-     * @param $id_user
+     * @param $idUser
      * @return bool|\PDOStatement
      */
-    public function changePassword($new_password, $id_user)
+    public function changePassword($new_password, $idUser)
     {
-        $statement = 'UPDATE User SET User.password =? WHERE User.id_user = ' . $id_user;
+        $statement = 'UPDATE User SET User.password =? WHERE User.idUser = ' . $idUser;
         $array = array($new_password);
         return $this->execArray($statement, $array);
     }

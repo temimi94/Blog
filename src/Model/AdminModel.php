@@ -23,30 +23,30 @@ class AdminModel extends MainModel
 
 
     /**
-     * @param $id_article
+     * @param $idArticle
      * @return bool|\PDOStatement
      */
-    public function deleteArticle($id_article)
+    public function deleteArticle($idArticle)
     {
-        $statement = 'DELETE FROM Comment WHERE id_article =' .$id_article . ';';
+        $statement = 'DELETE FROM Comment WHERE idArticle =' .$idArticle . ';';
         $this->exec($statement);
-        $statement = 'DELETE FROM Article WHERE id_article =' . $id_article . ';';
+        $statement = 'DELETE FROM Article WHERE idArticle =' . $idArticle . ';';
         return $this->exec($statement);
     }
 
     /**
-     * @param $id_article
+     * @param $idArticle
      * @param $article_title
      * @param $article_chapo
      * @param $article_content
      * @return bool|\PDOStatement
      */
-    public function updateArticle($id_article, $article_title, $article_chapo, $article_content)
+    public function updateArticle($idArticle, $article_title, $article_chapo, $article_content)
     {
         $date = date("Y-m-d H:i:s");
 
         $statement = 'UPDATE Article SET Article.title =?, Article.chapo =?,
-        Article.content =?, Article.date_update =? WHERE Article.id_article = ' . $id_article;
+        Article.content =?, Article.dateUpdate =? WHERE Article.idArticle = ' . $idArticle;
         $array = array($article_title, $article_chapo, $article_content, $date);
         return $this->execArray($statement, $array);
     }
@@ -56,29 +56,29 @@ class AdminModel extends MainModel
      */
     public function getAllComment()
     {
-        return $this->fetchAll('SELECT Comment.id_comment, Comment.id_comment, Comment.id_article,
-        Comment.content, Comment.date, Comment.id_user, Article.title, User.pseudo, Comment.validate 
-        FROM Comment INNER JOIN Article ON Comment.id_article = Article.id_article
-        INNER JOIN User ON Comment.id_user = User.id_user ');
+        return $this->fetchAll('SELECT Comment.idComment, Comment.idComment, Comment.idArticle,
+        Comment.content, Comment.date, Comment.idUser, Article.title, User.pseudo, Comment.validate 
+        FROM Comment INNER JOIN Article ON Comment.idArticle = Article.idArticle
+        INNER JOIN User ON Comment.idUser = User.idUser ');
     }
 
     /**
-     * @param $id_comment
+     * @param $idComment
      * @return bool|\PDOStatement
      */
-    public function approveComment($id_comment)
+    public function approveComment($idComment)
     {
-        $statement = 'UPDATE Comment SET Comment.validate = 1 WHERE Comment.id_comment = ' . $id_comment;
+        $statement = 'UPDATE Comment SET Comment.validate = 1 WHERE Comment.idComment = ' . $idComment;
         return $this->execArray($statement);
     }
 
     /**
-     * @param $id_comment
+     * @param $idComment
      * @return bool|\PDOStatement
      */
-    public function deleteComment($id_comment)
+    public function deleteComment($idComment)
     {
-        $statement = 'DELETE FROM Comment WHERE Comment.id_comment = ' . $id_comment;
+        $statement = 'DELETE FROM Comment WHERE Comment.idComment = ' . $idComment;
         return $this->execArray($statement);
     }
 
@@ -87,10 +87,10 @@ class AdminModel extends MainModel
      */
     public function selectArticleAdmin()
     {
-        return $this->fetchAll('SELECT Article.id_article, Article.title, Article.content, 
-        Article.date, Article.chapo, Article.date_update, 
-        Article.author_id, Article.validated, User.id_user, User.pseudo, User.email 
-        FROM Article INNER JOIN User ON Article.author_id = User.id_user');
+        return $this->fetchAll('SELECT Article.idArticle, Article.title, Article.content, 
+        Article.date, Article.chapo, Article.dateUpdate, 
+        Article.authorId, Article.validated, User.idUser, User.pseudo, User.email 
+        FROM Article INNER JOIN User ON Article.authorId = User.idUser');
     }
 
     /**
@@ -99,27 +99,27 @@ class AdminModel extends MainModel
      */
     public function approveArticle($article_id)
     {
-        $statement = 'UPDATE Article SET Article.validated = 1 WHERE Article.id_article = ' . $article_id;
+        $statement = 'UPDATE Article SET Article.validated = 1 WHERE Article.idArticle = ' . $article_id;
         return $this->exec($statement);
     }
 
     /**
-     * @param $id_user
+     * @param $idUser
      * @return mixed
      */
-    public function getAdminPassword($id_user)
+    public function getAdminPassword($idUser)
     {
-        return $this->fetch('SELECT User.password FROM User WHERE User.id_user =' . $id_user);
+        return $this->fetch('SELECT User.password FROM User WHERE User.idUser =' . $idUser);
     }
 
     /**
      * @param $new_password
-     * @param $id_user
+     * @param $idUser
      * @return bool|\PDOStatement
      */
-    public function changeAdminPassword($new_password, $id_user)
+    public function changeAdminPassword($new_password, $idUser)
     {
-        $statement = 'UPDATE User SET User.password =? WHERE User.id_user = ' . $id_user;
+        $statement = 'UPDATE User SET User.password =? WHERE User.idUser = ' . $idUser;
         $array = array($new_password);
         return $this->execArray($statement, $array);
     }
