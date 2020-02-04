@@ -33,10 +33,6 @@
     "swiftmailer/swiftmailer": "^6.0",
     "ext-openssl": "*"
   },
-  "require-dev": {
-    "symplify/coding-standard": "^7.2",
-    "symplify/easy-coding-standard": "^7.2"
-  },
   "config": {
     "platform": {
       "php": "7.2"
