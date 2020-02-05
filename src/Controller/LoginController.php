@@ -4,6 +4,10 @@ namespace App\Controller;
 
 
 use DateTime;
+use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class LoginController
@@ -29,22 +33,24 @@ class LoginController extends MainController
     const TWIGCHANGEPASS = 'login/changepassword.twig';
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function DefaultMethod()
     {
-        if ($this->session->isLogged()) $this->redirect('home');
-        $view = $this->twig->render(self::TWIGLOGIN);
-        return $view;
+        if ($this->session->isLogged()) {
+            $this->redirect('home');
+        }
+        return $this->render(self::TWIGLOGIN);
     }
 
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
      */
     public function loginMethod()
     {
@@ -81,14 +87,14 @@ class LoginController extends MainController
     /**
      * @param array $data
      * @param null $remember_me
-     * @throws \Exception
+     * @throws Exception
      */
     private function auth($data = [], $remember_me = null)
     {
         if ($remember_me == true) {
-            $auth_token = bin2hex(openssl_random_pseudo_bytes(32));
-            $this->loginSql->createAuthToken($auth_token, $data['id_user']);
-            $this->cookie->createCookie('gtk', $auth_token, time()+604800);//Create cookie that expires in 1 week
+            $authToken = bin2hex(openssl_random_pseudo_bytes(32));
+            $this->loginSql->createAuthToken($authToken, $data['idUser']);
+            $this->cookie->createCookie('gtk', $authToken, time()+604800);//Create cookie that expires in 1 week
         }
         $this->session->createSession($data);
         if ($this->session->getUserVar('rank') === 'Administrateur'){
@@ -101,11 +107,12 @@ class LoginController extends MainController
 
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * Forgot password method on login page
      */
-    public function emailForgetMethod(){
+    public function passwordForgetMethod(){
         $post = $this->post->getPostVar('email');
 
         if(empty($post)){
@@ -119,7 +126,7 @@ class LoginController extends MainController
         }//Vérifie si l'utilisateur est dans la base de données
 
         $user = array('email' => $search['email'],
-            'id_user' => $search['id_user']);
+            'idUser' => $search['idUser']);
         $mail = $this->mail->sendForgetPassword($user); //Envoi le mail
 
         if ($mail === false){
@@ -146,9 +153,9 @@ class LoginController extends MainController
 
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function registerMethod()
     {
@@ -191,10 +198,10 @@ class LoginController extends MainController
      * Fourth if verify if the token's date isn't passed (15min)
      * Fifth if verify if the passwords are the same
      * Then change password
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Exception
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
      */
     public function changePasswordByMailMethod() //Change Password when password forgotten mail
     {
@@ -206,27 +213,24 @@ class LoginController extends MainController
             return $this->twig->render(self::TWIGCHANGEPASS);
         }//Affiche la page si le formulaire n'est pas complété
 
+        $verify = $this->verifyChangePasswordByMail($get, $post);
+        if($verify !== true){
 
-        if($this->verifyChangePasswordByMail($get, $post) !== true){
-
-            return $this->renderTwigErr(self::TWIGCHANGEPASS, $this->verifyChangePasswordByMail($get, $post));
+            return $this->renderTwigErr(self::TWIGCHANGEPASS, $verify);
         }
 
         $password = password_hash($post['password1'], PASSWORD_DEFAULT);
-        $this->loginSql->changePassword($password, $get['iduser']);
+        $this->loginSql->changePassword($password, $get['idUser']);
 
 
         return $this->renderTwigSuccess(self::TWIGLOGIN, 'Votre mot de passe a bien été modifié');
-
-
-
     }
 
     /**
      * @param array $get
      * @param array $post
      * @return bool|string
-     * @throws \Exception
+     * @throws Exception
      */
     private function verifyChangePasswordByMail(array $get, array $post){ //Return a string error message or return true
         $verifyPost = $this->post->verifyPost();
@@ -235,14 +239,14 @@ class LoginController extends MainController
             return $verifyPost;
         }//Si le mot de passe est trop court (5 caractères) null ou vide
 
-        $verify = $this->loginSql->getUserById($get['iduser']);
+        $verify = $this->loginSql->getUserById($get['idUser']);
 
         if ($verify === false) {
 
             return "Il y a eu une erreur!";
         } //Si l'on ne trouve pas l'utilisateur
 
-        $verification = $this->verifyToken($verify['forgot_token'], $verify['forgot_token_expiration'], $get['token']);
+        $verification = $this->verifyToken($verify['forgotToken'], $verify['forgotTokenExpiration'], $get['token']);
         if($verification !== true) {
 
             return $verification;
@@ -261,7 +265,7 @@ class LoginController extends MainController
      * @param $tokenInDbDate
      * @param $currentToken
      * @return bool|string
-     * @throws \Exception
+     * @throws Exception
      */
     private function verifyToken(string $tokenInDb, string $tokenInDbDate, string $currentToken){
         $tokenInDbDate = date_create_from_format('Y-m-d H:i:s', $tokenInDbDate);
