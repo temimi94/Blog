@@ -3,6 +3,10 @@
 
 namespace App\Controller;
 
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+
 /**
  * Class AdminController
  * @package App\Controller
@@ -41,6 +45,9 @@ class AdminController extends UserController
 
     /**
      * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function changePasswordMethod()
     {
@@ -55,7 +62,7 @@ class AdminController extends UserController
         $change = $this->changePasswordWhenLogged();
         if ($change === true) {
 
-            return $this->render(self::TWIG, ['success' => 'Votre mot de passe a bien été modifié']);
+            return $this->renderTwigSuccess(self::TWIG, 'Votre mot de passe a bien été modifié');
         }
 
         return $this->render(self::TWIG, ['erreur' => $change, 'password' => true]);
