@@ -10,7 +10,7 @@
 
 -----------------
 
-### Installation :
+### Installation 
 
 *   Lancer la commande ` git https://github.com/kindertheo/Projet-5-PHP-OpenClassrooms.git`
 *   Lancer la commande `cd Projet-5-PHP-OpenClassrooms`
@@ -49,11 +49,11 @@ Ces informations sont trouvables chez votre hébergeur.
     
     define('MAIL_PASSWORD', '');
 
-
-*  Importer le fichier import.sql dans votre base de données
+*    Importer le fichier import.sql dans votre base de données
 
 Pour que le site marche correctement il est important d'utilisé ce modèle de base de données
 Il créera la base de données, les tables, les champs et inserera des données utiles au début du site (compte admin et utilisateur, premiers articles, commentaires...)
+
 -----------------
 
 Le site est consultable [ici](https://blog.kindertheo.net)
@@ -102,15 +102,24 @@ Commençons par les pages utiles à tous les internautes.
 Sur la page d’accueil, il faudra présenter les informations suivantes :
 
 *   votre nom et votre prénom ;
+
 *   une photo et/ou un logo ;
+
 *   une phrase d’accroche qui vous ressemble (exemple : “Martin Durand, le développeur qu’il vous faut !”) ;
+
 *   un menu permettant de naviguer parmi l’ensemble des pages de votre site web ;
+
 *   un formulaire de contact (à la soumission de ce formulaire, un e-mail avec toutes ces informations vous sera envoyé) avec les champs suivants :
+    
     * nom/prénom,
+    
     * e-mail de contact,
+    
     * message,
-*  un lien vers votre CV au format PDF ;
-*  et l’ensemble des liens vers les réseaux sociaux où l’on peut vous suivre (GitHub, LinkedIn, Twitter…).
+
+*   un lien vers votre CV au format PDF ;
+
+*   et l’ensemble des liens vers les réseaux sociaux où l’on peut vous suivre (GitHub, LinkedIn, Twitter…).
 
 Sur la page listant tous les blogs posts (du plus récent au plus ancien), il faut afficher les informations suivantes pour chaque blog post :
 
