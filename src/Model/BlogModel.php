@@ -26,15 +26,15 @@ class BlogModel extends MainModel
 
 
     /**
-     * @param $id_post
+     * @param $idArticle
      * @return mixed
      */
-    public function selectArticle($id_post)
+    public function selectArticle($idArticle)
     {
         return $this->fetch('SELECT Article.idArticle, Article.title, Article.content, Article.date, Article.chapo,
         Article.dateUpdate, User.pseudo FROM Article 
         INNER JOIN User ON Article.authorId = User.idUser
-        WHERE idArticle =' . $id_post);
+        WHERE idArticle =' . $idArticle);
     }
 
     /**

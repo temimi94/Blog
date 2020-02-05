@@ -10,15 +10,15 @@ namespace App\Model;
 class UserModel extends MainModel
 {
     /**
-     * @param $user_id
+     * @param $userId
      * @return array
      */
-    public function getUserComment($user_id)
+    public function getUserComment($userId)
     {
         return $this->fetchAll('SELECT Comment.idComment, Comment.idComment, Comment.idArticle,
         Comment.content, Comment.date, Comment.idUser, Article.title, User.pseudo, Comment.validate 
         FROM Comment INNER JOIN Article ON Comment.idArticle = Article.idArticle
-        INNER JOIN User ON Comment.idUser = User.idUser WHERE Comment.idUser = ' . $user_id);
+        INNER JOIN User ON Comment.idUser = User.idUser WHERE Comment.idUser = ' . $userId);
     }
 
 
