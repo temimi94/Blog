@@ -99,6 +99,8 @@ fabric.properties
 
 vendor/composer/
 
+node_modules/
+
 node_modules/xtend/
 
 node_modules/x-is-string/
