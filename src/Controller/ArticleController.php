@@ -5,6 +5,7 @@ namespace App\Controller;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+
 /**
  * Class ArticleController
  * @package App\Controller
@@ -75,18 +76,18 @@ class ArticleController extends MainController
             $this->adminSql->updateArticle($post['idArticle'], $post['title'], $post['chapo'], $post['content']);
 
             $this->redirect('article&method=listArticle');
-
-        } elseif (empty($post)) {
-            /*Si $_POST est vide, renvois sur formulaire pour saisir les données à changer */
-            $get = $this->get->getGetVar('idArticle');
-            if ($get === false) {
-                $this->redirect('admin');
-            }
-
-            $req = $this->articleSql->selectArticle($get);
-
-            return $this->render('admin/adminUpdateArticle.twig', ['article' => $req]);
         }
+
+        /*Si $_POST est vide, renvois sur formulaire pour saisir les données à changer */
+        $get = $this->get->getGetVar('idArticle');
+        if ($get === false) {
+            $this->redirect('admin');
+        }
+
+        $req = $this->articleSql->selectArticle($get);
+
+        return $this->render('admin/adminUpdateArticle.twig', ['article' => $req]);
+
     }
 
     /**
