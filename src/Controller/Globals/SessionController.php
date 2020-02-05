@@ -44,9 +44,9 @@ class SessionController
         elseif ($data['rank'] == 2) $data['rank'] = self::USER;
 
         $this->session['user'] = [
-            'session_id' => session_id(),
+            'sessionId' => session_id(),
             'pseudo' => $data['pseudo'],
-            'idUser' => $data['idUser'], //Todo le nom peut etre changer
+            'idUser' => $data['idUser'],
             'email' => $data['email'],
             'dateRegister' => $data['dateRegister'],
             'rank' => $data['rank']
@@ -67,7 +67,7 @@ class SessionController
      */
     public function isLogged()
     {
-        if (!empty($this->getUserVar('session_id'))) {
+        if (!empty($this->getUserVar('sessionId'))) {
             return true;
         }
         return false;
