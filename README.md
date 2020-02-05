@@ -26,7 +26,6 @@ Ces informations sont trouvables chez votre hébergeur.
      define('DB_USER', '');
      define('DB_PASS', '');
      define('DB_OPTIONS', array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
- 
 
 2.  Mettre à jour config/setupMail.php  
 
@@ -88,16 +87,22 @@ Les pages d’administration seront donc accessibles sur conditions et vous veil
 Commençons par les pages utiles à tous les internautes.
 Sur la page d’accueil, il faudra présenter les informations suivantes :
 
-*   votre nom et votre prénom;   
-*   une photo et/ou un logo;   
-*   une phrase d’accroche qui vous ressemble (exemple : “Martin Durand, le développeur qu’il vous faut !”);   
-*   un menu permettant de naviguer parmi l’ensemble des pages de votre site web;   
-*   un formulaire de contact (à la soumission de ce formulaire, un e-mail avec toutes ces informations vous sera envoyé) avec les champs suivants :  
+*   votre nom et votre prénom;
+
+*   une photo et/ou un logo;
+
+*   une phrase d’accroche qui vous ressemble (exemple : “Martin Durand, le développeur qu’il vous faut !”);
+
+*   un menu permettant de naviguer parmi l’ensemble des pages de votre site web;
+
+*   un formulaire de contact (à la soumission de ce formulaire, un e-mail avec toutes ces informations vous sera envoyé) avec les champs suivants :
+
     *   nom/prénom,  
     *   e-mail de contact,  
     *   message,  
 
-*   un lien vers votre CV au format PDF;   
+*   un lien vers votre CV au format PDF;
+
 *   et l’ensemble des liens vers les réseaux sociaux où l’on peut vous suivre (GitHub, LinkedIn, Twitter…).   
 
 Sur la page listant tous les blogs posts (du plus récent au plus ancien), il faut afficher les informations suivantes pour chaque blog post :
