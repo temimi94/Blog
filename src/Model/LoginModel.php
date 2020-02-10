@@ -15,7 +15,7 @@ class LoginModel extends MainModel
      */
     public function getUser($user_email)
     {
-        return $this->fetch('SELECT * FROM User WHERE User.email ="' . $user_email . '"');
+        return $this->read('SELECT * FROM User WHERE User.email ="' . $user_email . '"');
     }
 
     /**
@@ -23,7 +23,7 @@ class LoginModel extends MainModel
      * @return mixed
      */
     public function getUserById($idUser){
-        return $this->fetch('SELECT * FROM User WHERE User.idUser =' .$idUser);
+        return $this->read('SELECT * FROM User WHERE User.idUser =' .$idUser);
     }
 
     /**
@@ -75,7 +75,7 @@ class LoginModel extends MainModel
      */
     public function searchAuthToken($token){
         $statement = "SELECT * FROM User WHERE User.authToken= '" .$token."'";
-        return $this->fetch($statement);
+        return $this->read($statement);
     }
 
     /**
