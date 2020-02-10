@@ -53,10 +53,10 @@ class MailController
 
         $token = bin2hex(openssl_random_pseudo_bytes(24));
         $tokenReq = new LoginModel();
-        $id_user = $user['id_user'];
-        $tokenReq->createForgotToken($token, $id_user);
+        $idUser = $user['idUser'];
+        $tokenReq->createForgotToken($token, $idUser);
 
-        $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePasswordByMail&token=" . $token . "&iduser=" .$id_user;
+        $link = "www.". filter_input(INPUT_SERVER, 'HTTP_HOST') . "/index.php?page=login&method=changePasswordByMail&token=" . $token . "&idUser=" .$idUser;
 
         // Create the Transport
         $transport = (new Swift_SmtpTransport(MAIL_SMTP,MAIL_PORT))
@@ -68,8 +68,9 @@ class MailController
 
         $content = sprintf("<p>Bonjour !</p>
         <p>Vous avez demandé un changement de mot de passe</p>
-        <p>Merci de suivre ce lien pour procéder au changement <a href='%s'>Réinitialiser</a></p>
-        <p>Le lien ne sera valide que 15 minutes</p>", $link);
+        <p>Merci de suivre ce lien pour procéder au changement <a href=".$link.">Réinitialiser</a></p>
+        <p>Le lien ne sera valide que 15 minutes</p>
+        <p>Si le lien ne marche pas : ".$link."</p>");
         // Create a message
         $message = (new Swift_Message('Mot de passe oublié Blog PHP P5 Kinder Théo'))
             ->setFrom(MAIL_USERNAME)

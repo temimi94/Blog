@@ -2,8 +2,8 @@
 
 {% block content %}
     <div class="container">
-    <form action="index.php?page=admin&method=editArticle" method="post">
-        <input type="hidden" name="id_article" value="{{ article.id_article }}">
+    <form action="index.php?page=article&method=editArticle" method="post">
+        <input type="hidden" name="idArticle" value="{{ article.idArticle }}">
         <div class="form-group">
             <label for="title">Titre</label>
             <input type="text" class="form-control" value="{{article.title}}" id="title" name="title">

@@ -15,26 +15,26 @@ class BlogModel extends MainModel
      */
     public function selectAllArticle()
     {
-        return $this->fetchAll('SELECT Article.id_article, Article.title, Article.content, 
-        Article.date, Article.chapo, Article.date_update, 
-        Article.author_id, User.id_user, User.pseudo, User.email 
-        FROM Article INNER JOIN User ON Article.author_id = User.id_user
+        return $this->fetchAll('SELECT Article.idArticle, Article.title, Article.content, 
+        Article.date, Article.chapo, Article.dateUpdate, 
+        Article.authorId, User.idUser, User.pseudo, User.email 
+        FROM Article INNER JOIN User ON Article.authorId = User.idUser
         WHERE Article.validated = 1
-        ORDER BY CASE WHEN Article.date_update > Article.date
-        THEN Article.date_update ELSE Article.date END DESC');
+        ORDER BY CASE WHEN Article.dateUpdate > Article.date
+        THEN Article.dateUpdate ELSE Article.date END DESC');
     }
 
 
     /**
-     * @param $id_post
+     * @param $idArticle
      * @return mixed
      */
-    public function selectArticle($id_post)
+    public function selectArticle($idArticle)
     {
-        return $this->fetch('SELECT Article.id_article, Article.title, Article.content, Article.date, Article.chapo,
-        Article.date_update, User.pseudo FROM Article 
-        INNER JOIN User ON Article.author_id = User.id_user
-        WHERE id_article =' . $id_post);
+        return $this->fetch('SELECT Article.idArticle, Article.title, Article.content, Article.date, Article.chapo,
+        Article.dateUpdate, User.pseudo FROM Article 
+        INNER JOIN User ON Article.authorId = User.idUser
+        WHERE idArticle =' . $idArticle);
     }
 
     /**
@@ -42,19 +42,19 @@ class BlogModel extends MainModel
      */
     public function selectIdArticle()
     {
-        return $this->fetchAll('SELECT id_article FROM Article');
+        return $this->fetchAll('SELECT idArticle FROM Article');
     }
 
     /**
-     * @param $id_article
+     * @param $idArticle
      * @return array
      */
-    public function selectCommentByArticle($id_article)
+    public function selectCommentByArticle($idArticle)
     {
-        return $this->fetchAll('SELECT Comment.content, Comment.id_user, Comment.date, User.pseudo FROM Comment
-        INNER JOIN Article ON Article.id_article = Comment.id_article
-        INNER JOIN User ON Comment.id_user = User.id_user
-        WHERE Comment.validate = 1 AND Article.id_article = ' . $id_article);
+        return $this->fetchAll('SELECT Comment.content, Comment.idUser, Comment.date, User.pseudo FROM Comment
+        INNER JOIN Article ON Article.idArticle = Comment.idArticle
+        INNER JOIN User ON Comment.idUser = User.idUser
+        WHERE Comment.validate = 1 AND Article.idArticle = ' . $idArticle);
 
     }
 
@@ -62,29 +62,29 @@ class BlogModel extends MainModel
      * @param $article_title
      * @param $article_content
      * @param $article_chapo
-     * @param $author_id
+     * @param $authorId
      * @return bool|\PDOStatement
      */
-    public function createArticle($article_title, $article_content, $article_chapo, $author_id)
+    public function createArticle($article_title, $article_content, $article_chapo, $authorId)
     {
-        $statement = 'INSERT INTO Article (title, content, date, chapo, author_id) VALUES (?, ?, ?, ?, ?)';
+        $statement = 'INSERT INTO Article (title, content, date, chapo, authorId) VALUES (?, ?, ?, ?, ?)';
         $date = date("Y-m-d H:i:s");
-        $article = array($article_title, $article_content, $date, $article_chapo, $author_id);
+        $article = array($article_title, $article_content, $date, $article_chapo, $authorId);
         return $this->execArray($statement, $article);
     }
 
     /**
-     * @param $id_article
+     * @param $idArticle
      * @param $content
-     * @param $id_user
+     * @param $idUser
      * @return bool|\PDOStatement
      */
-    public function createComment($id_article, $content, $id_user)
+    public function createComment($idArticle, $content, $idUser)
     {
-        $statement = 'INSERT INTO Comment (id_article, content, date, id_user) VALUES (?, ?, ?, ?)';
+        $statement = 'INSERT INTO Comment (idArticle, content, date, idUser) VALUES (?, ?, ?, ?)';
         $date = date("Y-m-d H:i:s");
 
-        $comment = array($id_article, $content, $date, $id_user);
+        $comment = array($idArticle, $content, $date, $idUser);
         return $this->execArray($statement, $comment);
     }
 

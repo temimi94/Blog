@@ -10,19 +10,19 @@
             <a class="nav-link" href="index.php?page=home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=blog&method=list">Liste des articles</a>
+            <a class="nav-link" href="index.php?page=article&method=list">Liste des articles</a>
         </li>
 
-        {% if session.session_id is defined %}
+        {% if session.sessionId is defined %}
             {% if session.rank == 'Administrateur' %}
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=admin&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
+            <a class="nav-link" href="index.php?page=article&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
         </li>
             {% endif %}
         {% endif %}
     </ul>
 
-    {% if session.session_id is defined %}
+    {% if session.sessionId is defined %}
     <ul class="navbar-nav justify-content-end">
         <li class="nav-item">
             {% if session.rank == 'Administrateur' %}
@@ -34,7 +34,7 @@
     </ul>
     {% endif %}
 
-    {% if session.session_id is defined %}
+    {% if session.sessionId is defined %}
         <form class="nav-item">
             <a class="btn btn-warning" href="index.php?page=login&method=logout">Logout</a>
         </form>

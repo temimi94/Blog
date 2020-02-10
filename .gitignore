@@ -90,9 +90,19 @@ fabric.properties
 .idea/**/markdown-navigator.xml
 .idea/**/markdown-navigator/
 
+/vendor/*
+
 # End of https://www.gitignore.io/api/phpstorm
 
 
 .idea/
 
 vendor/composer/
+
+node_modules/
+
+node_modules/xtend/
+
+node_modules/x-is-string/
+
+node_modules/wrappy/

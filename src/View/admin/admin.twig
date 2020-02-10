@@ -21,7 +21,7 @@
                     </tr>
                     <tr>
                         <td>Session ID :</td>
-                        <td>{{ session.session_id }}</td>
+                        <td>{{ session.sessionId }}</td>
                     </tr>
                     <tr>
                         <td>Pseudo :</td>
@@ -34,7 +34,7 @@
                     </tr>
                     <tr>
                         <td>Date de création du compte : </td>
-                        <td>{{ session.date_register|date('d/m/Y \\à H:i:s')  }}</td>
+                        <td>{{ session.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
                     </tr>
                     <tr>
                         <td>Rang : </td>
@@ -45,8 +45,8 @@
 
             <div class="col-lg-6 pt-2 link ">
                 <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listUser">Liste des utilisateurs</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listArticle">Liste des articles</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listAllComment">Liste des commentaires</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=article&method=listAdmin">Liste des articles</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=comment&method=listAllComment">Liste des commentaires</a></div>
                 <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a></div>
             </div>
         </div>
@@ -84,7 +84,7 @@
 
                 {% for users in user %}
                 <div class="row">
-                    <p>User ID : {{ users.id_user }}</p>
+                    <p>User ID : {{ users.idUser }}</p>
                 </div>
                 <div class="row">
                     <p>Pseudo : {{ users.pseudo }}</p>
@@ -93,7 +93,7 @@
                     <p>Email : {{ users.email }}</p>
                 </div>
                 <div class="row">
-                    <p>Date d'enregistrement : {{ users.date_register|date('d/m/Y \\à H:i:s')  }}</p>
+                    <p>Date d'enregistrement : {{ users.dateRegister|date('d/m/Y \\à H:i:s')  }}</p>
                 </div>
                 <div class="row">
                     <p>Rang :
@@ -115,7 +115,7 @@
         <div class="container">
             {% for articles in article %}
             <div class="row">
-                <div class="col-6"><p>ID Article : {{ articles.id_article }}</p></div>
+                <div class="col-6"><p>ID Article : {{ articles.idArticle }}</p></div>
                 <div class="col-6"> <p>Titre: {{ articles.title }}</p></div>
             </div>
                 <div class="row">
@@ -130,9 +130,9 @@
                     <p>Date de création: {{ articles.date|date('d/m/Y \\à H:i:s') }}</p>
                 </div>
                 <div class="col-4">
-                    {% if articles.date_update != null %}
+                    {% if articles.dateUpdate != null %}
                     <div class="row">
-                        <p>Dernière modification le : {{ articles.date_update|date('d/m/Y \\à H:i:s') }}</p>
+                        <p>Dernière modification le : {{ articles.dateUpdate|date('d/m/Y \\à H:i:s') }}</p>
                     </div>
                     {% endif %}
                 </div>
@@ -143,10 +143,10 @@
 
 
             {% if articles.validated == '0' %}
-                <a class="btn btn-primary" href="index.php?page=admin&method=approveArticle&idarticle={{ articles.id_article }}">Approuver</a>
+                <a class="btn btn-primary" href="index.php?page=article&method=approveArticle&idArticle={{ articles.idArticle }}">Approuver</a>
             {% endif %}
-                <a class="btn btn-primary" href="index.php?page=admin&method=editArticle&idarticle={{ articles.id_article }}">Editer</a>
-                <a class="btn btn-danger" href="index.php?page=admin&method=deleteArticle&idarticle={{ articles.id_article }}">Supprimer</a>
+                <a class="btn btn-primary" href="index.php?page=article&method=editArticle&idArticle={{ articles.idArticle }}">Editer</a>
+                <a class="btn btn-danger" href="index.php?page=article&method=deleteArticle&idArticle={{ articles.idArticle }}">Supprimer</a>
             <hr>
             {% endfor %}
 
@@ -158,7 +158,7 @@
         <div class="container">
             {% for comments in comment %}
                 <div class="row justify-content-center">
-                    <p>ID : {{ comments.id_comment }}</p>
+                    <p>ID : {{ comments.idComment }}</p>
                 </div>
                 <div class="row justify-content-center">
                     <p>Commentaire : {{ comments.content }}</p>
@@ -175,9 +175,9 @@
                     <p>Commentaire approuvé</p>
                 {% elseif comments.validate == '0' %}
                     <p>Commentaire en attente de validation</p>
-                    <a class="btn btn-primary" href="index.php?page=admin&method=approveComment&idcomment={{ comments.id_comment }}">Approuver</a>
+                    <a class="btn btn-primary" href="index.php?page=comment&method=approveComment&idComment={{ comments.idComment }}">Approuver</a>
                 {% endif %}
-                <a class="btn btn-danger" href="index.php?page=admin&method=deleteComment&idcomment={{ comments.id_comment }}">Supprimer</a>
+                <a class="btn btn-danger" href="index.php?page=comment&method=deleteComment&idComment={{ comments.idComment }}">Supprimer</a>
                 </div>
 
                 <hr>

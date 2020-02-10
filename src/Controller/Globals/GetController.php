@@ -22,11 +22,10 @@ class GetController
     {
         $def = array(
             'page' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'idarticle' => FILTER_SANITIZE_NUMBER_INT,
-            'idblog' => FILTER_SANITIZE_NUMBER_INT,
-            'idcomment' => FILTER_SANITIZE_NUMBER_INT,
+            'idArticle' => FILTER_SANITIZE_NUMBER_INT,
+            'idComment' => FILTER_SANITIZE_NUMBER_INT,
             'token' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'iduser' => FILTER_SANITIZE_NUMBER_INT
+            'idUser' => FILTER_SANITIZE_NUMBER_INT
         );
         $this->get = filter_input_array(INPUT_GET, $def);
     }
@@ -36,6 +35,9 @@ class GetController
      */
     public function getGetArray()
     {
+        if(empty($this->get)){
+            return false;
+        }
         return $this->get;
     }
 
@@ -45,6 +47,9 @@ class GetController
      */
     public function getGetVar(string $var)
     {
+        if(empty($this->get[$var])){
+            return false;
+        }
         return $this->get[$var];
     }
 
