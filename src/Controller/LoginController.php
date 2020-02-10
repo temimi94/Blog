@@ -18,19 +18,19 @@ class LoginController extends MainController
     /**
      *
      */
-    const TWIGLOGIN = 'login/login.twig';
+    const TWIG_LOGIN = 'login/login.twig';
     /**
      *
      */
-    const TWIGFORGET = 'login/forget.twig';
+    const TWIG_FORGET = 'login/forget.twig';
     /**
      *
      */
-    const TWIGREGISTER = 'login/register.twig';
+    const TWIG_REGISTER = 'login/register.twig';
     /**
      *
      */
-    const TWIGCHANGEPASS = 'login/changepassword.twig';
+    const TWIG_CHANGEPASS = 'login/changepassword.twig';
     /**
      * @return string
      * @throws LoaderError
@@ -42,7 +42,7 @@ class LoginController extends MainController
         if ($this->session->isLogged()) {
             $this->redirect('home');
         }
-        return $this->render(self::TWIGLOGIN);
+        return $this->render(self::TWIG_LOGIN);
     }
 
     /**
@@ -58,7 +58,7 @@ class LoginController extends MainController
         $errorMsg = null;
 
         if(empty($post)){
-            return $this->twig->render(self::TWIGLOGIN);
+            return $this->twig->render(self::TWIG_LOGIN);
         } //Si $_POST est vide
 
         $data = $this->loginSql->getUser($post['email']); //Récupère les données de l'utilisateur avec l'email
@@ -80,7 +80,7 @@ class LoginController extends MainController
         $this->auth($data, false);
 
         ifError:
-        return $this->renderTwigErr(self::TWIGLOGIN, $errorMsg);
+        return $this->renderTwigErr(self::TWIG_LOGIN, $errorMsg);
 
     }
 
@@ -116,7 +116,7 @@ class LoginController extends MainController
         $post = $this->post->getPostVar('email');
 
         if(empty($post)){
-            return $this->twig->render(self::TWIGFORGET);
+            return $this->twig->render(self::TWIG_FORGET);
         }//Affiche le formulaire si $_POST est vide
 
         $search = $this->loginSql->getUser($post);
@@ -134,10 +134,10 @@ class LoginController extends MainController
             goto ifError;
         }//Si il y a une erreur dans l'envoi du mail
 
-        return $this->renderTwigSuccess(self::TWIGFORGET, 'Nous vous avons envoyé un lien par email. Il ne sera actif que 15 minutes.');
+        return $this->renderTwigSuccess(self::TWIG_FORGET, 'Nous vous avons envoyé un lien par email. Il ne sera actif que 15 minutes.');
 
         ifError:
-        return $this->renderTwigErr(self::TWIGFORGET, $errorMsg);
+        return $this->renderTwigErr(self::TWIG_FORGET, $errorMsg);
     }
 
     /**
@@ -163,7 +163,7 @@ class LoginController extends MainController
 
 
         if(empty($post)){
-            return $this->twig->render(self::TWIGREGISTER);
+            return $this->twig->render(self::TWIG_REGISTER);
         }
 
         $verif = $this->post->verifyPost();
@@ -185,7 +185,7 @@ class LoginController extends MainController
 
         ifError:
 
-        return $this->renderTwigErr(self::TWIGREGISTER, $errorMsg);
+        return $this->renderTwigErr(self::TWIG_REGISTER, $errorMsg);
 
     }
 
@@ -210,20 +210,20 @@ class LoginController extends MainController
 
         if(empty($post)){
 
-            return $this->twig->render(self::TWIGCHANGEPASS);
+            return $this->twig->render(self::TWIG_CHANGEPASS);
         }//Affiche la page si le formulaire n'est pas complété
 
         $verify = $this->verifyChangePasswordByMail($get, $post);
         if($verify !== true){
 
-            return $this->renderTwigErr(self::TWIGCHANGEPASS, $verify);
+            return $this->renderTwigErr(self::TWIG_CHANGEPASS, $verify);
         }
 
         $password = password_hash($post['password1'], PASSWORD_DEFAULT);
         $this->loginSql->changePassword($password, $get['idUser']);
 
 
-        return $this->renderTwigSuccess(self::TWIGLOGIN, 'Votre mot de passe a bien été modifié');
+        return $this->renderTwigSuccess(self::TWIG_LOGIN, 'Votre mot de passe a bien été modifié');
     }
 
     /**
