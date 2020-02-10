@@ -15,7 +15,7 @@ class MainModel
      * @param $statement
      * @return mixed
      */
-    public function fetch($statement)
+    public function read($statement)
     {
         $req = ConnectPDO::getPDO()->prepare($statement);
         $req->execute();
@@ -26,7 +26,7 @@ class MainModel
      * @param $statement
      * @return array
      */
-    public function fetchAll($statement)
+    public function readAll($statement)
     {
         $req = ConnectPDO::getPDO()->prepare($statement);
         $req->execute();
