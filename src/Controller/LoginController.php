@@ -173,7 +173,7 @@ class LoginController extends MainController
         }
 
         if ($post['password1'] != $post['password2']) {
-            $errorMsg = 'Les mots de passes sont différents';
+            $errorMsg = 'Les mots de passe sont différents';
             goto ifError;
         }
 
@@ -254,7 +254,7 @@ class LoginController extends MainController
 
         if ($post['password1'] != $post['password2']){
 
-            return "Les mots de passes entrés ne sont pas identiques";
+            return "Les mots de passe entrés ne sont pas identiques";
         }//Si les mots de passes ne sont pas identiques
 
         return true;
