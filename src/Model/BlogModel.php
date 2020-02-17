@@ -15,7 +15,7 @@ class BlogModel extends MainModel
      */
     public function selectAllArticle()
     {
-        return $this->fetchAll('SELECT Article.idArticle, Article.title, Article.content, 
+        return $this->readAll('SELECT Article.idArticle, Article.title, Article.content, 
         Article.date, Article.chapo, Article.dateUpdate, 
         Article.authorId, User.idUser, User.pseudo, User.email 
         FROM Article INNER JOIN User ON Article.authorId = User.idUser
@@ -31,7 +31,7 @@ class BlogModel extends MainModel
      */
     public function selectArticle($idArticle)
     {
-        return $this->fetch('SELECT Article.idArticle, Article.title, Article.content, Article.date, Article.chapo,
+        return $this->read('SELECT Article.idArticle, Article.title, Article.content, Article.date, Article.chapo,
         Article.dateUpdate, User.pseudo FROM Article 
         INNER JOIN User ON Article.authorId = User.idUser
         WHERE idArticle =' . $idArticle);
@@ -42,7 +42,7 @@ class BlogModel extends MainModel
      */
     public function selectIdArticle()
     {
-        return $this->fetchAll('SELECT idArticle FROM Article');
+        return $this->readAll('SELECT idArticle FROM Article');
     }
 
     /**
@@ -51,7 +51,7 @@ class BlogModel extends MainModel
      */
     public function selectCommentByArticle($idArticle)
     {
-        return $this->fetchAll('SELECT Comment.content, Comment.idUser, Comment.date, User.pseudo FROM Comment
+        return $this->readAll('SELECT Comment.content, Comment.idUser, Comment.date, User.pseudo FROM Comment
         INNER JOIN Article ON Article.idArticle = Comment.idArticle
         INNER JOIN User ON Comment.idUser = User.idUser
         WHERE Comment.validate = 1 AND Article.idArticle = ' . $idArticle);

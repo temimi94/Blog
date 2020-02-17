@@ -15,7 +15,7 @@ class UserModel extends MainModel
      */
     public function getUserComment($userId)
     {
-        return $this->fetchAll('SELECT Comment.idComment, Comment.idComment, Comment.idArticle,
+        return $this->readAll('SELECT Comment.idComment, Comment.idComment, Comment.idArticle,
         Comment.content, Comment.date, Comment.idUser, Article.title, User.pseudo, Comment.validate 
         FROM Comment INNER JOIN Article ON Comment.idArticle = Article.idArticle
         INNER JOIN User ON Comment.idUser = User.idUser WHERE Comment.idUser = ' . $userId);
@@ -40,7 +40,7 @@ class UserModel extends MainModel
      */
     public function getUserPassword($idUser)
     {
-        return $this->fetch('SELECT User.password FROM User WHERE User.idUser =' . $idUser);
+        return $this->read('SELECT User.password FROM User WHERE User.idUser =' . $idUser);
     }
 
     /**

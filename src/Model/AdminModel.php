@@ -56,7 +56,7 @@ class AdminModel extends MainModel
      */
     public function getAllComment()
     {
-        return $this->fetchAll('SELECT Comment.idComment, Comment.idComment, Comment.idArticle,
+        return $this->readAll('SELECT Comment.idComment, Comment.idComment, Comment.idArticle,
         Comment.content, Comment.date, Comment.idUser, Article.title, User.pseudo, Comment.validate 
         FROM Comment INNER JOIN Article ON Comment.idArticle = Article.idArticle
         INNER JOIN User ON Comment.idUser = User.idUser ');
@@ -87,7 +87,7 @@ class AdminModel extends MainModel
      */
     public function selectArticleAdmin()
     {
-        return $this->fetchAll('SELECT Article.idArticle, Article.title, Article.content, 
+        return $this->readAll('SELECT Article.idArticle, Article.title, Article.content, 
         Article.date, Article.chapo, Article.dateUpdate, 
         Article.authorId, Article.validated, User.idUser, User.pseudo, User.email 
         FROM Article INNER JOIN User ON Article.authorId = User.idUser');
@@ -109,7 +109,7 @@ class AdminModel extends MainModel
      */
     public function getAdminPassword($idUser)
     {
-        return $this->fetch('SELECT User.password FROM User WHERE User.idUser =' . $idUser);
+        return $this->read('SELECT User.password FROM User WHERE User.idUser =' . $idUser);
     }
 
     /**

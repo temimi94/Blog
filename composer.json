@@ -1,6 +1,6 @@
 {
   "name": "kindertheo/p5",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "project",
   "description": "Projet 5 de la formation Développeur Symfony chez OpenClassrooms",
   "keywords": [
@@ -16,8 +16,8 @@
     {
       "name": "Kinder Théo",
       "email": "kinder.theo@gmail.com",
-      "homepage": "https://kindertheo.net",
-      "role": "Apprenti Développeur Symfony"
+      "homepage": "https://blog.kindertheo.net",
+      "role": "Apprenti Développeur PHP/Symfony"
     }
   ],
   "autoload": {
