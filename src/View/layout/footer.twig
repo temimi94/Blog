@@ -1,11 +1,7 @@
+
 <div class="row">
     <div class="col">
-      <p>Copyright 2020 - Kinder Théo</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        <a href="cv_kinder_theo.pdf">Télécharger mon CV</a>
+        <a href="kinder_theo_cv.pdf">Télécharger mon CV</a>
     </div>
 </div>
 <div class="row">
@@ -18,3 +14,18 @@
       <a href="http://github.com/kindertheo">GitHub</a>
     </div>
 </div>
+{% if session.sessionId is defined %}
+    {% if session.rank == 'Administrateur' %}
+        <div class="row">
+            <div class="col">
+                <a href="index.php?page=admin">Administration</a>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
+<div class="row">
+    <div class="col pt-2">
+        <p>Copyright 2020 - Kinder Théo</p>
+    </div>
+</div>
+<!-- TODO Ajouter lien admin
