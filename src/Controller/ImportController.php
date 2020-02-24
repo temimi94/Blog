@@ -13,7 +13,7 @@ use App\Model\LoginModel;
 use App\Model\UserModel;
 
 /**
- * Class GlobalController
+ * Class ImportController
  * @package App\Controller
  */
 abstract class ImportController

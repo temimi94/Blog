@@ -44,7 +44,8 @@ class ArticleController extends MainController
 
         return $this->render('listArticle.twig', ['listArticle' => $article]);
     }
-
+//TODO Mettre des articles et commentaires pertinents
+//TODO Ajouter des commentaires a certaines methodes
 
 
 

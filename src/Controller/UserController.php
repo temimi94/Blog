@@ -33,7 +33,7 @@ class UserController extends MainController
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function changePasswordMethod() //TODO Peut etre modifié en ajoutant des parametres
+    public function changePasswordMethod()
     {
         $this->session->isUser();
         $post = $this->post->getPostArray();

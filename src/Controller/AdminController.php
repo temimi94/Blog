@@ -69,5 +69,5 @@ class AdminController extends UserController
 
     }
 
-
+//TODO Valider un utilisateur
 }
