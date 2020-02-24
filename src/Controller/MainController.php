@@ -17,11 +17,6 @@ abstract class MainController extends ImportController
      */
     protected $twig = null;
 
-    /**
-     * @var
-     */
-    protected $mail;
-
 
     /**
      * MainController constructor
@@ -31,7 +26,6 @@ abstract class MainController extends ImportController
     public function __construct()
     {
         parent::__construct();
-        $this->verifyAuth();
 
         $this->twig = new Environment(new FilesystemLoader('../src/View'), array(
             'cache' => false,
@@ -94,19 +88,6 @@ abstract class MainController extends ImportController
         return $link;
     }
 
-    /**
-     *
-     */
-    public function verifyAuth(){
-        $cookie = $this->cookie->getCookieVar('gtk');
-        if(!empty($cookie) AND !$this->session->isLogged()){
-            $req = $this->loginSql->searchAuthToken($cookie);
-            if($req){
-                $this->session->createSession($req);
-            }
-        }
-
-    }
 
 
 }
