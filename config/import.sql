@@ -64,17 +64,15 @@ CREATE TABLE `User` (
   `rank` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '2',
   `forgotToken` varchar(90) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `forgotTokenExpiration` datetime DEFAULT NULL,
-  `authToken` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `authTokenExpiration` datetime DEFAULT NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `idUser_UNIQUE` (`idUser`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `pseudo_UNIQUE` (`pseudo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `User` (`idUser`, `pseudo`, `email`, `password`, `dateRegister`, `rank`, `forgotToken`, `forgotTokenExpiration`, `authToken`, `authTokenExpiration`) VALUES
-(1,	'SuperAdmin',	'admin@admin.com',	'$2y$10$/hMiIISnBgvV0PlftWFeB.TAIZSNOKV7LQozKeDUm1EPvRVYBP0UK',	'2000-01-01 00:00:00',	'1',	'1234',	'2020-01-30 05:46:22',	'093be4d672767f384070ce32728f1748cfcfccae14d4d720f7e7dcba8155b4d1',	'2020-01-27 03:59:54'),
-(2,	'Théo',	'theo@gmail.com',	'$2y$10$/hMiIISnBgvV0PlftWFeB.TAIZSNOKV7LQozKeDUm1EPvRVYBP0UK',	'2019-12-12 12:00:00',	'2',	NULL,	NULL,	'1',	NULL),
-(4,	'user',	'user@user.com',	'$2y$10$5Ng1iq/F31LyKu5j.Oib8u0EQi.bN7ujDvA4oe2EwBC2Ymc/2MTvO',	'2019-12-24 17:20:19',	'2',	NULL,	NULL,	NULL,	NULL);
+INSERT INTO `User` (`idUser`, `pseudo`, `email`, `password`, `dateRegister`, `rank`, `forgotToken`, `forgotTokenExpiration`) VALUES
+(1,	'SuperAdmin',	'admin@admin.com',	'$2y$10$/hMiIISnBgvV0PlftWFeB.TAIZSNOKV7LQozKeDUm1EPvRVYBP0UK',	'2000-01-01 00:00:00',	'1',	'1234',	'2020-01-30 05:46:22'),
+(2,	'Théo',	'theo@gmail.com',	'$2y$10$/hMiIISnBgvV0PlftWFeB.TAIZSNOKV7LQozKeDUm1EPvRVYBP0UK',	'2019-12-12 12:00:00',	'2',	NULL,	NULL),
+(4,	'user',	'user@user.com',	'$2y$10$5Ng1iq/F31LyKu5j.Oib8u0EQi.bN7ujDvA4oe2EwBC2Ymc/2MTvO',	'2019-12-24 17:20:19',	'2',	NULL,	NULL);
 
 -- 2020-01-20 05:21:46
