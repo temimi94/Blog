@@ -17,7 +17,7 @@ class MainModel
      */
     public function read($statement)
     {
-        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req = ConnectDB::getPDO()->prepare($statement);
         $req->execute();
         return $req->fetch();
     }
@@ -28,7 +28,7 @@ class MainModel
      */
     public function readAll($statement)
     {
-        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req = ConnectDB::getPDO()->prepare($statement);
         $req->execute();
         return $req->fetchAll();
     }
@@ -39,7 +39,7 @@ class MainModel
      */
     public function exec($statement)
     {
-        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req = ConnectDB::getPDO()->prepare($statement);
         $req->execute();
         return $req;
     }
@@ -51,7 +51,7 @@ class MainModel
      */
     public function execArray($statement, $array = [])
     {
-        $req = ConnectPDO::getPDO()->prepare($statement);
+        $req = ConnectDB::getPDO()->prepare($statement);
         $req->execute($array);
         return $req;
     }

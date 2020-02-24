@@ -14,7 +14,7 @@ class AdminModel extends MainModel
      */
     public function selectAllUser()
     {
-        $database = ConnectPDO::getPDO()->prepare('SELECT * FROM User');
+        $database = ConnectDB::getPDO()->prepare('SELECT * FROM User');
         $database->execute();
         $req = $database->fetchAll();
         return $req;
