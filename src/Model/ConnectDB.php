@@ -6,10 +6,10 @@ namespace App\Model;
 use PDO;
 
 /**
- * Class ConnectPDO
+ * Class ConnectDB
  * @package App\Model
  */
-class ConnectPDO
+class ConnectDB
 {
     /**
      * Stores the Connection

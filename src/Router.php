@@ -9,13 +9,13 @@ class Router
 
     public function __construct()
     {
-        $this->parseUrl();
+        $this->getUrl();
         $this->setController();
         $this->setMethod();
-        $this->controllerSendView();
+        $this->getControllerView();
     }
 
-    public function parseUrl()
+    public function getUrl()
     {
         $page = filter_input(INPUT_GET, 'page');
         if (!isset($page)) {
@@ -49,7 +49,7 @@ class Router
         }
     }
 
-    public function controllerSendView()
+    public function getControllerView()
     {
         $this->controller = new $this->controller;
         $reponse = call_user_func([$this->controller, $this->method]);

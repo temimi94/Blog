@@ -23,9 +23,9 @@
             <hr>
             <div class="row date-blog-page">
             {% if article.dateUpdate <= article.date %}
-                <p>A été créé le {{ article.date }} par <strong>{{ article.pseudo }}</strong></p>
+                <p>A été créé le {{ article.date|date('d/m/Y \\à H:i:s') }} par <strong>{{ article.pseudo }}</strong></p>
             {% else %}
-                <p>A été modifié le {{ article.dateUpdate }} par <strong>{{ article.pseudo }}</strong></p>
+                <p>A été modifié le {{ article.dateUpdate|date('d/m/Y \\à H:i:s') }} par <strong>{{ article.pseudo }}</strong></p>
             {% endif %}
             </div>
         </div>
@@ -45,9 +45,9 @@
                 </div>
                 <div class="row">
                    {% if comments.dateUpdate <= comment.date %}
-                        <p>A été créé le {{ comments.date }} par <strong>{{ comments.pseudo }}</strong></p>
+                        <p>A été créé le {{ comments.date|date('d/m/Y \\à H:i:s') }} par <strong>{{ comments.pseudo }}</strong></p>
                     {% else %}
-                        <p>A été modifié le {{ comments.dateUpdate }} par <strong>{{ comments.pseudo }}</strong></p>
+                        <p>A été modifié le {{ comments.dateUpdate|date('d/m/Y \\à H:i:s') }} par <strong>{{ comments.pseudo }}</strong></p>
                     {% endif %}
                 </div>
                 <hr>

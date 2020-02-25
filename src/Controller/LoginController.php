@@ -74,10 +74,8 @@ class LoginController extends MainController
             goto ifError;
         }
 
-        if (isset($post['remember_me'])) {
-            $this->auth($data, true);//login() will redirect to the good home page
-        }
-        $this->auth($data, false);
+
+        $this->auth($data);
 
         ifError:
         return $this->renderTwigErr(self::TWIG_LOGIN, $errorMsg);
@@ -86,16 +84,10 @@ class LoginController extends MainController
 
     /**
      * @param array $data
-     * @param null $remember_me
      * @throws Exception
      */
-    private function auth($data = [], $remember_me = null)
+    private function auth($data = [])
     {
-        if ($remember_me == true) {
-            $authToken = bin2hex(openssl_random_pseudo_bytes(32));
-            $this->loginSql->createAuthToken($authToken, $data['idUser']);
-            $this->cookie->createCookie('gtk', $authToken, time()+604800);//Create cookie that expires in 1 week
-        }
         $this->session->createSession($data);
         if ($this->session->getUserVar('rank') === 'Administrateur'){
             $this->redirect('admin');
@@ -147,7 +139,6 @@ class LoginController extends MainController
     {
         unset($_SESSION);
         session_destroy();
-        $this->cookie->destroyCookie('gtk');
         $this->redirect('home');
     }
 
