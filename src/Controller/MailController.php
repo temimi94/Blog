@@ -31,7 +31,7 @@ class MailController
         $mailer = new Swift_Mailer($transport);
 
         // Create a message
-        $message = (new Swift_Message('Contact Blog PHP P5 OpenClassrooms'))
+        $message = (new Swift_Message('Contact'))
             ->setFrom([$user['email'] => $user['name']])
             ->setTo(MAIL_USERNAME)
             ->setBody($user['content']);
@@ -72,7 +72,7 @@ class MailController
         <p>Le lien ne sera valide que 15 minutes</p>
         <p>Si le lien ne marche pas : ".$link."</p>");
         // Create a message
-        $message = (new Swift_Message('Mot de passe oublié Blog PHP P5 Kinder Théo'))
+        $message = (new Swift_Message('Mot de passe oublié'))
             ->setFrom(MAIL_USERNAME)
             ->setTo($user['email']) //change to $user['email']
             ->setBody($content, 'text/html');

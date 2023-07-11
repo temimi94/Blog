@@ -1,74 +1,90 @@
 {% extends 'layout/layout.twig' %}
 {% block title %}
-    <div class="row">
-        <div class="col text-center">
-            <h3>{{ article.title }}</h3>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col text-center">
+			<em style="color: white; font-size: 24px;" >{{ article.title }}</em>
+		</div>
+	</div>
 {% endblock %}
 
 {% block content %}
 
-    <div class="jumbotron blog-page">
-        <div class="container">
-            <div class="row">
-                <p>{{ article.chapo }}</p>
-            </div>
-        </div>
-        <hr>
-        <div class="container">
-            <div class="row">
-                <p>{{ article.content }}</p>
-            </div>
-            <hr>
-            <div class="row date-blog-page">
-            {% if article.dateUpdate <= article.date %}
-                <p>A été créé le {{ article.date|date('d/m/Y \\à H:i:s') }} par <strong>{{ article.pseudo }}</strong></p>
-            {% else %}
-                <p>A été modifié le {{ article.dateUpdate|date('d/m/Y \\à H:i:s') }} par <strong>{{ article.pseudo }}</strong></p>
-            {% endif %}
-            </div>
-        </div>
-    </div>
+	<div class="jumbotron blog-page">
+		<div class="container">
+			<div class="row">
+				<p>{{ article.chapo }}</p>
+			</div>
+		</div>
+		<hr>
+		<div class="container">
+			<div class="row">
+				<p>{{ article.content }}</p>
+			</div>
+			<hr>
+			<div class="row date-blog-page">
+				{% if article.dateUpdate <= article.date %}
+					<p>A été créé le
+						{{ article.date|date('d/m/Y \\à H:i:s') }}
+						par
+						<strong>{{ article.pseudo }}</strong>
+					</p>
+				{% else %}
+					<p>A été modifié le
+						{{ article.dateUpdate|date('d/m/Y \\à H:i:s') }}
+						par
+						<strong>{{ article.pseudo }}</strong>
+					</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
-    <div class="container">
-        <div class="row">
-            <h4>Commentaires</h4>
-        </div>
-    </div>
-    <div class="jumbotron blog-page">
-        <div class="container">
+	<div class="container">
+		<div class="row">
+			<h4>Commentaires</h4>
+		</div>
+	</div>
+	<div class="jumbotron blog-page">
+		<div class="container">
 
-            {% for comments in comment %}
-                <div class="row">
-                    <p>{{ comments.content }}</p>
-                </div>
-                <div class="row">
-                   {% if comments.dateUpdate <= comment.date %}
-                        <p>A été créé le {{ comments.date|date('d/m/Y \\à H:i:s') }} par <strong>{{ comments.pseudo }}</strong></p>
-                    {% else %}
-                        <p>A été modifié le {{ comments.dateUpdate|date('d/m/Y \\à H:i:s') }} par <strong>{{ comments.pseudo }}</strong></p>
-                    {% endif %}
-                </div>
-                <hr>
-            {% endfor %}
-        </div>
-    </div>
-{% if session.sessionId is defined  %}
-    <hr>
-    <div class="container">
-        <div class="row">
-            <div class="col-2"></div>
-            <form class="col-8" action="index.php?page=comment&method=createComment&idArticle={{ article.idArticle }}" method="post">
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Commentaire</label>
-                    <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Envoyer</button>
-            </form>
-            <div class="col-2"></div>
-        </div>
-    </div>
-{% endif %}
+			{% for comments in comment %}
+				<div class="row">
+					<p>{{ comments.content }}</p>
+				</div>
+				<div class="row">
+					{% if comments.dateUpdate <= comment.date %}
+						<p>A été créé le
+							{{ comments.date|date('d/m/Y \\à H:i:s') }}
+							par
+							<strong>{{ comments.pseudo }}</strong>
+						</p>
+					{% else %}
+						<p>A été modifié le
+							{{ comments.dateUpdate|date('d/m/Y \\à H:i:s') }}
+							par
+							<strong>{{ comments.pseudo }}</strong>
+						</p>
+					{% endif %}
+				</div>
+				<hr>
+			{% endfor %}
+		</div>
+	</div>
+	{% if session.sessionId is defined  %}
+		<hr>
+		<div class="container">
+			<div class="row">
+				<div class="col-2"></div>
+				<form class="col-8" action="index.php?page=comment&method=createComment&idArticle={{ article.idArticle }}" method="post">
+					<div class="form-group">
+						<label for="exampleFormControlTextarea1">Commentaire</label>
+						<textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary">Envoyer</button>
+				</form>
+				<div class="col-2"></div>
+			</div>
+		</div>
+	{% endif %}
 
 {% endblock %}

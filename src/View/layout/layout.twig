@@ -3,56 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Blog PHP - Projet 5 - Développeur d'application PHP/Symfony - OpenClassrooms ">
-    <meta name="author" content="Kinder Théo">
-    <title>Projet 5 - PHP - Développeur d'application Symfony - OpenClassrooms</title>
+    <meta name="description" content="Blog">
+    <meta name="author" content="Hamdaoui rogaya">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <title>Blog</title>
 
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="../public/css/style.css" rel="stylesheet">
+    <link href="../public/template/css/styles.css" rel="stylesheet">
 </head>
 <body>
+ <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                     {{  include ('layout/navbar.twig') }}
+                </div>
+            </div>
+        </nav>
     <div class="page">
-        <div class="container site-header">
-            {{  include ('layout/navbar.twig') }}
-        </div>
-        <main role="main" class="site-content">
-            <div class="jumbotron">
+     <header class="masthead" style="background-image: url('../public/img/background.jpg'); padding-top: 16rem;">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                        <h3>Hamdaoui Rogaya</h3>
+                            <span class="subheading">Développeuse Web</span>
 
-                <div class="container">
-                    <div class="row pt-5">
-                        <div class="col-lg-2 text-center">
-                            <img src="../public/img/myAvatar.png" class="rounded-circle" alt="Avatar">
-                        </div>
-                        <div class="col-lg-10 text-center">
-                            <h2>Kinder Théo<br> étudiant développeur PHP / Symfony chez OpenClassrooms</h2>
                         </div>
                     </div>
-                    {% block title %}{% endblock %}
                 </div>
-
+                 {% block title %}{% endblock %}
             </div>
-
+        </header>
                 <div class="container pb-5">
                     {% if erreur is defined %}
                         <div class="alert alert-danger text-center" role="alert">{{ erreur }}</div>

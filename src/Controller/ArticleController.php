@@ -40,8 +40,6 @@ class ArticleController extends MainController
     public function listMethod()
     {
         $article = $this->articleSql->selectAllArticle();
-        //$blog = $blog->selectAllArticle(); //TODO Afficher seulement 10 Articles maximum, Vérifier s'il y minimum 1 article
-
         return $this->render('listArticle.twig', ['listArticle' => $article]);
     }
 //TODO Mettre des articles et commentaires pertinents

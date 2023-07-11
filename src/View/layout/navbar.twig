@@ -1,14 +1,13 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Projet 5 - PHP</a>
+<nav class="navbar navbar-expand-md fixed-top">
+    <a class="navbar-brand" href="index.php?page=home"> <span class="sr-only">(current)</span> 
+	<img src="../public/template/assets/img/gayah.jpg" style="width:50px; border-radius: 50%" alt="Avatar">
+	</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
 </button>
 
 <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link" href="index.php?page=home">Home <span class="sr-only">(current)</span></a>
-        </li>
         <li class="nav-item">
             <a class="nav-link" href="index.php?page=article&method=list">Liste des articles</a>
         </li>
@@ -16,14 +15,14 @@
         {% if session.sessionId is defined %}
             {% if session.rank == 'Administrateur' %}
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=article&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
+            <a class="nav-link" href="index.php?page=article&method=createArticle">Créer un article</a>
         </li>
             {% endif %}
         {% endif %}
     </ul>
 
     {% if session.sessionId is defined %}
-    <ul class="navbar-nav justify-content-end">
+    <ul class="navbar-nav justify-content-end;">
         <li class="nav-item">
             {% if session.rank == 'Administrateur' %}
                 <a class="nav-link" href="index.php?page=admin">Mon compte</a>
@@ -35,15 +34,15 @@
     {% endif %}
 
     {% if session.sessionId is defined %}
-        <form class="nav-item">
+        <form class="nav-item justify-content-end">
             <a class="btn btn-warning" href="index.php?page=login&method=logout">Logout</a>
         </form>
     {% else %}
         <form class="nav-item">
-        <a class="btn btn-success" href="index.php?page=login">Login</a>
+        <a class="btn btn-success justify-content-end" href="index.php?page=login&method=login">Login</a>
         </form>
         <form class="nav-item">
-            <a class="btn btn-warning" href="index.php?page=login&method=register">Créer un compte</a>
+            <a class="btn btn-warning justify-content-end" href="index.php?page=login&method=register">Créer un compte</a>
         </form>
     {% endif %}
 </div>

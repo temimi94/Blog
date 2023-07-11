@@ -32,7 +32,7 @@ abstract class MainController extends ImportController
             'debug' => true
         ));
         $this->twig->addExtension(new DebugExtension());
-        $this->twig->addGlobal("session", $this->session->getUserArray());
+        // $this->twig->addGlobal("session", $this->session->getUserArray());
         $this->twig->addGlobal("get", $this->get->getGetArray());
     }
 

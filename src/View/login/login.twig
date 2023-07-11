@@ -1,18 +1,21 @@
 {% extends 'layout/layout.twig' %}
 
 {% block content %}
-    <form method="post" action="index.php?page=login&method=login">
-        <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
-            <label for="passwrd">Password</label>
-            <input type="password" name="password" class="form-control" id="passwrd" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-    </form>
-
-    <a href="index.php?page=login&method=passwordForget">Mot de passe oublié?</a>
-{% endblock %}
+	<div style="display:flex; flex-direction: row; justify-content: space-around;">
+		<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" style="width: 45%;">
+		<form class="login" method="post" action="index.php?page=login&method=login" style="width: 45%;">
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+			</div>
+			<div class="form-group">
+				<label for="passwrd">Password</label>
+				<input type="password" name="password" class="form-control" id="passwrd" placeholder="Password">
+			</div>
+		</br>
+		<button type="submit" class="btn btn-primary">Se Connecter</button>
+	</br>
+	<p>
+		<a href="index.php?page=login&method=passwordForget">Mot de passe oublié?</a>
+	</p>
+</form></div>{% endblock %}

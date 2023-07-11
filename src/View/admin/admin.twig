@@ -1,193 +1,245 @@
 {% extends 'layout/layout.twig' %}
 
 {% block title %}
-    <div class="row">
-        <div class="col text-center">
-            <h3>Panel d'administration</h3>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col text-center">
+			<em style="color: white; font-size: 24px;">Administration</em>
+		</div>
+	</div>
 {% endblock %}
 
 {% block content %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 pb-2">
-                <table class="panel">
-                    <tr>
-                        <td>
-                            <h4>Informations du compte</h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Session ID :</td>
-                        <td>{{ session.sessionId }}</td>
-                    </tr>
-                    <tr>
-                        <td>Pseudo :</td>
-                        <td>{{ session.pseudo }}</td>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 pb-2">
+				<table class="panel">
+					<tr>
+						<td>
+							<h4>Informations du compte</h4>
+						</td>
+					</tr>
+					<tr>
+						<td>Session ID :</td>
+						<td>{{ session.sessionId }}</td>
+					</tr>
+					<tr>
+						<td>Pseudo :</td>
+						<td>{{ session.pseudo }}</td>
 
-                    </tr>
-                    <tr>
-                        <td>Adresse email :</td>
-                        <td>{{ session.email }}</td>
-                    </tr>
-                    <tr>
-                        <td>Date de création du compte : </td>
-                        <td>{{ session.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
-                    </tr>
-                    <tr>
-                        <td>Rang : </td>
-                        <td>{{ session.rank }}</td>
-                    </tr>
-                </table>
-            </div>
+					</tr>
+					<tr>
+						<td>Adresse email :</td>
+						<td>{{ session.email }}</td>
+					</tr>
+					<tr>
+						<td>Date de création du compte :
+						</td>
+						<td>{{ session.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
+					</tr>
+					<tr>
+						<td>Rang :
+						</td>
+						<td>{{ session.rank }}</td>
+					</tr>
+				</table>
+			</div>
 
-            <div class="col-lg-6 pt-2 link ">
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listUser">Liste des utilisateurs</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=article&method=listAdmin">Liste des articles</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=comment&method=listAllComment">Liste des commentaires</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a></div>
-            </div>
-        </div>
-    </div>
-
-
-    {% if password is defined %}
-        <div class="container">
-            <div class="row justify-content-center">
-                <p>Changement de mot de passe</p>
-            </div>
-            <div class="row justify-content-center">
-                <form method="post" action="index.php?page=admin&method=changePassword">
-                    <div class="form-group">
-                        <label for="passwrd">Ancien mot de passe</label>
-                        <input type="password" name="oldpassword" class="form-control" id="passwrd" placeholder="Ancien mot de passe">
-                    </div>
-                    <div class="form-group">
-                        <label for="passwrd">Nouveau mot de passe</label>
-                        <input type="password" name="password1" class="form-control" id="passwrd" placeholder="Nouveau mot de passe">
-                    </div>
-                    <div class="form-group">
-                        <label for="passwrd">Re-rentrez le nouveau mot de passe</label>
-                        <input type="password" name="password2" class="form-control" id="passwrd" placeholder="Vérification nouveau mot de passe">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Changer</button>
-                </form>
-            </div>
-        </div>
-    {% endif %}
-
-    {% if user is defined %}
-        <hr>
-        <div class="container">
-
-                {% for users in user %}
-                <div class="row">
-                    <p>User ID : {{ users.idUser }}</p>
-                </div>
-                <div class="row">
-                    <p>Pseudo : {{ users.pseudo }}</p>
-                </div>
-                <div class="row">
-                    <p>Email : {{ users.email }}</p>
-                </div>
-                <div class="row">
-                    <p>Date d'enregistrement : {{ users.dateRegister|date('d/m/Y \\à H:i:s')  }}</p>
-                </div>
-                <div class="row">
-                    <p>Rang :
-                        {% if users.rank == 1%}
-                        Administrateur
-                        {% elseif users.rank == 2 %}
-                        Utilisateur
-                        {% endif %}
-                    </p>
-                </div>
-                    <hr>
-                {% endfor %}
-        </div>
-    {% endif %}
+			<div class="col-lg-6 pt-2 link ">
+				<div class="row pb-2 justify-content-center">
+					<a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listUser">Gestion des utilisateurs</a>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<a class="btn btn-default btn-secondary" href="index.php?page=article&method=listAdmin">Gestion des articles</a>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<a class="btn btn-default btn-secondary" href="index.php?page=comment&method=listAllComment">Gestion des commentaires</a>
+				</div>
+				<div class="row pb-2 justify-content-center">
+					<a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-    {% if article is defined %}
-        <hr>
-        <div class="container">
-            {% for articles in article %}
-            <div class="row">
-                <div class="col-6"><p>ID Article : {{ articles.idArticle }}</p></div>
-                <div class="col-6"> <p>Titre: {{ articles.title }}</p></div>
-            </div>
-                <div class="row">
-                    <p>Chapo : {{ articles.chapo }}</p>
-                </div>
+	{% if password is defined %}
+		<div class="container">
+			<div class="row justify-content-center">
+				<p>Changement de mot de passe</p>
+			</div>
+			<div class="row justify-content-center">
+				<form method="post" action="index.php?page=admin&method=changePassword">
+					<div class="form-group">
+						<label for="passwrd">Ancien mot de passe</label>
+						<input type="password" name="oldpassword" class="form-control" id="passwrd" placeholder="Ancien mot de passe">
+					</div>
+					<div class="form-group">
+						<label for="passwrd">Nouveau mot de passe</label>
+						<input type="password" name="password1" class="form-control" id="passwrd" placeholder="Nouveau mot de passe">
+					</div>
+					<div class="form-group">
+						<label for="passwrd">Re-rentrez le nouveau mot de passe</label>
+						<input type="password" name="password2" class="form-control" id="passwrd" placeholder="Vérification nouveau mot de passe">
+					</div>
+					<button type="submit" class="btn btn-primary">Changer</button>
+				</form>
+			</div>
+		</div>
+	{% endif %}
 
-            <div class="row">
-                <p>{{ articles.content }}</p>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <p>Date de création: {{ articles.date|date('d/m/Y \\à H:i:s') }}</p>
-                </div>
-                <div class="col-4">
-                    {% if articles.dateUpdate != null %}
-                    <div class="row">
-                        <p>Dernière modification le : {{ articles.dateUpdate|date('d/m/Y \\à H:i:s') }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="col-4">
-                    <p>Crée par : {{ articles.pseudo }}</p>
-                </div>
-            </div>
+	{% if user is defined %}
+		<div class="card-user" style="width: 30%; margin-top: 60px;">
+			<div class="card" style="width: 18rem; display: flex; flex-direction: row; justify-content: space-around; flex-wrap:wrap;">
+				{% for users in user %}
+					<div class="card-body">
+						<h5 class="card-title">Pseudo :
+							{{ users.pseudo }}</h5>
+						<p class="card-text">Email :
+							{{ users.email }}</p>
+						<p class="card-text">Rang :
+							{% if users.rank == 1%}
+								Administrateur
+							{% elseif users.rank == 2 %}
+								Utilisateur
+							{% endif %}
+						</p>
+						<p class="card-text">User ID :
+							{{ users.idUser }}</p>
+						<p class="card-text">Date d'enregistrement :
+							{{ users.dateRegister|date('d/m/Y \\à H:i:s')  }}</p>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
 
 
-            {% if articles.validated == '0' %}
-                <a class="btn btn-primary" href="index.php?page=article&method=approveArticle&idArticle={{ articles.idArticle }}">Approuver</a>
-            {% endif %}
-                <a class="btn btn-primary" href="index.php?page=article&method=editArticle&idArticle={{ articles.idArticle }}">Editer</a>
-                <a class="btn btn-danger" href="index.php?page=article&method=deleteArticle&idArticle={{ articles.idArticle }}">Supprimer</a>
-            <hr>
-            {% endfor %}
+	{# <hr>
+						<div class="container">
+				
+							{% for users in user %}
+								<div class="row">
+									<p>User ID :
+										{{ users.idUser }}</p>
+								</div>
+								<div class="row">
+									<p>Pseudo :
+										{{ users.pseudo }}</p>
+								</div>
+								<div class="row">
+									<p>Email :
+										{{ users.email }}</p>
+								</div>
+								<div class="row">
+									<p>Date d'enregistrement :
+										{{ users.dateRegister|date('d/m/Y \\à H:i:s')  }}</p>
+								</div>
+								<div class="row">
+									<p>Rang :
+										{% if users.rank == 1%}
+											Administrateur
+										{% elseif users.rank == 2 %}
+											Utilisateur
+										{% endif %}
+									</p>
+								</div>
+								<hr>
+							{% endfor %}
+						</div>
+					{% endif %} #}
+	{% if article is defined %}
+		<hr>
+		<div class="container">
+			{% for articles in article %}
+				<div class="row">
+					<div class="col-6">
+						<p>ID Article :
+							{{ articles.idArticle }}</p>
+					</div>
+					<div class="col-6">
+						<p>Titre:
+							{{ articles.title }}</p>
+					</div>
+				</div>
+				<div class="row">
+					<p>Chapo :
+						{{ articles.chapo }}</p>
+				</div>
 
-        </div>
-    {% endif %}
+				<div class="row">
+					<p>{{ articles.content }}</p>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						<p>Date de création:
+							{{ articles.date|date('d/m/Y \\à H:i:s') }}</p>
+					</div>
+					<div class="col-4">
+						{% if articles.dateUpdate != null %}
+							<div class="row">
+								<p>Dernière modification le :
+									{{ articles.dateUpdate|date('d/m/Y \\à H:i:s') }}</p>
+							</div>
+						{% endif %}
+					</div>
+					<div class="col-4">
+						<p>Crée par :
+							{{ articles.pseudo }}</p>
+					</div>
+				</div>
 
-    {% if comment is defined %}
-        <hr>
-        <div class="container">
-            {% for comments in comment %}
-                <div class="row justify-content-center">
-                    <p>ID : {{ comments.idComment }}</p>
-                </div>
-                <div class="row justify-content-center">
-                    <p>Commentaire : {{ comments.content }}</p>
-                </div>
-                <div class="row justify-content-center">
-                    <p>Ecrit par : {{ comments.pseudo }} le {{ comments.date|date('d/m/Y \\à H:i:s')  }}</p>
-                </div>
-                <div class="row justify-content-center">
-                    <p>Article : {{ comments.title }}</p>
-                </div>
 
-                <div class="row justify-content-around">
-                {% if comments.validate == '1' %}
-                    <p>Commentaire approuvé</p>
-                {% elseif comments.validate == '0' %}
-                    <p>Commentaire en attente de validation</p>
-                    <a class="btn btn-primary" href="index.php?page=comment&method=approveComment&idComment={{ comments.idComment }}">Approuver</a>
-                {% endif %}
-                <a class="btn btn-danger" href="index.php?page=comment&method=deleteComment&idComment={{ comments.idComment }}">Supprimer</a>
-                </div>
+				{% if articles.validated == '0' %}
+					<a class="btn btn-primary" href="index.php?page=article&method=approveArticle&idArticle={{ articles.idArticle }}">Approuver</a>
+				{% endif %}
+				<a class="btn btn-primary" href="index.php?page=article&method=editArticle&idArticle={{ articles.idArticle }}">Editer</a>
+				<a class="btn btn-danger" href="index.php?page=article&method=deleteArticle&idArticle={{ articles.idArticle }}">Supprimer</a>
+				<hr>
+			{% endfor %}
 
-                <hr>
-            {% endfor %}
-            {% if comment is empty %}
-                <div class="row justify-content-center">
-                    <p>Il n'y a aucun commentaires</p>
-                </div>
-            {% endif %}
-        </div>
-    {% endif %}
+		</div>
+	{% endif %}
+	{% if comment is defined %}
+		<hr>
+		<div class="container">
+			{% for comments in comment %}
+				<div class="row justify-content-center">
+					<p>ID :
+						{{ comments.idComment }}</p>
+				</div>
+				<div class="row justify-content-center">
+					<p>Commentaire :
+						{{ comments.content }}</p>
+				</div>
+				<div class="row justify-content-center">
+					<p>Ecrit par :
+						{{ comments.pseudo }}
+						le
+						{{ comments.date|date('d/m/Y \\à H:i:s')  }}</p>
+				</div>
+				<div class="row justify-content-center">
+					<p>Article :
+						{{ comments.title }}</p>
+				</div>
 
+				<div class="row justify-content-around">
+					{% if comments.validate == '1' %}
+						<p>Commentaire approuvé</p>
+					{% elseif comments.validate == '0' %}
+						<p>Commentaire en attente de validation</p>
+						<a class="btn btn-primary" href="index.php?page=comment&method=approveComment&idComment={{ comments.idComment }}">Approuver</a>
+					{% endif %}
+					<a class="btn btn-danger" href="index.php?page=comment&method=deleteComment&idComment={{ comments.idComment }}">Supprimer</a>
+				</div>
+
+				<hr>
+			{% endfor %}
+			{% if comment is empty %}
+				<div class="row justify-content-center">
+					<p>Il n'y a aucun commentaires</p>
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
 {% endblock %}

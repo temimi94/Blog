@@ -1,32 +1,44 @@
 {% extends 'layout/layout.twig' %}
-{% block title %}
-
-{% endblock %}
+{% block title %}{% endblock %}
 
 {% block content %}
-
-    <div class="form-group text-center">
-        <h3>Me contacter</h3>
-        <form method="post" action="index.php?page=home&method=sendMail">
-            <div class="row">
-                <div class="col-lg-6 pt-3">
-                    <input type="text" name="name" class="form-control text-center" placeholder="Nom et prénom">
-                </div>
-                <div class="col-lg-6 pt-3">
-                    <input type="email" name="email" class="form-control text-center" placeholder="Adresse email">
-                </div>
-            </div>
-                <div class="row">
-                    <div class="col pt-3">
-                        <textarea name="content" class="form-control" rows="4" id="message"></textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col pt-3">
-                        <input type="submit" value="Envoyer"/>
-                    </div>
-                </div>
-
-        </form>
-    </div>
-{% endblock %}
+	<div>
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+				<p>Ayant une passion pour l'informatique, j'ai choisi de faire une reconversion professionelle en 2019.
+					J'ai donc suivi les parcours
+					<em>Développeur Web Junior</em>,
+					<em>Développeur d'Application JavaScript/React</em>
+					et
+					<em>Développeur d'Application Php/Symfony
+					</em>
+					chez Openclassrooms.<br/>
+				</p>
+			</br>
+			<button style="background-color: white;">
+				<a href="../public/cv new.pdf" style="text-decoration: none; font-size: 16px; background-color: white;">
+					<em>mon Curriculum Vitae</em>
+				</a>
+			</button>
+		</div>
+	</div>
+</div></br></br><div class="col-md-10 col-lg-20 col-xl-7 justify-content-center text-center" style="width: auto;"><h4>N'hésitez pas à me contacter pour plus d'infos</h4>
+<form method="post" action="index.php?page=home&method=sendMail">
+<div class="row">
+	<div class="col-lg-6 pt-3">
+		<input type="text" name="name" class="form-control text-center" placeholder="Nom et prénom">
+	</div>
+	<div class="col-lg-6 pt-3">
+		<input type="email" name="email" class="form-control text-center" placeholder="Adresse email">
+	</div>
+</div>
+<div class="row">
+	<div class="col pt-3">
+		<textarea name="content" class="form-control" rows="4" id="message"></textarea>
+	</div>
+</div>
+<div class="row">
+	<div class="col pt-3">
+		<input type="submit" value="Envoyer"/>
+	</div>
+</div></form></div>{% endblock %}

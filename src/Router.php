@@ -5,6 +5,8 @@ namespace App;
 class Router
 {
 
+    public $controller;
+    public $method;
     const DEFAULT_METHOD = 'DefaultMethod';
 
     public function __construct()

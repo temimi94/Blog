@@ -1,5 +1,5 @@
 {
-  "name": "kindertheo/p5",
+  "name": "hamda/p5",
   "version": "0.1.2",
   "type": "project",
   "description": "Projet 5 de la formation Développeur Symfony chez OpenClassrooms",
@@ -14,9 +14,9 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Kinder Théo",
-      "email": "kinder.theo@gmail.com",
-      "homepage": "https://blog.kindertheo.net",
+      "name": "Hamdaoui Rogaya",
+      "email": "hamdaouirogoya1994@gmail.com",
+      "homepage": "",
       "role": "Apprenti Développeur PHP/Symfony"
     }
   ],
@@ -39,7 +39,7 @@
     }
   },
   "support": {
-    "email": "theo.kinder@gmail.com",
+    "email": "hamdaouirogoya1994@gmail.com",
     "issues": "https://github.com/kindertheo/p5issues",
     "source": "https://github.com/kindertheo/p5"
   }

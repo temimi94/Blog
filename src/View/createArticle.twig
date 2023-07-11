@@ -1,34 +1,34 @@
 {% extends 'layout/layout.twig' %}
 {% block title %}
-    <div class="row">
-        <div class="col text-center">
-            <h3>Création d'un article</h3>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col text-center">
+			<em style="color: white; font-size: 24px;">Création d'un article</em>
+		</div>
+	</div>
 {% endblock %}
 
 {% block content %}
 
-    <div class="container">
-        <form action="index.php?page=article&method=createArticle" method="post">
+	<div class="container">
+		<form action="index.php?page=article&method=createArticle" method="post">
 
-            <div class="form-group">
-                <label for="title">Titre</label>
-                <input type="text" class="form-control"  id="title" name="title">
-            </div>
+			<div class="form-group">
+				<label for="title">Titre</label>
+				<input type="text" class="form-control" id="title" name="title">
+			</div>
 
-            <div class="form-group">
-                <label for="chapo">Extrait</label>
-                <input type="text" class="form-control" id="chapo" name="chapo">
-            </div>
+			<div class="form-group">
+				<label for="chapo">Extrait</label>
+				<input type="text" class="form-control" id="chapo" name="chapo">
+			</div>
 
-            <div class="form-group form-check">
-                <label for="content">Contenu</label>
-                <textarea type="text" class="form-control" rows="10" id="content" name="content"></textarea>
-            </div>
+			<div class="form-group form-check">
+				<label for="content">Contenu</label>
+				<textarea type="text" class="form-control" rows="10" id="content" name="content"></textarea>
+			</div>
 
-            <button type="submit" class="btn btn-primary">Créer</button>
-        </form>
+			<button type="submit" class="btn btn-primary">Créer</button>
+		</form>
 
-    </div>
+	</div>
 {% endblock %}

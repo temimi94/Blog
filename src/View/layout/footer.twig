@@ -1,19 +1,33 @@
 
-<div class="row">
-    <div class="col">
-        <a href="kinder_theo_cv.pdf">Télécharger mon CV</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-     <a href="http://twitter.com/KndrTheo">Twitter</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-      <a href="http://github.com/kindertheo">GitHub</a>
-    </div>
-</div>
+ <div style="background-color: bleu;">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="#!">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/rogaya-hamdaoui/">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/temimi94">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Hamdaoui rogaya</div>
+                </div>
 {% if session.sessionId is defined %}
     {% if session.rank == 'Administrateur' %}
         <div class="row">
@@ -23,9 +37,4 @@
         </div>
     {% endif %}
 {% endif %}
-<div class="row">
-    <div class="col pt-2">
-        <p>Copyright 2020 - Kinder Théo</p>
-    </div>
-</div>
 <!-- TODO Ajouter lien admin
